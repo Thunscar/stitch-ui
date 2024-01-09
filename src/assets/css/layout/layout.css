@@ -1,0 +1,62 @@
+.container{
+    float: left;
+}
+
+.layout-sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100%;
+    background: #141414;
+}
+
+.layout-content{
+    position: fixed;
+    top: 0;
+    left: 240px;
+    width: 100%;
+    height: 100%;
+    background: #13ce66;
+}
+
+.layout-header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: #eeeeee;
+    z-index: 99;
+}
+
+.view-tab{
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: chartreuse;
+    z-index: 99;
+}
+
+.view-content{
+    position: absolute;
+    top: 110px;
+    left: 0;
+    width: 100%;
+    height: 80%;
+    flex: 100;
+    background: aqua;
+    z-index: 99999;
+}
+
+.layout-footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: #123123;
+    z-index: 99;
+}

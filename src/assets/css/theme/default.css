@@ -1,0 +1,11 @@
+:root {
+    --backgroud-color: #ffffff;
+    --login-bg-image: url('@/assets/img/login-bg.svg');
+    --login-bg-color: rgba(233, 235, 237, 0.3);
+    --login-title-color: #000000;
+    --login-form-color: rgb(255, 255, 255);
+    --login-form-shadow: rgba(99, 99, 99, 0.5);
+
+    --layout-backgroud-color: rgb(255, 255, 255);
+    --menu-backgroud-color: rgb(255, 255, 255);
+}
