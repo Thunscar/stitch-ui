@@ -16,7 +16,6 @@ export const useRouterStore = defineStore("router", {
                 getRouters().then(res => {
                     const storeData = JSON.parse(JSON.stringify(res.data))
                     const routerData = JSON.parse(JSON.stringify(res.data))
-                    console.log(storeData)
                     let filterStoreState = filterRouterData(storeData)
                     let filterRouter = filterRouterData(routerData)
                     addHomePage(filterStoreState)
@@ -34,9 +33,9 @@ function filterRouterData(asyncRouterMap, lastRouter = false, filterChild = fals
         if (route.component) {
             if (route.component === "Layout") {
                 route.component = Layout
-            } else if (route.component === "parentView") {
+            } else if (route.component === "ParentView") {
                 route.component = ParentView
-            } else if (route.component === "outerLink") {
+            } else if (route.component === "OuterLink") {
                 route.component = OuterLink
             } else {
                 route.component = loadComponent(route.component)
@@ -75,8 +74,11 @@ function addHomePage(menuState) {
  * @returns {*}
  */
 function loadComponent(view) {
+    let component;
     if (view.lastIndexOf('.vue') !== -1 && view.substring(view.lastIndexOf('.vue'), view.length - 1)) {
-        return modules[`/src/views/${view}`]
+        component = modules[`/src/views${view}`]
+    } else {
+        component = modules[`/src/views${view}/index.vue`]
     }
-    return modules[`/src/views/${view}.vue`]
+    return component;
 }

@@ -104,7 +104,6 @@ function handlerLogin() {
     //路由跳转
     router.push({path: router.currentRoute.value.query.redirect || "/"})
   }).catch(res => {
-    console.log(res)
     loginForm.loading = false
     getVerifyCode()
     loginForm.code = ''

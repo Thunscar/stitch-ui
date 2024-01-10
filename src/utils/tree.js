@@ -63,19 +63,15 @@ function buildSelectTree(data, primaryKey, titleKey, parentId) {
  * @returns {*[]|null}
  */
 export function initTreeData(data, primaryKey) {
-    try {
-        const parentId = getTreeParent(data)
-        const buildMenu = buildTreeData(data, parentId, primaryKey)
-        for (let i = 0; i < data.length; i++) {
-            if (data[i] && data[i].inTree !== 1) {
-                const newBuildMenu = buildTreeData(data, data[i].parentId, primaryKey)
-                buildMenu.push(...newBuildMenu)
-            }
+    const parentId = getTreeParent(data)
+    const buildMenu = buildTreeData(data, parentId, primaryKey)
+    for (let i = 0; i < data.length; i++) {
+        if (data[i] && data[i].inTree !== 1) {
+            const newBuildMenu = buildTreeData(data, data[i].parentId, primaryKey)
+            buildMenu.push(...newBuildMenu)
         }
-        return buildMenu
-    } catch (e) {
-        console.log("initTreeData Exception", e);
     }
+    return buildMenu
 }
 
 /**

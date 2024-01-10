@@ -147,7 +147,6 @@ const init = (menuId) => {
   if (menuId) {
     menuFormTitle.value = '修改菜单'
     getMenuById(menuId).then(res => {
-      console.log(res)
       if (res.code === 200 && res.data) {
         const menuData = res.data
         menuInfo.menuId = menuId

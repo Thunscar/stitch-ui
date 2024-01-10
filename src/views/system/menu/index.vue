@@ -40,11 +40,11 @@
             <el-tag v-else type="danger">未知</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="path" label="路由地址" width="150" :show-overflow-tooltip="true"/>
+        <el-table-column prop="path" label="路由地址" width="180" :show-overflow-tooltip="true"/>
         <el-table-column prop="component" label="组件地址" width="200" :show-overflow-tooltip="true"/>
         <el-table-column prop="orderNum" label="菜单排序" width="90" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="createUser" label="创建人员" width="100" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="createTime" label="创建时间" width="130" :show-overflow-tooltip="true"/>
+        <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true"/>
         <el-table-column prop="visible" label="是否可见" width="85" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.visible === '1'">可见</el-tag>

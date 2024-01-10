@@ -12,7 +12,6 @@ const RouteWhiteList = ['/login', '/register']
 /*路由守卫*/
 router.beforeEach((to, from, next) => {
     qprogress.start()
-    console.log("start to")
     if (getToken()) {
         if (to.path === '/login') {
             next({path: '/'})
@@ -42,7 +41,6 @@ router.beforeEach((to, from, next) => {
             next(`/login?redirect=${to.fullPath}`)
         }
     }
-    console.log("ennd")
     qprogress.finish()
     const globalStore = useStore().global
     globalStore.ChangeUserTheme()

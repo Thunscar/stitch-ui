@@ -31,7 +31,6 @@ const collapse = ref(false)
 
 //需要选中的菜单框
 const menuList = computed(() => {
-  console.log('asdasda',routerStore.routerState)
   return routerStore.routerState
 })
 
