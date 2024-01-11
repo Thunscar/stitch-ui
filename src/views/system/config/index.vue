@@ -33,9 +33,9 @@
                 @selection-change="selectConfigHandler"
                 class="table-content">
         <el-table-column type="selection" width="50" align="center"/>
-        <el-table-column label="参数名称" prop="configName" :show-overflow-tooltip="true" width="180"/>
-        <el-table-column label="参数键名" prop="configKey" :show-overflow-tooltip="true" width="200"/>
-        <el-table-column label="参数值" prop="configValue" :show-overflow-tooltip="true" width="150"/>
+        <el-table-column label="参数名称" prop="configName" :show-overflow-tooltip="true" width="180" align="center"/>
+        <el-table-column label="参数键名" prop="configKey" :show-overflow-tooltip="true" width="200" align="center"/>
+        <el-table-column label="参数值" prop="configValue" :show-overflow-tooltip="true" width="150" align="center"/>
         <el-table-column label="是否内置" prop="configType" width="85" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.configType === 'Y'">内置</el-tag>
@@ -43,9 +43,9 @@
             <el-tag v-else type="danger">未知</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="remark" label="备注" width="200" :show-overflow-tooltip="true"/>
+        <el-table-column prop="remark" label="备注" width="200" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="createUser" label="创建人员" width="100" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="createTime" label="创建时间" width="130" :show-overflow-tooltip="true"/>
+        <el-table-column prop="createTime" label="创建时间" width="130" :show-overflow-tooltip="true" align="center"/>
         <el-table-column label="操作" min-width="120" fixed="right" align="center">
           <template #default="scope">
             <el-button type="primary" size="default" link @click="updateConfigHandler(scope.row.configId)">修改
@@ -96,6 +96,9 @@ function resetQueryCondition() {
   queryConfig.configName = ''
   queryConfig.configKey = ''
   queryConfig.configType = ''
+  queryConfig.pageNum = 1
+  queryConfig.pageSize = 10
+  queryConfig.total = 0
   queryConfigList()
 }
 

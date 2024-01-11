@@ -31,10 +31,10 @@ export function updateSysUser(sysUser) {
     })
 }
 
-export function deleteSysUser(userId) {
+export function deleteSysUser(userIds) {
     return request({
         method: 'delete',
-        url: '/sys/user/' + userId
+        url: '/sys/user/' + userIds
     })
 }
 

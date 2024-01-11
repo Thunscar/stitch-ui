@@ -40,7 +40,7 @@ import Cookies from 'js-cookie'
 
 const appTitle = import.meta.env.VITE_APP_TITLE
 const loginForm = reactive({
-  username: 'stitch',
+  username: 'admin',
   password: '001010',
   code: '',
   uuid: '',

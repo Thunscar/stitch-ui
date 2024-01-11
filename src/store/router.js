@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {getRouters} from "@/api/user.js";
+import {getRouters} from "@/api/router.js";
 import ParentView from "@/layout/VerticalLayout/parentView/index.vue"
 import OuterLink from "@/layout/VerticalLayout/outerLink/index.vue"
 import Layout from "@/layout/index.vue"

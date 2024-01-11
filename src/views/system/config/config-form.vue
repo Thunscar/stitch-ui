@@ -52,7 +52,7 @@ const configInfo = reactive({
 
 //提交表单
 function submitConfigHandler() {
-  if (configInfo.configId) {
+  if (configInfo.userId) {
     updateConfig(configInfo).then(res => {
       if (res.code === 200) {
         ElMessage.success('修改成功')
@@ -77,7 +77,7 @@ function submitConfigHandler() {
 
 //清空表单
 function clearForm() {
-  configInfo.configId = null
+  configInfo.userId = null
   configInfo.configName = ''
   configInfo.configKey = ''
   configInfo.configValue = ''
@@ -96,7 +96,7 @@ function init(configId) {
     getConfig(configId).then(res => {
       if (res.code === 200 && res.data) {
         const config = res.data
-        configInfo.configId = configId
+        configInfo.userId = configId
         configInfo.configName = config.configName
         configInfo.configKey = config.configKey
         configInfo.configValue = config.configValue
