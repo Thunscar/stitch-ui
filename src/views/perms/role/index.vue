@@ -31,9 +31,9 @@
                 @selection-change="selectRoleHandler"
                 class="table-content">
         <el-table-column type="selection" width="50" align="center"/>
-        <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" fixed="left" width="200"
+        <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" fixed="left"
                          align="center"/>
-        <el-table-column label="权限标识符" prop="roleKey" :show-overflow-tooltip="true" width="200" align="center"/>
+        <el-table-column label="权限标识符" prop="roleKey" :show-overflow-tooltip="true" align="center"/>
         <el-table-column label="状态" prop="status" width="80" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.status === '0'">正常</el-tag>
@@ -43,8 +43,8 @@
         </el-table-column>
         <el-table-column label="排序" prop="roleSort" :show-overflow-tooltip="true" width="80" align="center"/>
         <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="remark" label="备注" width="200" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column label="操作" min-width="160" fixed="right" align="center">
+        <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
+        <el-table-column label="操作" width="160" min-width="160" fixed="right" align="center">
           <template #default="scope">
             <el-button type="primary" size="default" link @click="updateRoleHandler(scope.row.roleId)">修改</el-button>
             <el-button type="danger" size="default" link @click="deleteRoleHandler(scope.row.roleId)">删除</el-button>

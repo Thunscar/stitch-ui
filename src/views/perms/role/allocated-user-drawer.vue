@@ -3,13 +3,10 @@
              :close-on-click-modal="false"
              size="60%"
              :title="title">
-    <template #title>
-      <span class="drawer-title">{{ title }}</span>
-    </template>
     <template #default>
       <div>
         <div class="search">
-          <span><el-input class="s-search-input" placeholder="用户名" v-model="queryUser.roleName"/></span>
+          <span><el-input class="s-search-input" placeholder="用户名" v-model="queryUser.userName"/></span>
           <span><el-input class="s-search-input" placeholder="手机号" v-model="queryUser.phone"/></span>
           <span><el-input class="s-search-input" placeholder="邮箱" v-model="queryUser.email"/></span>
           <span>
@@ -69,10 +66,14 @@
                              align="center"/>
             <el-table-column prop="loginTime" label="最后登录时间" width="130" :show-overflow-tooltip="true"
                              align="center"/>
-            <el-table-column prop="remark" label="备注" width="200" :show-overflow-tooltip="true" align="center"/>
+            <el-table-column prop="remark" label="备注" width="500" :show-overflow-tooltip="true" align="center"/>
             <el-table-column label="操作" min-width="160" fixed="right" align="center">
               <template #default="scope">
-                <el-button type="primary" size="default" link @click="updateUserHandler(scope.row.userId)">取消授予
+                <el-button type="primary" size="default" v-if="conferStatus === 1" link
+                           @click="updateUserHandler(scope.row.userId)">授予角色
+                </el-button>
+                <el-button type="primary" size="default" v-else-if="conferStatus === 0" link
+                           @click="updateUserHandler(scope.row.userId)">取消授予
                 </el-button>
               </template>
             </el-table-column>
@@ -93,8 +94,8 @@
   </el-drawer>
 </template>
 <script setup>
-import {reactive, ref} from "vue";
-import {getSysUserList} from "@/api/perms/user.js";
+import {reactive, ref, watch} from "vue";
+import {selectAllocatedUsers, selectUnAllocatedUsers} from "@/api/perms/role.js";
 import {ElMessage} from "element-plus";
 
 const visible = ref(false)
@@ -106,10 +107,15 @@ const queryUser = reactive({
   userName: '',
   phone: '',
   email: '',
+  roleId: '',
   pageNum: 1,
   pageSize: 10,
   total: 0
 })
+
+function selectUserHandler(rows) {
+  selectedUsers.value = rows.map(row => row.userId)
+}
 
 function conferRole() {
 
@@ -119,8 +125,8 @@ function cancelBatchConferRole() {
 
 }
 
-function queryUserList() {
-  getSysUserList(queryUser).then(res => {
+function getAllocatedUsers() {
+  selectAllocatedUsers(queryUser).then(res => {
     if (res.code === 200 && res.list) {
       userList.value = res.list
       queryUser.total = res.total
@@ -130,8 +136,27 @@ function queryUserList() {
   })
 }
 
+function getUnAllocatedUsers() {
+  selectUnAllocatedUsers(queryUser).then(res => {
+    if (res.code === 200 && res.list) {
+      userList.value = res.list
+      queryUser.total = res.total
+    } else {
+      ElMessage.error(msg)
+    }
+  })
+}
+
+function queryUserList() {
+  if (conferStatus.value === 0) {
+    getAllocatedUsers()
+  } else {
+    getUnAllocatedUsers()
+  }
+}
+
 function resetQueryCondition() {
-  queryUser.roleName = ''
+  queryUser.userName = ''
   queryUser.phone = ''
   queryUser.email = ''
   queryUser.pageNum = 1
@@ -141,10 +166,16 @@ function resetQueryCondition() {
 }
 
 function initDrawer(roleId, roleName) {
+  resetQueryCondition()
+  queryUser.roleId = roleId
   title.value = '分配用户 - ' + roleName
-  queryUserList()
   visible.value = true
+  queryUserList()
 }
+
+watch(conferStatus, async () => {
+  queryUserList()
+})
 
 defineExpose({
   initDrawer

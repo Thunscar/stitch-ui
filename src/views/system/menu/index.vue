@@ -32,19 +32,19 @@
                 :indent="8"
                 border
                 :header-cell-style="{'text-align':'center'}">
-        <el-table-column prop="menuName" label="菜单名称" width="120" :show-overflow-tooltip="true"/>
-        <el-table-column prop="menuType" label="菜单类型" width="85" align="center">
+        <el-table-column prop="menuName" label="菜单名称" :show-overflow-tooltip="true"/>
+        <el-table-column prop="menuType" label="菜单类型" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.menuType === 'M'">菜单</el-tag>
             <el-tag v-else-if="scope.row.menuType === 'B'" type="warning">按钮</el-tag>
             <el-tag v-else type="danger">未知</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="path" label="路由地址" width="180" :show-overflow-tooltip="true"/>
-        <el-table-column prop="component" label="组件地址" width="200" :show-overflow-tooltip="true"/>
+        <el-table-column prop="path" label="路由地址" :show-overflow-tooltip="true" align="center"/>
+        <el-table-column prop="component" label="组件地址" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="orderNum" label="菜单排序" width="90" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="createUser" label="创建人员" width="100" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true"/>
+        <el-table-column prop="createUser" label="创建人员" :show-overflow-tooltip="true" align="center"/>
+        <el-table-column prop="createTime" label="创建时间" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="visible" label="是否可见" width="85" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.visible === '1'">可见</el-tag>
@@ -59,7 +59,7 @@
             <el-tag v-else type="danger">未知</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" min-width="120" fixed="right" align="center">
+        <el-table-column label="操作" width="120" min-width="120" fixed="right" align="center">
           <template #default="scope">
             <el-button type="primary" size="default" link @click="updateMenuHandler(scope.row.menuId)">修改</el-button>
             <el-button type="danger" size="default" link @click="deleteMenu(scope.row.menuId)">删除</el-button>

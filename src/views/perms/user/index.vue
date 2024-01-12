@@ -58,8 +58,8 @@
         <el-table-column prop="createTime" label="创建时间" width="130" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="loginTime" label="最后登录时间" width="130" :show-overflow-tooltip="true"
                          align="center"/>
-        <el-table-column prop="remark" label="备注" width="200" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column label="操作" min-width="160" fixed="right" align="center">
+        <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
+        <el-table-column label="操作" width="160" min-width="160" fixed="right" align="center">
           <template #default="scope">
             <el-button type="primary" size="default" link @click="updateUserHandler(scope.row.userId)">修改</el-button>
             <el-button type="danger" size="default" link @click="deleteUserHandler(scope.row.userId)">删除</el-button>

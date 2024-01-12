@@ -32,8 +32,8 @@
                 @selection-change="selectPostHandler"
                 class="table-content">
         <el-table-column type="selection" width="50" align="center"/>
-        <el-table-column label="岗位编码" prop="postCode" :show-overflow-tooltip="true" width="180" align="center"/>
-        <el-table-column label="岗位名称" prop="postName" :show-overflow-tooltip="true" width="200" align="center"/>
+        <el-table-column label="岗位编码" prop="postCode" :show-overflow-tooltip="true" width="180" fixed="left" align="center"/>
+        <el-table-column label="岗位名称" prop="postName" :show-overflow-tooltip="true" align="center"/>
         <el-table-column label="排序" prop="postSort" :show-overflow-tooltip="true" width="80" align="center"/>
         <el-table-column label="岗位状态" prop="status" width="85" align="center">
           <template #default="scope">
@@ -43,8 +43,8 @@
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="remark" label="备注" width="300" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column label="操作" min-width="120" fixed="right" align="center">
+        <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
+        <el-table-column label="操作" width="120" min-width="120" fixed="right" align="center">
           <template #default="scope">
             <el-button type="primary" size="default" link @click="updatePostHandler(scope.row.postId)">修改
             </el-button>

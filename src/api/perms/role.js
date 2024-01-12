@@ -44,3 +44,20 @@ export function selectAuthorizedMenu(roleId) {
         method: 'get'
     })
 }
+
+
+export function selectAllocatedUsers(sysUser) {
+    return request({
+        url: '/sys/user/allocated',
+        method: 'get',
+        params: sysUser
+    })
+}
+
+export function selectUnAllocatedUsers(sysUser){
+    return request({
+        url:'/sys/user/unallocated',
+        method:'get',
+        params:sysUser
+    })
+}
