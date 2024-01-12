@@ -10,8 +10,8 @@
         </el-select>
       </span>
       <span style="position: relative;right: 0">
-        <span><el-button type="primary" @click="queryPostList">搜索</el-button></span>
-        <span><el-button type="default" @click="resetQueryCondition">重置</el-button></span>
+        <el-button type="primary" @click="queryPostList">搜索</el-button>
+        <el-button type="default" @click="resetQueryCondition">重置</el-button>
       </span>
     </div>
     <div class="operation">
@@ -64,15 +64,18 @@
           class="table-pagination"
       />
     </div>
-    <config-form ref="configFormRef" @refresh-data-list="queryConfigList"/>
+    <post_form ref="postFormRef" @refresh-data-list="queryPostList"/>
   </div>
 </template>
 <script setup>
 import {onMounted, reactive, ref} from "vue";
 import '@/assets/css/table/table.css'
-import {querySysPostList} from "@/api/perms/post.js";
-import {ElMessage} from "element-plus";
+import {deleteBatchSysPost, querySysPostList} from "@/api/perms/post.js";
+import {ElMessage, ElMessageBox} from "element-plus";
+import Post_form from "@/views/perms/post/post_form.vue";
+import {download} from "@/api/download.js";
 
+const postFormRef = ref()
 const postList = ref([])
 const selectedPostIds = ref([])
 const queryPost = reactive({
@@ -86,27 +89,53 @@ const queryPost = reactive({
 })
 
 function createPostHandler() {
-
+  postFormRef.value.init()
 }
 
 function deleteBatchPostHandler() {
-
+  ElMessageBox.confirm('确认删除选中的岗位?', '警告', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    deleteBatchSysPost(selectedPostIds.value).then(res => {
+      if (res.code === 200) {
+        ElMessage.success('删除成功')
+        queryPostList()
+      } else {
+        ElMessage.error(res.msg)
+      }
+    })
+  })
 }
 
 function exportExcelHandler() {
-
+  download('/sys/post/export', {...queryPost}, `post_${new Date().getTime()}.xlsx`)
 }
 
-function selectPostHandler() {
-
+function selectPostHandler(rows) {
+  selectedPostIds.value = rows.map(row => row.postId)
 }
 
 function updatePostHandler(postId) {
-
+  postFormRef.value.init(postId)
 }
 
 function deletePostHandler(postId) {
-
+  ElMessageBox.confirm('确认删除该岗位?', '警告', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    deleteBatchSysPost(postId).then(res => {
+      if (res.code === 200) {
+        ElMessage.success('删除成功')
+        queryPostList()
+      } else {
+        ElMessage.error(res.msg)
+      }
+    })
+  })
 }
 
 function resetQueryCondition() {
@@ -137,24 +166,4 @@ onMounted(() => {
 
 </script>
 <style scoped>
-.search {
-  margin-bottom: 12px;
-}
-
-.search span {
-  margin-right: 12px;
-}
-
-.operation {
-  margin-bottom: 12px;
-}
-
-.table-content {
-  margin-bottom: 12px;
-}
-
-.table-pagination {
-  position: absolute;
-  right: 20px;
-}
 </style>

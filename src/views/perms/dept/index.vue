@@ -4,9 +4,9 @@
       <span><el-input class="s-search-input" placeholder="部门名称" v-model="queryDept.deptName"/></span>
       <span><el-input class="s-search-input" placeholder="联系人" v-model="queryDept.leader"/></span>
       <span style="position: relative;right: 0">
-      <span><el-button type="primary" @click="queryDeptDataList">搜索</el-button></span>
-      <span><el-button type="default" @click="resetQueryCondition">重置</el-button></span>
-    </span>
+        <el-button type="primary" @click="queryDeptDataList">搜索</el-button>
+        <el-button type="default" @click="resetQueryCondition">重置</el-button>
+      </span>
     </div>
     <div class="operation">
       <el-button type="primary" size="default" @click="createDeptHandler">新增</el-button>
@@ -26,8 +26,8 @@
         <el-table-column prop="leader" label="联系人" width="120" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="phone" label="联系电话" width="150" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="email" label="邮箱" width="200" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="createUser" label="创建人员" width="100" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="createTime" label="创建时间" width="130" :show-overflow-tooltip="true"/>
+        <el-table-column prop="createUser" label="创建人" width="100" :show-overflow-tooltip="true" align="center"/>
+        <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true"/>
         <el-table-column label="操作" min-width="120" fixed="right" align="center">
           <template #default="scope">
             <el-button type="primary" size="default" link @click="updateDeptHandler(scope.row.deptId)">修改</el-button>
@@ -123,15 +123,4 @@ onMounted(() => {
 
 </script>
 <style scoped>
-.search {
-  margin-bottom: 12px;
-}
-
-.search span {
-  margin-right: 12px;
-}
-
-.operation {
-  margin-bottom: 12px;
-}
 </style>

@@ -58,7 +58,7 @@ const userInfo = reactive({
 
 //提交表单
 function submitConfigHandler() {
-  if (userInfo.userId) {
+  if (userInfo.roleId) {
     updateConfig(userInfo).then(res => {
       if (res.code === 200) {
         ElMessage.success('修改成功')
@@ -83,7 +83,7 @@ function submitConfigHandler() {
 
 //清空表单
 function clearForm() {
-  userInfo.userId = null
+  userInfo.roleId = null
   userInfo.userName = ''
   userInfo.nikeName = ''
   userInfo.sex = ''
@@ -102,7 +102,7 @@ function init(configId) {
     getConfig(configId).then(res => {
       if (res.code === 200 && res.data) {
         const config = res.data
-        userInfo.userId = configId
+        userInfo.roleId = configId
         userInfo.userName = config.configName
         userInfo.nikeName = config.configKey
         userInfo.sex = config.configValue

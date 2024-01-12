@@ -33,4 +33,29 @@
     text-align: right;
 }
 
+/* 搜索框间隔样式 */
+.search {
+    margin-bottom: 12px;
+    margin-right: 12px;
+}
+
+.search > span {
+    margin-right: 12px;
+}
+
+/* 操作框间隔 */
+.operation {
+    margin-bottom: 12px;
+}
+
+/* 表格间隔 */
+.table-content {
+    margin-bottom: 12px;
+}
+
+.table-pagination {
+    position: absolute;
+    right: 20px;
+}
+
 

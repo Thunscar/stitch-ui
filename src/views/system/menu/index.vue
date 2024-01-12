@@ -15,8 +15,8 @@
         </el-select>
       </span>
       <span style="position: relative;right: 0">
-        <span><el-button type="primary" @click="queryMenuDataList">搜索</el-button></span>
-        <span><el-button type="default" @click="resetQueryCondition">重置</el-button></span>
+        <el-button type="primary" @click="queryMenuDataList">搜索</el-button>
+        <el-button type="default" @click="resetQueryCondition">重置</el-button>
       </span>
     </div>
     <div class="operation">
@@ -155,15 +155,4 @@ onMounted(() => {
 })
 </script>
 <style scoped>
-.search {
-  margin-bottom: 12px;
-}
-
-.search span {
-  margin-right: 12px;
-}
-
-.operation {
-  margin-bottom: 12px;
-}
 </style>

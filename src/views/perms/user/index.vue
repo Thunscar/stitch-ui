@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="search">
-      <span><el-input class="s-search-input" placeholder="用户名" v-model="queryUser.userName"/></span>
+      <span><el-input class="s-search-input" placeholder="用户名" v-model="queryUser.roleName"/></span>
       <span><el-input class="s-search-input" placeholder="手机号" v-model="queryUser.phone"/></span>
       <span><el-input class="s-search-input" placeholder="邮箱" v-model="queryUser.email"/></span>
       <span style="position: relative;right: 0">
-        <span><el-button type="primary" @click="queryUserList">搜索</el-button></span>
-        <span><el-button type="default" @click="resetQueryCondition">重置</el-button></span>
+        <el-button type="primary" @click="queryUserList">搜索</el-button>
+        <el-button type="default" @click="resetQueryCondition">重置</el-button>
       </span>
     </div>
     <div class="operation">
@@ -98,7 +98,6 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import '@/assets/css/table/table.css'
 import UserForm from "@/views/perms/user/user-form.vue";
 import {download} from "@/api/download.js";
-import {deleteConfig} from "@/api/system/config.js";
 
 const userList = ref([])
 const selectedUsers = ref([])
@@ -201,7 +200,7 @@ function queryUserList() {
 }
 
 function resetQueryCondition() {
-  queryUser.userName = ''
+  queryUser.roleName = ''
   queryUser.phone = ''
   queryUser.email = ''
   queryUser.pageNum = 1
@@ -217,25 +216,4 @@ onMounted(() => {
 
 </script>
 <style scoped>
-.search {
-  margin-bottom: 12px;
-}
-
-.search span {
-  margin-right: 12px;
-}
-
-.operation {
-  margin-bottom: 12px;
-}
-
-.table-content {
-  margin-bottom: 12px;
-}
-
-.table-pagination {
-  position: absolute;
-  right: 20px;
-}
-
 </style>

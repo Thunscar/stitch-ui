@@ -23,14 +23,6 @@ export function getSysPostById(postId) {
     })
 }
 
-export function exportSysPost(sysPost) {
-    return request({
-        url: '/sys/post/export',
-        method: 'post',
-        data: sysPost
-    })
-}
-
 export function deleteBatchSysPost(postIds) {
     return request({
         url: '/sys/post/' + postIds,
