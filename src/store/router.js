@@ -59,7 +59,8 @@ function addHomePage(menuState) {
                 path: '/home',
                 component: () => import('@/views/home/index.vue'),
                 meta: {
-                    title: '首页'
+                    title: '首页',
+                    icon: 'home'
                 },
                 visible: true,
                 children: null

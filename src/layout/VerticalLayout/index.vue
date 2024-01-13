@@ -1,10 +1,8 @@
 <template>
-  <el-container>
-    <el-aside class="aside">
-      <SideBar/>
-    </el-aside>
+  <el-container style="border-radius: 20px">
+    <s-sidebar/>
     <el-container>
-      <el-header style="background: #13ce66">Header</el-header>
+      <s-header/>
       <el-main class="main">
         <div class="view-container">
           <router-view v-slot="{ Component }">
@@ -22,15 +20,12 @@
 </template>
 <script setup>
 import '@/assets/css/layout/layout.css'
-import SideBar from "@/layout/VerticalLayout/Sidebar/index.vue"
+import SSidebar from "@/layout/VerticalLayout/siderBar/s-sidebar.vue"
+import SHeader from "@/layout/VerticalLayout/header/s-header.vue"
 
 const copyRight = import.meta.env.VITE_COPYRIGHT ? import.meta.env.VITE_COPYRIGHT : 'Copyright ©2023 Created by StitchCoder'
 </script>
 <style scoped>
-.aside {
-  width: 240px;
-  overflow-y: hidden;
-}
 
 .footer {
   background-color: var(--layout-backgroud-color);

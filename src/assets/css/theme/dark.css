@@ -8,4 +8,8 @@
 
     --layout-backgroud-color: rgb(16, 16, 16);
     --menu-backgroud-color: rgb(16, 16, 16);
+
+    --put-away-menu-icon: url('@/assets/img/put-away-menu-dark.svg');
+    --expand-menu-icon: url('@/assets/img/expand-menu-dark.svg');
+    --header-menu-hover-color: rgb(68, 68, 68);
 }

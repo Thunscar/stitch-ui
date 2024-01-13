@@ -2,14 +2,14 @@
   <el-dialog v-model="visible"
              :title="menuFormTitle"
              width="600">
-    <el-form :model="menuInfo" label-width="100" inline>
-      <el-form-item label="菜单类型">
+    <el-form :model="menuInfo" label-width="100" :rules="checkRoles" inline>
+      <el-form-item label="菜单类型" >
         <el-radio-group v-model="menuInfo.menuType" :disabled="menuTypeDisabled">
           <el-radio label="M">菜单</el-radio>
           <el-radio label="B">按钮</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="菜单名称" :required="true">
+      <el-form-item label="菜单名称" prop="menuName">
         <el-input placeholder="菜单名称" v-model="menuInfo.menuName" class="form-input"/>
       </el-form-item>
       <el-form-item label="菜单排序" :required="true">
@@ -23,6 +23,9 @@
           <el-radio label="0">否</el-radio>
           <el-radio label="1">是</el-radio>
         </el-radio-group>
+      </el-form-item>
+      <el-form-item label="菜单图标" v-if="menuInfo.menuType === 'M'" :required="true">
+        <icon-selector :icon="menuInfo.icon" @icon-selected="iconSelected" class="form-input"/>
       </el-form-item>
       <el-form-item label="路由地址" :required="true" v-if="menuInfo.menuType === 'M'">
         <el-input placeholder="路由地址" v-model="menuInfo.path" class="form-input"/>
@@ -61,6 +64,7 @@ import {createMenu, getMenuById, getMenuList, updateSysMenu} from "@/api/system/
 import {initSelectTree} from "@/utils/tree.js";
 import '@/assets/css/form/form.css'
 import {ElMessage} from "element-plus";
+import IconSelector from "@/components/Icon/IconSelector.vue";
 
 const menuFormTitle = ref('')
 const visible = ref(false)
@@ -71,6 +75,7 @@ const menuInfo = reactive({
   parentId: 0,
   orderNum: 1,
   path: '',
+  icon: '',
   component: '',
   isFrame: "0",
   menuType: 'M',
@@ -83,6 +88,14 @@ const selectMenuData = ref([{
   value: 0,
   children: null
 }])
+
+const checkRoles = ref({
+  menuName: [{
+    required: true,
+    message: '菜单名称不可为空',
+    trigger: ['blur']
+  }]
+})
 
 const emits = defineEmits(['refreshDataList'])
 
@@ -105,6 +118,10 @@ function submitMenuFormHandler() {
   }
 }
 
+function iconSelected(icon) {
+  menuInfo.icon = icon
+}
+
 //初始化菜单树选择框
 function initSelectMenuData() {
   getMenuList().then(res => {
@@ -120,6 +137,7 @@ function clearForm() {
   menuInfo.parentId = 0
   menuInfo.orderNum = 1
   menuInfo.path = ''
+  menuInfo.icon = ''
   menuInfo.component = ''
   menuInfo.isFrame = '0'
   menuInfo.menuType = 'M'
@@ -137,18 +155,19 @@ const init = (menuId) => {
   if (menuId) {
     menuFormTitle.value = '修改菜单'
     getMenuById(menuId).then(res => {
-        const menuData = res.data
-        menuInfo.menuId = menuId
-        menuInfo.menuName = menuData.menuName
-        menuInfo.parentId = menuData.parentId
-        menuInfo.orderNum = menuData.orderNum
-        menuInfo.path = menuData.path
-        menuInfo.component = menuData.component
-        menuInfo.isFrame = menuData.isFrame
-        menuInfo.menuType = menuData.menuType
-        menuInfo.visible = menuData.visible
-        menuInfo.status = menuData.status
-        menuInfo.perms = menuData.perms
+      const menuData = res.data
+      menuInfo.menuId = menuId
+      menuInfo.menuName = menuData.menuName
+      menuInfo.parentId = menuData.parentId
+      menuInfo.orderNum = menuData.orderNum
+      menuInfo.path = menuData.path
+      menuInfo.icon = menuData.icon
+      menuInfo.component = menuData.component
+      menuInfo.isFrame = menuData.isFrame
+      menuInfo.menuType = menuData.menuType
+      menuInfo.visible = menuData.visible
+      menuInfo.status = menuData.status
+      menuInfo.perms = menuData.perms
     })
   } else {
     menuFormTitle.value = '新增菜单'
