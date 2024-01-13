@@ -54,10 +54,26 @@ export function selectAllocatedUsers(sysUser) {
     })
 }
 
-export function selectUnAllocatedUsers(sysUser){
+export function selectUnAllocatedUsers(sysUser) {
     return request({
-        url:'/sys/user/unallocated',
-        method:'get',
-        params:sysUser
+        url: '/sys/user/unallocated',
+        method: 'get',
+        params: sysUser
+    })
+}
+
+export function conferRoles(sysUserRole) {
+    return request({
+        url: '/sys/role/confer',
+        method: 'post',
+        params: sysUserRole
+    })
+}
+
+export function cancelConferRoles(sysUserRole) {
+    return request({
+        url: '/sys/role/confer/cancel',
+        method: 'post',
+        params: sysUserRole
     })
 }

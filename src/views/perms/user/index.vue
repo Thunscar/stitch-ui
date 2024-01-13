@@ -129,13 +129,10 @@ function deleteBatchUserHandler() {
     type: 'warning'
   }).then(() => {
     deleteSysUser(selectedUsers.value).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('删除成功')
-        queryUserList()
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('删除成功')
+      queryUserList()
     })
+  }).catch(() => {
   })
 }
 
@@ -162,24 +159,17 @@ function deleteUserHandler(userId) {
     type: 'warning'
   }).then(() => {
     deleteSysUser(userId).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('删除成功')
-        queryUserList()
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('删除成功')
+      queryUserList()
     })
+  }).catch(() => {
   })
 }
 
 // 重置密码
 function resetPassword(userId) {
   resetSysUserPassword(userId).then(res => {
-    if (res.code === 200) {
-      ElMessage.success('重置成功')
-    } else {
-      ElMessage.error(res.msg)
-    }
+    ElMessage.success('重置成功')
   })
 }
 
@@ -190,12 +180,8 @@ function allocatedRoles(userId) {
 
 function queryUserList() {
   getSysUserList(queryUser).then(res => {
-    if (res.code === 200 && res.list) {
-      userList.value = res.list
-      queryUser.total = res.total
-    } else {
-      ElMessage.error(res.msg)
-    }
+    userList.value = res.list
+    queryUser.total = res.total
   })
 }
 

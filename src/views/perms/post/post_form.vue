@@ -53,23 +53,15 @@ const postInfo = reactive({
 function submitPostHandler() {
   if (postInfo.postId) {
     updateSysPost(postInfo).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('修改成功')
-        visible.value = false
-        emits('refreshDataList')
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('修改成功')
+      visible.value = false
+      emits('refreshDataList')
     })
   } else {
     insertSysPost(postInfo).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('新增成功')
-        visible.value = false
-        emits('refreshDataList')
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('新增成功')
+      visible.value = false
+      emits('refreshDataList')
     })
   }
 }
@@ -94,17 +86,13 @@ function init(postId) {
   if (postId) {
     postFormTitle.value = '修改岗位'
     getSysPostById(postId).then(res => {
-      if (res.code === 200 && res.data) {
-        const post = res.data
-        postInfo.postId = postId
-        postInfo.postCode = post.postCode
-        postInfo.postName = post.postName
-        postInfo.postSort = post.postSort
-        postInfo.status = post.status
-        postInfo.remark = post.remark
-      } else {
-        ElMessage.error(res.msg)
-      }
+      const post = res.data
+      postInfo.postId = postId
+      postInfo.postCode = post.postCode
+      postInfo.postName = post.postName
+      postInfo.postSort = post.postSort
+      postInfo.status = post.status
+      postInfo.remark = post.remark
     })
   } else {
     postFormTitle.value = '新增参数'

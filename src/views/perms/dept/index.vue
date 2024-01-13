@@ -24,7 +24,7 @@
         <el-table-column prop="deptName" label="部门名称" width="250" :show-overflow-tooltip="true"/>
         <el-table-column prop="orderNum" label="菜单排序" width="85" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="leader" label="联系人" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="phone" label="联系电话"  :show-overflow-tooltip="true" align="center"/>
+        <el-table-column prop="phone" label="联系电话" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="email" label="邮箱" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="createUser" label="创建人" width="120" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true"/>
@@ -41,7 +41,7 @@
 </template>
 <script setup>
 import '@/assets/css/table/table.css'
-import {ref, reactive, onMounted} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import {deleteSysDept, getDeptList} from "@/api/system/dept.js";
 import {initTreeData} from "@/utils/tree.js";
 import {ElMessage, ElMessageBox} from "element-plus";
@@ -87,13 +87,10 @@ function deleteDeptHandler(deptId) {
     type: 'warning'
   }).then(() => {
     deleteSysDept(deptId).then(res => {
-      if (res.code === 200) {
-        queryDeptDataList()
-        ElMessage.success('删除成功')
-      } else {
-        ElMessage.error(res.msg)
-      }
+      queryDeptDataList()
+      ElMessage.success('删除成功')
     })
+  }).catch(() => {
   })
 }
 
@@ -107,12 +104,8 @@ function resetQueryCondition() {
 //获取部门数据
 function queryDeptDataList() {
   getDeptList(queryDept).then(res => {
-    if (res.code === 200 && res.data) {
-      deptTreeData.value = initTreeData(res.data, 'deptId')
-      deptListData.value = res.data
-    } else {
-      ElMessage.error(res.msg)
-    }
+    deptTreeData.value = initTreeData(res.data, 'deptId')
+    deptListData.value = res.data
   })
 }
 

@@ -72,23 +72,15 @@ const roleInfo = reactive({
 function submitRoleHandler() {
   if (roleInfo.roleId) {
     updateSysRole(roleInfo).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('修改成功')
-        visible.value = false
-        emits('refreshDataList')
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('修改成功')
+      visible.value = false
+      emits('refreshDataList')
     })
   } else {
     insertSysRole(roleInfo).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('新增成功')
-        visible.value = false
-        emits('refreshDataList')
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('新增成功')
+      visible.value = false
+      emits('refreshDataList')
     })
   }
 }
@@ -126,23 +118,15 @@ function init(roleId) {
   if (roleId) {
     roleFormTitle.value = '修改角色'
     selectSysRoleById(roleId).then(res => {
-      if (res.code === 200 && res.data) {
-        const role = res.data
-        roleInfo.roleId = roleId
-        roleInfo.roleName = role.roleName
-        roleInfo.roleKey = role.roleKey
-        roleInfo.status = role.status
-        roleInfo.remark = role.remark
-        selectAuthorizedMenu(roleId).then(res => {
-          if (res.code === 200 && res.data) {
-            roleInfo.menuIds = res.data
-          } else {
-            ElMessage.error(res.msg)
-          }
-        })
-      } else {
-        ElMessage.error(res.msg)
-      }
+      const role = res.data
+      roleInfo.roleId = roleId
+      roleInfo.roleName = role.roleName
+      roleInfo.roleKey = role.roleKey
+      roleInfo.status = role.status
+      roleInfo.remark = role.remark
+      selectAuthorizedMenu(roleId).then(res => {
+        roleInfo.menuIds = res.data
+      })
     })
   } else {
     roleFormTitle.value = '新增角色'

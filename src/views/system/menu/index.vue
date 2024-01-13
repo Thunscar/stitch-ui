@@ -112,12 +112,8 @@ function resetQueryCondition() {
 // 查询菜单列表
 function queryMenuDataList() {
   getMenuList(queryMenu).then(res => {
-    if (res.code === 200 && res.data) {
-      menuTreeData.value = initTreeData(res.data, 'menuId')
-      menuListData.value = res.data
-    } else {
-      ElMessage.error(res.msg)
-    }
+    menuTreeData.value = initTreeData(res.data, 'menuId')
+    menuListData.value = res.data
   })
 }
 
@@ -140,13 +136,10 @@ function deleteMenu(menuId) {
       }
   ).then(() => {
     deleteSysMenu(menuId).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('删除成功')
-        queryMenuDataList()
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('删除成功')
+      queryMenuDataList()
     })
+  }).catch(() => {
   })
 }
 

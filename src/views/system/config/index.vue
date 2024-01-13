@@ -105,12 +105,8 @@ function resetQueryCondition() {
 //获取参数数据
 function queryConfigList() {
   getConfigList(queryConfig).then(res => {
-    if (res.code === 200 && res.list) {
-      configList.value = res.list
-      queryConfig.total = res.total
-    } else {
-      ElMessage.error(res.msg)
-    }
+    configList.value = res.list
+    queryConfig.total = res.total
   })
 }
 
@@ -137,13 +133,10 @@ function deleteConfigHandler(configId) {
     type: 'warning'
   }).then(() => {
     deleteConfig(configId).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('删除成功')
-        queryConfigList()
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('删除成功')
+      queryConfigList()
     })
+  }).catch(() => {
   })
 }
 
@@ -155,13 +148,10 @@ function deleteBatchConfigHandler() {
     type: 'warning'
   }).then(() => {
     deleteConfig(selectedConfigs.value).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('删除成功')
-        queryConfigList()
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('删除成功')
+      queryConfigList()
     })
+  }).catch(() => {
   })
 }
 
@@ -173,11 +163,7 @@ function exportExcelHandler() {
 //刷新缓存
 function refreshCacheHandler() {
   refreshConfigCache().then(res => {
-    if (res.code === 200) {
-      ElMessage.success("刷新缓存成功")
-    } else {
-      ElMessage.error(res.msg)
-    }
+    ElMessage.success("刷新缓存成功")
   })
 }
 

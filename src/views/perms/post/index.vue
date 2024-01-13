@@ -32,7 +32,8 @@
                 @selection-change="selectPostHandler"
                 class="table-content">
         <el-table-column type="selection" width="50" align="center"/>
-        <el-table-column label="岗位编码" prop="postCode" :show-overflow-tooltip="true" width="180" fixed="left" align="center"/>
+        <el-table-column label="岗位编码" prop="postCode" :show-overflow-tooltip="true" width="180" fixed="left"
+                         align="center"/>
         <el-table-column label="岗位名称" prop="postName" :show-overflow-tooltip="true" align="center"/>
         <el-table-column label="排序" prop="postSort" :show-overflow-tooltip="true" width="80" align="center"/>
         <el-table-column label="岗位状态" prop="status" width="85" align="center">
@@ -99,13 +100,10 @@ function deleteBatchPostHandler() {
     type: 'warning'
   }).then(() => {
     deleteBatchSysPost(selectedPostIds.value).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('删除成功')
-        queryPostList()
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('删除成功')
+      queryPostList()
     })
+  }).catch(() => {
   })
 }
 
@@ -128,13 +126,10 @@ function deletePostHandler(postId) {
     type: 'warning'
   }).then(() => {
     deleteBatchSysPost(postId).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('删除成功')
-        queryPostList()
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('删除成功')
+      queryPostList()
     })
+  }).catch(() => {
   })
 }
 
@@ -151,12 +146,8 @@ function resetQueryCondition() {
 
 function queryPostList() {
   querySysPostList(queryPost).then(res => {
-    if (res.code === 200 && res.list) {
-      postList.value = res.list
-      queryPost.total = res.total
-    } else {
-      ElMessage.error(res.msg)
-    }
+    postList.value = res.list
+    queryPost.total = res.total
   })
 }
 

@@ -91,24 +91,16 @@ function submitMenuFormHandler() {
   if (menuInfo.menuId) {
     //update
     updateSysMenu(menuInfo).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('修改成功')
-        visible.value = false
-        emits('refreshDataList')
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('修改成功')
+      visible.value = false
+      emits('refreshDataList')
     })
   } else {
     //save
     createMenu(menuInfo).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('创建成功')
-        visible.value = false
-        emits('refreshDataList')
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('创建成功')
+      visible.value = false
+      emits('refreshDataList')
     })
   }
 }
@@ -116,9 +108,7 @@ function submitMenuFormHandler() {
 //初始化菜单树选择框
 function initSelectMenuData() {
   getMenuList().then(res => {
-    if (res.code === 200 && res.data) {
-      selectMenuData.value[0].children = initSelectTree(res.data, 'menuId', 'menuName')
-    }
+    selectMenuData.value[0].children = initSelectTree(res.data, 'menuId', 'menuName')
   })
 }
 
@@ -147,7 +137,6 @@ const init = (menuId) => {
   if (menuId) {
     menuFormTitle.value = '修改菜单'
     getMenuById(menuId).then(res => {
-      if (res.code === 200 && res.data) {
         const menuData = res.data
         menuInfo.menuId = menuId
         menuInfo.menuName = menuData.menuName
@@ -160,9 +149,6 @@ const init = (menuId) => {
         menuInfo.visible = menuData.visible
         menuInfo.status = menuData.status
         menuInfo.perms = menuData.perms
-      } else {
-        ElMessage.error(res.msg)
-      }
     })
   } else {
     menuFormTitle.value = '新增菜单'

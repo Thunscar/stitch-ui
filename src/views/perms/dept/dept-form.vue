@@ -69,24 +69,16 @@ function submitDeptFormHandler() {
   if (deptInfo.deptId) {
     //修改
     updateSysDept(deptInfo).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('修改成功')
-        visible.value = false
-        emits('refreshDataList')
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('修改成功')
+      visible.value = false
+      emits('refreshDataList')
     })
   } else {
     //创建
     insertSysDept(deptInfo).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('新增成功')
-        visible.value = false
-        emits('refreshDataList')
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('新增成功')
+      visible.value = false
+      emits('refreshDataList')
     })
   }
 }
@@ -109,18 +101,14 @@ function init(deptId) {
   if (deptId) {
     deptFormTitle.value = '修改部门信息'
     getSysDeptById(deptId).then(res => {
-      if (res.code === 200 && res.data) {
-        const dept = res.data
-        deptInfo.deptId = deptId
-        deptInfo.deptName = dept.deptName
-        deptInfo.parentId = dept.parentId
-        deptInfo.orderNum = dept.orderNum
-        deptInfo.leader = dept.leader
-        deptInfo.phone = dept.phone
-        deptInfo.email = dept.email
-      } else {
-        ElMessage.error(res.msg)
-      }
+      const dept = res.data
+      deptInfo.deptId = deptId
+      deptInfo.deptName = dept.deptName
+      deptInfo.parentId = dept.parentId
+      deptInfo.orderNum = dept.orderNum
+      deptInfo.leader = dept.leader
+      deptInfo.phone = dept.phone
+      deptInfo.email = dept.email
     })
   } else {
     deptFormTitle.value = '新增部门'

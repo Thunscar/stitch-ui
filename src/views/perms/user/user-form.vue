@@ -48,10 +48,10 @@ const userInfo = reactive({
   nikeName: '',
   sex: '',
   userType: 'Y',
-  deptId:'',
-  phone:'',
-  email:'',
-  password:'',
+  deptId: '',
+  phone: '',
+  email: '',
+  password: '',
 
   remark: ''
 })
@@ -60,23 +60,15 @@ const userInfo = reactive({
 function submitConfigHandler() {
   if (userInfo.roleId) {
     updateConfig(userInfo).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('修改成功')
-        visible.value = false
-        emits('refreshDataList')
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('修改成功')
+      visible.value = false
+      emits('refreshDataList')
     })
   } else {
     addConfig(userInfo).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('新增成功')
-        visible.value = false
-        emits('refreshDataList')
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('新增成功')
+      visible.value = false
+      emits('refreshDataList')
     })
   }
 }
@@ -100,17 +92,13 @@ function init(configId) {
   if (configId) {
     userFormTitle.value = '修改参数'
     getConfig(configId).then(res => {
-      if (res.code === 200 && res.data) {
-        const config = res.data
-        userInfo.roleId = configId
-        userInfo.userName = config.configName
-        userInfo.nikeName = config.configKey
-        userInfo.sex = config.configValue
-        userInfo.userType = config.configType
-        userInfo.remark = config.remark
-      } else {
-        ElMessage.error(res.msg)
-      }
+      const config = res.data
+      userInfo.roleId = configId
+      userInfo.userName = config.configName
+      userInfo.nikeName = config.configKey
+      userInfo.sex = config.configValue
+      userInfo.userType = config.configType
+      userInfo.remark = config.remark
     })
   } else {
     userFormTitle.value = '新增参数'

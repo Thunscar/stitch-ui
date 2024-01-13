@@ -21,7 +21,7 @@ const service = axios.create({
 service.interceptors.request.use(config => {
     //是否需要设置token
     const isToken = (config.headers || {}).isToken === false
-    //是否需要方式数据重复提交
+    //是否需要防止数据重复提交
     const isRepeatSubmit = (config.headers || {}).repeatSubmit === false
     if (!isToken && getToken()) {
         config.headers['Authorization'] = "bearer " + getToken()
@@ -73,26 +73,27 @@ service.interceptors.response.use(response => {
         //系统提示错误
         ElMessage.error(msg)
         return Promise.reject(msg)
+    } else if (code === 601) {
+        ElMessage.warning(msg)
+        return Promise.reject(msg)
+    } else if (code === 401) {
+        // token过期 弹出重新登录框
+        ElMessageBox.confirm(ReLoginDialog.message, ReLoginDialog.title, {
+            confirmButtonText: ReLoginDialog.confirmText,
+            cancelButtonText: ReLoginDialog.cancelText,
+            type: 'warning',
+        }).then(() => {
+            removeToken()
+            router.push({path: `/login?redirect=${router.currentRoute.value.path}`}).catch()
+        }).catch(() => {
+        })
+        return Promise.reject(msg)
     }
     return response.data
 }, error => {
     //请求失败拦截处理
-    if (error.response && error.response.status != null && error.response.status) {
-        const errCode = error.response.status
-        if (errCode === 401) {
-            // token过期 弹出重新登录框
-            ElMessageBox.confirm(ReLoginDialog.message, ReLoginDialog.title, {
-                confirmButtonText: ReLoginDialog.confirmText,
-                cancelButtonText: ReLoginDialog.cancelText,
-                type: 'warning',
-            }).then(() => {
-                removeToken()
-                router.push({path: `/login?redirect=${router.currentRoute.value.path}`})
-            }).catch(() => {
 
-            })
-        }
-    }
+    return Promise.reject(error)
 })
 
 export default service

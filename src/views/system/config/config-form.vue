@@ -54,23 +54,15 @@ const configInfo = reactive({
 function submitConfigHandler() {
   if (configInfo.configId) {
     updateConfig(configInfo).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('修改成功')
-        visible.value = false
-        emits('refreshDataList')
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('修改成功')
+      visible.value = false
+      emits('refreshDataList')
     })
   } else {
     addConfig(configInfo).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('新增成功')
-        visible.value = false
-        emits('refreshDataList')
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('新增成功')
+      visible.value = false
+      emits('refreshDataList')
     })
   }
 }
@@ -94,17 +86,13 @@ function init(configId) {
   if (configId) {
     configFormTitle.value = '修改参数'
     getConfig(configId).then(res => {
-      if (res.code === 200 && res.data) {
-        const config = res.data
-        configInfo.configId = configId
-        configInfo.configName = config.configName
-        configInfo.configKey = config.configKey
-        configInfo.configValue = config.configValue
-        configInfo.configType = config.configType
-        configInfo.remark = config.remark
-      } else {
-        ElMessage.error(res.msg)
-      }
+      const config = res.data
+      configInfo.configId = configId
+      configInfo.configName = config.configName
+      configInfo.configKey = config.configKey
+      configInfo.configValue = config.configValue
+      configInfo.configType = config.configType
+      configInfo.remark = config.remark
     })
   } else {
     configFormTitle.value = '新增参数'

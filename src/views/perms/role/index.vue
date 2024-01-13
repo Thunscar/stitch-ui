@@ -48,12 +48,13 @@
           <template #default="scope">
             <el-button type="primary" size="default" link @click="updateRoleHandler(scope.row.roleId)">修改</el-button>
             <el-button type="danger" size="default" link @click="deleteRoleHandler(scope.row.roleId)">删除</el-button>
-            <el-button type="primary" size="default" link>
-              <el-dropdown>
+            <el-button type="primary" link>
+              <el-dropdown size="large">
                 <el-button type="primary" size="default" link>更多</el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item @click="allocatedDataAuthority(scope.row.roleId)">数据权限</el-dropdown-item>
+                    <el-dropdown-item @click="allocatedDataAuthority(scope.row.roleId,scope.row.roleName)">数据权限
+                    </el-dropdown-item>
                     <el-dropdown-item @click="allocatedUsers(scope.row.roleId,scope.row.roleName)">分配用户
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -120,13 +121,10 @@ function deleteBatchRoleHandler() {
     type: 'warning'
   }).then(() => {
     deleteBatchSysRoles(selectedRoles.value).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('删除成功')
-        queryRoleList()
-      } else {
-        ElMessage.error(res.msg)
-      }
+      ElMessage.success('删除成功')
+      queryRoleList()
     })
+  }).catch(() => {
   })
 }
 
@@ -151,16 +149,15 @@ function deleteRoleHandler(userId) {
       if (res.code === 200) {
         ElMessage.success('删除成功')
         queryRoleList()
-      } else {
-        ElMessage.error(res.msg)
       }
     })
+  }).catch(() => {
   })
 }
 
 // 分配数据权限
-function allocatedDataAuthority(userId) {
-
+function allocatedDataAuthority(roleId, roleName) {
+  dataScopeDrawerRef.value.initDrawer(roleId, roleName)
 }
 
 // 为角色分配用户
@@ -170,12 +167,8 @@ function allocatedUsers(roleId, roleName) {
 
 function queryRoleList() {
   selectSysRoleList(queryRole).then(res => {
-    if (res.code === 200 && res.list) {
-      roleList.value = res.list
-      queryRole.total = res.total
-    } else {
-      ElMessage.error(res.msg)
-    }
+    roleList.value = res.list
+    queryRole.total = res.total
   })
 }
 
