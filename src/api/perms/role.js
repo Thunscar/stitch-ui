@@ -8,9 +8,16 @@ export function selectSysRoleList(sysRole) {
     })
 }
 
-export function selectSysRoleById(roleId) {
+export function selectAuthMenu(roleId) {
     return request({
-        url: '/sys/role/' + roleId,
+        url: '/sys/role/auth/' + roleId,
+        method: 'get'
+    })
+}
+
+export function selectDataScope(roleId) {
+    return request({
+        url: '/sys/role/data/' + roleId,
         method: 'get'
     })
 }
@@ -75,5 +82,14 @@ export function cancelConferRoles(sysUserRole) {
         url: '/sys/role/confer/cancel',
         method: 'post',
         params: sysUserRole
+    })
+}
+
+
+export function updateDataScope(sysRole) {
+    return request({
+        url: '/sys/role/dataScope',
+        method: 'put',
+        data: sysRole
     })
 }

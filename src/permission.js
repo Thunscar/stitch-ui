@@ -22,10 +22,7 @@ router.beforeEach((to, from, next) => {
                         routes.forEach(item => {
                             router.addRoute('Layout', item)
                         })
-                        router.addRoute({
-                            path: '/:catchAll(.*)',
-                            redirect: '404'
-                        })
+                        router.addRoute({path: '/:catchAll(.*)', redirect: '404'})
                         next({...to, replace: true})
                     })
                 })

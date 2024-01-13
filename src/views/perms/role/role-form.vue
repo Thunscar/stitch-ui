@@ -45,7 +45,7 @@
 import {reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
 import '@/assets/css/form/form.css'
-import {insertSysRole, selectAuthorizedMenu, selectSysRoleById, updateSysRole} from "@/api/perms/role.js";
+import {insertSysRole, selectAuthMenu, updateSysRole} from "@/api/perms/role.js";
 import {getMenuList} from "@/api/system/menu.js";
 import {initSelectTree} from "@/utils/tree.js";
 
@@ -117,16 +117,14 @@ function init(roleId) {
 
   if (roleId) {
     roleFormTitle.value = '修改角色'
-    selectSysRoleById(roleId).then(res => {
+    selectAuthMenu(roleId).then(res => {
       const role = res.data
       roleInfo.roleId = roleId
       roleInfo.roleName = role.roleName
       roleInfo.roleKey = role.roleKey
       roleInfo.status = role.status
       roleInfo.remark = role.remark
-      selectAuthorizedMenu(roleId).then(res => {
-        roleInfo.menuIds = res.data
-      })
+      roleInfo.menuIds = role.menuIds
     })
   } else {
     roleFormTitle.value = '新增角色'

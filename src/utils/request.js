@@ -5,7 +5,6 @@ import cache from "@/plugins/cache.js";
 import router from "@/router/index.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 
-
 export const ReLoginDialog = {
     title: '系统提示',
     message: '登录状态已过期，是否重新登录',
@@ -60,22 +59,22 @@ service.interceptors.request.use(config => {
     }
     return config
 }, error => {
-    Promise.reject(error)
+    return Promise.reject(error)
 })
 
 service.interceptors.response.use(response => {
     const code = response.data.code
-    const msg = response.data.msg
+    const message = response.data.msg
     if (response.request.responseType === 'blob' || response.request.responseType === 'arraybuffer') {
         return response.data
     }
     if (code === 500) {
         //系统提示错误
-        ElMessage.error(msg)
-        return Promise.reject(msg)
+        ElMessage.error(message)
+        return Promise.reject(message)
     } else if (code === 601) {
-        ElMessage.warning(msg)
-        return Promise.reject(msg)
+        ElMessage.warning(message)
+        return Promise.reject(message)
     } else if (code === 401) {
         // token过期 弹出重新登录框
         ElMessageBox.confirm(ReLoginDialog.message, ReLoginDialog.title, {
@@ -87,12 +86,21 @@ service.interceptors.response.use(response => {
             router.push({path: `/login?redirect=${router.currentRoute.value.path}`}).catch()
         }).catch(() => {
         })
-        return Promise.reject(msg)
+        return Promise.reject(message)
     }
     return response.data
 }, error => {
     //请求失败拦截处理
-
+    console.log('err' + error)
+    let {message} = error;
+    if (message === "Network Error") {
+        message = "后端接口连接异常";
+    } else if (message.includes("timeout")) {
+        message = "系统接口请求超时";
+    } else if (message.includes("Request failed with status code")) {
+        message = "系统接口" + message.substr(message.length - 3) + "异常";
+    }
+    ElMessage.error(message)
     return Promise.reject(error)
 })
 
