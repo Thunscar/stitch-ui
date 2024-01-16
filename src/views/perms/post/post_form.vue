@@ -1,15 +1,16 @@
 <template>
   <el-dialog v-model="visible"
              :title="postFormTitle"
-             width="600">
-    <el-form :model="postInfo" label-width="100" inline>
-      <el-form-item label="岗位编码" :required="true">
+             width="600"
+             @close="closeForm">
+    <el-form :model="postInfo" ref="postFormRef" :rules="checkRules" label-width="100" inline>
+      <el-form-item label="岗位编码" prop="postCode">
         <el-input placeholder="岗位编码" v-model="postInfo.postCode" class="form-input"/>
       </el-form-item>
-      <el-form-item label="岗位名称" :required="true">
+      <el-form-item label="岗位名称" prop="postName">
         <el-input placeholder="岗位名称" v-model="postInfo.postName" class="form-input"/>
       </el-form-item>
-      <el-form-item label="岗位排序" :required="true">
+      <el-form-item label="岗位排序">
         <el-input type="number" :min="0" :max="999" placeholder="排序" v-model="postInfo.postSort"/>
       </el-form-item>
       <el-form-item label="状态">
@@ -24,7 +25,7 @@
     </el-form>
     <template #footer>
         <span class="dialog-footer">
-          <el-button @click="visible = false">取消</el-button>
+          <el-button @click="closeForm">取消</el-button>
           <el-button type="primary" @click="submitPostHandler">确认</el-button>
         </span>
     </template>
@@ -39,6 +40,7 @@ import {ElMessage} from "element-plus";
 const emits = defineEmits(['refreshDataList'])
 const postFormTitle = ref('')
 const visible = ref(false)
+const postFormRef = ref()
 const postInfo = reactive({
   postId: null,
   postCode: '',
@@ -48,22 +50,45 @@ const postInfo = reactive({
   remark: ''
 })
 
+const checkRules = ref({
+  postName: {
+    required: true,
+    message: '岗位名称不可为空',
+    trigger: 'blur'
+  },
+  postCode: {
+    required: true,
+    message: '岗位编码不可为空',
+    trigger: 'blur'
+  }
+})
+
 
 // 提交表单
 function submitPostHandler() {
-  if (postInfo.postId) {
-    updateSysPost(postInfo).then(res => {
-      ElMessage.success('修改成功')
-      visible.value = false
-      emits('refreshDataList')
-    })
-  } else {
-    insertSysPost(postInfo).then(res => {
-      ElMessage.success('新增成功')
-      visible.value = false
-      emits('refreshDataList')
-    })
-  }
+  postFormRef.value.validate((valid) => {
+    if (valid) {
+      if (postInfo.postId) {
+        updateSysPost(postInfo).then(res => {
+          ElMessage.success('修改成功')
+          closeForm()
+          emits('refreshDataList')
+        })
+      } else {
+        insertSysPost(postInfo).then(res => {
+          ElMessage.success('新增成功')
+          closeForm()
+          emits('refreshDataList')
+        })
+      }
+    }
+  })
+}
+
+function closeForm() {
+  visible.value = false
+  postFormRef.value.resetFields()
+  clearForm()
 }
 
 //清空表单

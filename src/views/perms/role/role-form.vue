@@ -1,15 +1,16 @@
 <template>
   <el-dialog v-model="visible"
              :title="roleFormTitle"
-             width="600">
-    <el-form :model="roleInfo" label-width="100" inline>
-      <el-form-item label="角色名称" :required="true">
+             width="600"
+             @close="closeForm">
+    <el-form :model="roleInfo" ref="roleFormRef" :rules="checkRules" label-width="100" inline>
+      <el-form-item label="角色名称" prop="roleName">
         <el-input placeholder="角色名称" v-model="roleInfo.roleName" class="form-input"/>
       </el-form-item>
-      <el-form-item label="权限标识符" :required="true">
-        <el-input placeholder="权限标识符" v-model="roleInfo.roleKey" class="form-input"/>
+      <el-form-item label="角色编码" prop="roleKey">
+        <el-input placeholder="角色编码" v-model="roleInfo.roleKey" class="form-input"/>
       </el-form-item>
-      <el-form-item label="排序" :required="true">
+      <el-form-item label="排序">
         <el-input type="number" :min="0" :max="999" placeholder="排序" v-model="roleInfo.roleSort"/>
       </el-form-item>
       <el-form-item label="状态">
@@ -35,7 +36,7 @@
     </el-form>
     <template #footer>
         <span class="dialog-footer">
-          <el-button @click="visible = false">取消</el-button>
+          <el-button @click="closeForm">取消</el-button>
           <el-button type="primary" @click="submitRoleHandler">确认</el-button>
         </span>
     </template>
@@ -67,22 +68,46 @@ const roleInfo = reactive({
   status: '0',
   remark: ''
 })
+const roleFormRef = ref()
+const checkRules = ref({
+  roleName: {
+    required: true,
+    message: '角色名称不可为空',
+    trigger: 'blur'
+  },
+  roleKey: {
+    required: true,
+    message: '角色编码不可为空',
+    trigger: 'blur'
+  }
+})
 
 //提交表单
 function submitRoleHandler() {
-  if (roleInfo.roleId) {
-    updateSysRole(roleInfo).then(res => {
-      ElMessage.success('修改成功')
-      visible.value = false
-      emits('refreshDataList')
-    })
-  } else {
-    insertSysRole(roleInfo).then(res => {
-      ElMessage.success('新增成功')
-      visible.value = false
-      emits('refreshDataList')
-    })
-  }
+  roleFormRef.value.validate((valid) => {
+    if (valid) {
+      if (roleInfo.roleId) {
+        updateSysRole(roleInfo).then(res => {
+          ElMessage.success('修改成功')
+          closeForm()
+          emits('refreshDataList')
+        })
+      } else {
+        insertSysRole(roleInfo).then(res => {
+          ElMessage.success('新增成功')
+          closeForm()
+          emits('refreshDataList')
+        })
+      }
+    }
+  })
+}
+
+//重置并清空表单
+function closeForm() {
+  visible.value = false
+  roleFormRef.value.resetFields()
+  clearForm()
 }
 
 //清空表单

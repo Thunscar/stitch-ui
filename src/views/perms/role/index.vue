@@ -33,7 +33,7 @@
         <el-table-column type="selection" width="50" align="center"/>
         <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" fixed="left"
                          align="center"/>
-        <el-table-column label="权限标识符" prop="roleKey" :show-overflow-tooltip="true" align="center"/>
+        <el-table-column label="角色编码" prop="roleKey" :show-overflow-tooltip="true" align="center"/>
         <el-table-column label="状态" prop="status" width="80" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.status === '0'">正常</el-tag>

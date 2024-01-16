@@ -1,5 +1,5 @@
 <template>
-  <el-container style="border-radius: 20px">
+  <el-container>
     <s-sidebar/>
     <el-container>
       <s-header/>

@@ -1,31 +1,32 @@
 <template>
   <el-dialog v-model="visible"
              :title="deptFormTitle"
-             width="600">
-    <el-form :model="deptInfo" label-width="100" inline>
-      <el-form-item label="部门名称" :required="true">
+             width="600"
+             @close="closeForm">
+    <el-form :model="deptInfo" ref="deptFormRef" :rules="checkRules" label-width="100" inline>
+      <el-form-item label="部门名称" prop="deptName">
         <el-input placeholder="部门名称" v-model="deptInfo.deptName" class="form-input"/>
       </el-form-item>
-      <el-form-item label="上级部门" :required="true">
+      <el-form-item label="上级部门" prop="parentDept">
         <el-tree-select placeholder="上级部门" v-model="deptInfo.parentId" :data="selectDeptData" check-strictly/>
       </el-form-item>
-      <el-form-item label="部门排序" :required="true">
+      <el-form-item label="部门排序">
         <el-input type="number" placeholder="部门排序" v-model="deptInfo.orderNum" :min="0" :max="999"/>
       </el-form-item>
-      <el-form-item label="联系人" :required="true">
+      <el-form-item label="联系人">
         <el-input placeholder="联系人" v-model="deptInfo.leader" class="form-input"/>
       </el-form-item>
-      <el-form-item label="联系电话" :required="true">
+      <el-form-item label="联系电话">
         <el-input placeholder="联系电话" v-model="deptInfo.phone" class="form-input"/>
       </el-form-item>
-      <el-form-item label="联系邮箱" :required="true">
+      <el-form-item label="联系邮箱">
         <el-input placeholder="联系邮箱" v-model="deptInfo.email" class="form-input"/>
       </el-form-item>
     </el-form>
     <template #footer>
         <span class="dialog-footer">
-          <el-button @click="visible = false">取消</el-button>
-          <el-button type="primary" @click="submitDeptFormHandler">确认</el-button>
+          <el-button @click="closeForm">取消</el-button>
+          <el-button type="primary" @click="submitDeptForm">确认</el-button>
         </span>
     </template>
   </el-dialog>
@@ -53,6 +54,19 @@ const deptInfo = reactive({
   phone: '',
   email: ''
 })
+const deptFormRef = ref()
+const checkRules = {
+  deptName: {
+    required: true,
+    message: '部门名称不可为空',
+    trigger: 'blur'
+  },
+  parentDept: {
+    required: true,
+    message: '上级部门不可为空',
+    trigger: 'blur'
+  }
+}
 const emits = defineEmits(['refreshDataList'])
 
 //初始化菜单树选择框
@@ -65,22 +79,32 @@ function initSelectDeptData() {
 }
 
 //提交部门表单
-function submitDeptFormHandler() {
-  if (deptInfo.deptId) {
-    //修改
-    updateSysDept(deptInfo).then(res => {
-      ElMessage.success('修改成功')
-      visible.value = false
-      emits('refreshDataList')
-    })
-  } else {
-    //创建
-    insertSysDept(deptInfo).then(res => {
-      ElMessage.success('新增成功')
-      visible.value = false
-      emits('refreshDataList')
-    })
-  }
+function submitDeptForm() {
+  deptFormRef.value.validate((valid) => {
+    if (valid) {
+      if (deptInfo.deptId) {
+        //修改
+        updateSysDept(deptInfo).then(res => {
+          ElMessage.success('修改成功')
+          closeForm()
+          emits('refreshDataList')
+        })
+      } else {
+        //创建
+        insertSysDept(deptInfo).then(res => {
+          ElMessage.success('新增成功')
+          closeForm()
+          emits('refreshDataList')
+        })
+      }
+    }
+  })
+}
+
+function closeForm() {
+  visible.value = false
+  deptFormRef.value.resetFields()
+  clearForm()
 }
 
 function clearForm() {
@@ -94,8 +118,8 @@ function clearForm() {
 }
 
 function init(deptId) {
-  clearForm()
 
+  clearForm()
   visible.value = true
 
   if (deptId) {
@@ -116,6 +140,7 @@ function init(deptId) {
 
   initSelectDeptData()
 }
+
 
 defineExpose({
   init

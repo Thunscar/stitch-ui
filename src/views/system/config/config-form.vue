@@ -1,15 +1,16 @@
 <template>
   <el-dialog v-model="visible"
              :title="configFormTitle"
-             width="600">
-    <el-form :model="configInfo" label-width="100" inline>
-      <el-form-item label="参数名称" :required="true">
+             width="600"
+             @close="closeForm">
+    <el-form :model="configInfo" ref="configFormRef" :rules="checkRules" label-width="100" inline>
+      <el-form-item label="参数名称" prop="configName">
         <el-input placeholder="参数名称" v-model="configInfo.configName" class="form-input"/>
       </el-form-item>
-      <el-form-item label="参数键名" :required="true">
+      <el-form-item label="参数键名" prop="configKey">
         <el-input placeholder="参数键名" v-model="configInfo.configKey" class="form-input"/>
       </el-form-item>
-      <el-form-item label="参数值" :required="true">
+      <el-form-item label="参数值">
         <el-input placeholder="参数值" v-model="configInfo.configValue" class="form-input"/>
       </el-form-item>
       <el-form-item label="是否内置">
@@ -24,7 +25,7 @@
     </el-form>
     <template #footer>
         <span class="dialog-footer">
-          <el-button @click="visible = false">取消</el-button>
+          <el-button @click="closeForm">取消</el-button>
           <el-button type="primary" @click="submitConfigHandler">确认</el-button>
         </span>
     </template>
@@ -49,22 +50,45 @@ const configInfo = reactive({
   configType: 'Y',
   remark: ''
 })
+const configFormRef = ref()
+const checkRules = ref({
+  configName: {
+    required: true,
+    message: '参数名称不可为空',
+    trigger: 'blur'
+  },
+  configKey: {
+    required: true,
+    message: '参数键名不可为空',
+    trigger: 'blur'
+  }
+})
 
 //提交表单
 function submitConfigHandler() {
-  if (configInfo.configId) {
-    updateConfig(configInfo).then(res => {
-      ElMessage.success('修改成功')
-      visible.value = false
-      emits('refreshDataList')
-    })
-  } else {
-    addConfig(configInfo).then(res => {
-      ElMessage.success('新增成功')
-      visible.value = false
-      emits('refreshDataList')
-    })
-  }
+  configFormRef.value.validate((valid) => {
+    if (valid) {
+      if (configInfo.configId) {
+        updateConfig(configInfo).then(res => {
+          ElMessage.success('修改成功')
+          closeForm()
+          emits('refreshDataList')
+        })
+      } else {
+        addConfig(configInfo).then(res => {
+          ElMessage.success('新增成功')
+          closeForm()
+          emits('refreshDataList')
+        })
+      }
+    }
+  })
+}
+
+function closeForm() {
+  visible.value = false
+  configFormRef.value.resetFields()
+  clearForm()
 }
 
 //清空表单

@@ -1,9 +1,10 @@
 <template>
   <el-dialog v-model="visible"
              :title="menuFormTitle"
-             width="600">
-    <el-form :model="menuInfo" label-width="100" :rules="checkRoles" inline>
-      <el-form-item label="菜单类型" >
+             width="600"
+             @close="closeForm">
+    <el-form :model="menuInfo" ref="menuFormRef" label-width="100" :rules="checkRoles" inline>
+      <el-form-item label="菜单类型">
         <el-radio-group v-model="menuInfo.menuType" :disabled="menuTypeDisabled">
           <el-radio label="M">菜单</el-radio>
           <el-radio label="B">按钮</el-radio>
@@ -12,10 +13,13 @@
       <el-form-item label="菜单名称" prop="menuName">
         <el-input placeholder="菜单名称" v-model="menuInfo.menuName" class="form-input"/>
       </el-form-item>
-      <el-form-item label="菜单排序" :required="true">
+      <el-form-item label="菜单图标" v-if="menuInfo.menuType === 'M'" prop="menuIcon">
+        <icon-selector :icon="menuInfo.icon" @icon-selected="iconSelected" class="form-input"/>
+      </el-form-item>
+      <el-form-item label="菜单排序">
         <el-input type="number" placeholder="菜单排序" v-model="menuInfo.orderNum" :min="0" :max="999"/>
       </el-form-item>
-      <el-form-item label="上级菜单" :required="true">
+      <el-form-item label="上级菜单">
         <el-tree-select v-model="menuInfo.parentId" :data="selectMenuData" check-strictly/>
       </el-form-item>
       <el-form-item label="是否外链" v-if="menuInfo.menuType === 'M'">
@@ -24,10 +28,7 @@
           <el-radio label="1">是</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="菜单图标" v-if="menuInfo.menuType === 'M'" :required="true">
-        <icon-selector :icon="menuInfo.icon" @icon-selected="iconSelected" class="form-input"/>
-      </el-form-item>
-      <el-form-item label="路由地址" :required="true" v-if="menuInfo.menuType === 'M'">
+      <el-form-item label="路由地址" prop="menuPath" v-if="menuInfo.menuType === 'M'">
         <el-input placeholder="路由地址" v-model="menuInfo.path" class="form-input"/>
       </el-form-item>
       <el-form-item label="组件地址" v-if="menuInfo.menuType === 'M'">
@@ -51,8 +52,8 @@
     </el-form>
     <template #footer>
         <span class="dialog-footer">
-          <el-button @click="visible = false">取消</el-button>
-          <el-button type="primary" @click="submitMenuFormHandler">确认</el-button>
+          <el-button @click="closeForm">取消</el-button>
+          <el-button type="primary" @click="submitMenuHandler">确认</el-button>
         </span>
     </template>
   </el-dialog>
@@ -66,6 +67,7 @@ import '@/assets/css/form/form.css'
 import {ElMessage} from "element-plus";
 import IconSelector from "@/components/Icon/IconSelector.vue";
 
+const menuFormRef = ref()
 const menuFormTitle = ref('')
 const visible = ref(false)
 const menuTypeDisabled = ref(false)
@@ -90,32 +92,53 @@ const selectMenuData = ref([{
 }])
 
 const checkRoles = ref({
-  menuName: [{
+  menuName: {
     required: true,
     message: '菜单名称不可为空',
     trigger: ['blur']
-  }]
+  },
+  menuIcon: {
+    required: true,
+    message: '菜单图标不可为空',
+    trigger: ['blur']
+  },
+  menuPath: {
+    required: true,
+    message: '路由地址不可为空',
+    trigger: ['blur']
+  }
 })
 
 const emits = defineEmits(['refreshDataList'])
 
 //表单提交
-function submitMenuFormHandler() {
-  if (menuInfo.menuId) {
-    //update
-    updateSysMenu(menuInfo).then(res => {
-      ElMessage.success('修改成功')
-      visible.value = false
-      emits('refreshDataList')
-    })
-  } else {
-    //save
-    createMenu(menuInfo).then(res => {
-      ElMessage.success('创建成功')
-      visible.value = false
-      emits('refreshDataList')
-    })
-  }
+function submitMenuHandler() {
+  menuFormRef.value.validate((valid) => {
+    if (valid) {
+      if (menuInfo.menuId) {
+        //update
+        updateSysMenu(menuInfo).then(res => {
+          ElMessage.success('修改成功')
+          visible.value = false
+          emits('refreshDataList')
+        })
+      } else {
+        //save
+        createMenu(menuInfo).then(res => {
+          ElMessage.success('创建成功')
+          visible.value = false
+          emits('refreshDataList')
+        })
+      }
+    }
+  })
+}
+
+//关闭表单事件
+function closeForm() {
+  visible.value = false
+  menuFormRef.value.resetFields()
+  clearForm()
 }
 
 function iconSelected(icon) {

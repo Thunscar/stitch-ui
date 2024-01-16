@@ -1,6 +1,6 @@
 <template>
   <template v-for="(item,index) in props.menus" :key="index">
-    <el-sub-menu v-if="item.children && item.visible" :index="item.path" :key="item.path" popper-append-to-body>
+    <el-sub-menu v-if="item.children && item.visible" :index="item.path" :key="item.path">
       <template #title>
         <el-icon>
           <svg-icon :icon-class="item.meta.icon"/>
