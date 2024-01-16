@@ -18,8 +18,8 @@
       </div>
     </template>
 
-    <el-tabs class="demo-tabs" tab-position="left" @tab-click="handleClick">
-      <el-tab-pane label="面性风格" name="first">
+    <el-tabs class="demo-tabs" tab-position="left" model-value="facial">
+      <el-tab-pane label="面性风格" name="facial">
         <el-scrollbar>
           <div class="icon-view">
             <el-button class="icon-btn" text plain v-for="(item,index) in menuIcons" :key="index"
@@ -29,7 +29,7 @@
           </div>
         </el-scrollbar>
       </el-tab-pane>
-      <el-tab-pane label="彩色风格" name="second">彩色风格</el-tab-pane>
+      <el-tab-pane label="彩色风格" name="color">彩色风格</el-tab-pane>
     </el-tabs>
   </el-popover>
 </template>
@@ -54,9 +54,9 @@ const menuIcons = ref([
   'Clock',
   'Eye',
   'Filter',
-  'Flask',
   'Flask-alt',
   'Info-triangle',
+  'Flask',
   'Key',
   'Lightbulb',
   'Lightning-alt',
