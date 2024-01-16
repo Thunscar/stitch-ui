@@ -7,7 +7,7 @@
       <el-form-item label="部门名称" prop="deptName">
         <el-input placeholder="部门名称" v-model="deptInfo.deptName" class="form-input"/>
       </el-form-item>
-      <el-form-item label="上级部门" prop="parentDept">
+      <el-form-item label="上级部门" prop="parentId">
         <el-tree-select placeholder="上级部门" v-model="deptInfo.parentId" :data="selectDeptData" check-strictly/>
       </el-form-item>
       <el-form-item label="部门排序">
@@ -61,7 +61,7 @@ const checkRules = {
     message: '部门名称不可为空',
     trigger: 'blur'
   },
-  parentDept: {
+  parentId: {
     required: true,
     message: '上级部门不可为空',
     trigger: 'blur'

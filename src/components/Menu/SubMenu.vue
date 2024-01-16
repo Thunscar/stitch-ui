@@ -40,6 +40,6 @@ function handleClick(item) {
 </script>
 <style scoped>
 .menu-item {
-  margin-top: 6px;
+  margin-top: 4px;
 }
 </style>

@@ -60,7 +60,7 @@ function addHomePage(menuState) {
                 component: () => import('@/views/home/index.vue'),
                 meta: {
                     title: '首页',
-                    icon: 'home'
+                    icon: 'f-home'
                 },
                 visible: true,
                 children: null

@@ -14,7 +14,7 @@ export const routes = [
                 component: () => import('@/views/home/index.vue'),
                 meta: {
                     title: '首页',
-                    icon: 'home'
+                    icon: 'f-home'
                 }
             }
         ]

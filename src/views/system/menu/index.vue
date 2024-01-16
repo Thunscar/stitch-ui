@@ -43,6 +43,11 @@
         <el-table-column prop="path" label="路由地址" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="component" label="组件地址" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="orderNum" label="菜单排序" width="90" :show-overflow-tooltip="true" align="center"/>
+        <el-table-column prop="icon" label="菜单图标" width="85" align="center">
+          <template #default="scope">
+            <svg-icon :icon-class="scope.row.icon"/>
+          </template>
+        </el-table-column>
         <el-table-column prop="createUser" label="创建人员" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="createTime" label="创建时间" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="visible" label="是否可见" width="85" align="center">
@@ -77,6 +82,7 @@ import {initTreeData} from "@/utils/tree.js";
 import '@/assets/css/table/table.css'
 import MenuForm from "@/views/system/menu/menu-form.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
+import SvgIcon from "@/components/Icon/SvgIcon.vue";
 
 const menuTreeData = ref([])
 const menuListData = ref([])
