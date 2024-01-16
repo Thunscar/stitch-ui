@@ -5,8 +5,6 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'virtual:svg-icons-register'
 import locale from 'element-plus/lib/locale/lang/zh-cn.js'
 import './permission.js'
-import 'animate.css'
-import 'nprogress/nprogress.css'
 import router from '@/router/index.js'
 import {createPinia} from "pinia"
 import '@/utils/modules.js'
@@ -17,6 +15,7 @@ import '@/assets/css/theme/dark.css'
 
 import App from './App.vue'
 import bus from "@/utils/bus.js";
+
 
 //引入全局事件总线
 

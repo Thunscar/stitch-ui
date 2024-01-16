@@ -13,8 +13,8 @@
       <el-form-item label="菜单名称" prop="menuName">
         <el-input placeholder="菜单名称" v-model="menuInfo.menuName" class="form-input"/>
       </el-form-item>
-      <el-form-item label="菜单图标" v-if="menuInfo.menuType === 'M'" prop="menuIcon">
-        <icon-selector :icon="menuInfo.icon" @icon-selected="iconSelected" class="form-input"/>
+      <el-form-item label="菜单图标" v-if="menuInfo.menuType === 'M'" prop="icon">
+        <icon-selector :icon="menuInfo.icon" @icon-selected="iconSelected"/>
       </el-form-item>
       <el-form-item label="菜单排序">
         <el-input type="number" placeholder="菜单排序" v-model="menuInfo.orderNum" :min="0" :max="999"/>
@@ -28,7 +28,7 @@
           <el-radio label="1">是</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="路由地址" prop="menuPath" v-if="menuInfo.menuType === 'M'">
+      <el-form-item label="路由地址" prop="path" v-if="menuInfo.menuType === 'M'">
         <el-input placeholder="路由地址" v-model="menuInfo.path" class="form-input"/>
       </el-form-item>
       <el-form-item label="组件地址" v-if="menuInfo.menuType === 'M'">
@@ -53,7 +53,7 @@
     <template #footer>
         <span class="dialog-footer">
           <el-button @click="closeForm">取消</el-button>
-          <el-button type="primary" @click="submitMenuHandler">确认</el-button>
+          <el-button type="primary" @click="submitMenuHandler(menuFormRef)">确认</el-button>
         </span>
     </template>
   </el-dialog>
@@ -97,12 +97,12 @@ const checkRoles = ref({
     message: '菜单名称不可为空',
     trigger: ['blur']
   },
-  menuIcon: {
+  icon: {
     required: true,
     message: '菜单图标不可为空',
     trigger: ['blur']
   },
-  menuPath: {
+  path: {
     required: true,
     message: '路由地址不可为空',
     trigger: ['blur']
@@ -112,8 +112,11 @@ const checkRoles = ref({
 const emits = defineEmits(['refreshDataList'])
 
 //表单提交
-function submitMenuHandler() {
-  menuFormRef.value.validate((valid) => {
+function submitMenuHandler(menuFormRef) {
+  menuFormRef.validate((valid,fields) => {
+    console.log(valid,fields)
+    console.log(menuInfo.icon)
+    console.log(menuInfo.path)
     if (valid) {
       if (menuInfo.menuId) {
         //update
