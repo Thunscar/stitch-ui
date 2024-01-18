@@ -81,6 +81,7 @@ service.interceptors.response.use(response => {
             confirmButtonText: ReLoginDialog.confirmText,
             cancelButtonText: ReLoginDialog.cancelText,
             type: 'warning',
+            closeOnClickModal: false
         }).then(() => {
             removeToken()
             router.push({path: `/login?redirect=${router.currentRoute.value.path}`}).catch()

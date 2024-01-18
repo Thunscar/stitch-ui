@@ -3,6 +3,7 @@
     <s-sidebar/>
     <el-container>
       <s-header/>
+      <s-tabs/>
       <el-main class="main">
         <div class="view-container">
           <router-view v-slot="{ Component }">
@@ -22,6 +23,7 @@
 import '@/assets/css/layout/layout.css'
 import SSidebar from "@/layout/VerticalLayout/siderBar/s-sidebar.vue"
 import SHeader from "@/layout/VerticalLayout/header/s-header.vue"
+import STabs from "@/layout/VerticalLayout/tabs/s-tabs.vue";
 
 const copyRight = import.meta.env.VITE_COPYRIGHT ? import.meta.env.VITE_COPYRIGHT : 'Copyright ©2023 Created by StitchCoder'
 </script>
@@ -36,7 +38,7 @@ const copyRight = import.meta.env.VITE_COPYRIGHT ? import.meta.env.VITE_COPYRIGH
 }
 
 .main {
-  min-height: 75vh;
+  min-height: 70vh;
 }
 
 .fade-enter-active,

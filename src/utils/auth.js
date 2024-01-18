@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+
 const TokenKey = "Stitch-Token";
 
 export function getToken() {

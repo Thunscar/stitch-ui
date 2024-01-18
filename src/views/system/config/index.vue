@@ -12,15 +12,13 @@
       <span style="position: relative;right: 0">
         <el-button type="primary" @click="queryConfigList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
+        <el-button type="primary" text bg @click="createConfigHandler">新增</el-button>
+        <el-button type="danger" text bg :disabled="selectedConfigs.length === 0"
+                   @click="deleteBatchConfigHandler">批量删除
+        </el-button>
+        <el-button type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
+        <el-button type="success" text bg @click="refreshCacheHandler">刷新缓存</el-button>
       </span>
-    </div>
-    <div class="operation">
-      <el-button type="primary" size="default" @click="createConfigHandler">新增</el-button>
-      <el-button type="danger" size="default" :disabled="selectedConfigs.length === 0"
-                 @click="deleteBatchConfigHandler">批量删除
-      </el-button>
-      <el-button type="info" size="default" @click="exportExcelHandler">导出Excel</el-button>
-      <el-button type="success" size="default" @click="refreshCacheHandler">刷新缓存</el-button>
     </div>
     <div class="table">
       <el-table :data="configList"
@@ -48,9 +46,9 @@
         <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true" align="center"/>
         <el-table-column label="操作" width="120" min-width="120" fixed="right" align="center">
           <template #default="scope">
-            <el-button type="primary" size="default" link @click="updateConfigHandler(scope.row.configId)">修改
+            <el-button type="primary" link @click="updateConfigHandler(scope.row.configId)">修改
             </el-button>
-            <el-button type="danger" size="default" link @click="deleteConfigHandler(scope.row.configId)">删除
+            <el-button type="danger" link @click="deleteConfigHandler(scope.row.configId)">删除
             </el-button>
           </template>
         </el-table-column>

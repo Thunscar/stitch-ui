@@ -3,7 +3,6 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'virtual:svg-icons-register'
-import locale from 'element-plus/lib/locale/lang/zh-cn.js'
 import './permission.js'
 import router from '@/router/index.js'
 import {createPinia} from "pinia"
@@ -24,7 +23,7 @@ const pinia = createPinia();
 
 
 const app = createApp(App)
-app.use(ElementPlus, {locale})
+app.use(ElementPlus)
 app.config.globalProperties.bus = bus
 app.use(pinia)
 app.use(router)

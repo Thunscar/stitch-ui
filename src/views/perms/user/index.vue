@@ -7,15 +7,13 @@
       <span style="position: relative;right: 0">
         <el-button type="primary" @click="queryUserList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
+        <el-button type="success" text bg @click="createUserHandler">新增</el-button>
+        <el-button type="danger" text bg :disabled="selectedUsers.length === 0"
+                   @click="deleteBatchUserHandler">批量删除
+        </el-button>
+        <el-button type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
+        <el-button type="success" text bg @click="importExcelHandler">导入用户</el-button>
       </span>
-    </div>
-    <div class="operation">
-      <el-button type="primary" size="default" @click="createUserHandler">新增</el-button>
-      <el-button type="danger" size="default" :disabled="selectedUsers.length === 0"
-                 @click="deleteBatchUserHandler">批量删除
-      </el-button>
-      <el-button type="info" size="default" @click="exportExcelHandler">导出Excel</el-button>
-      <el-button type="success" size="default" @click="importExcelHandler">导入用户</el-button>
     </div>
     <div class="table">
       <el-table :data="userList"
@@ -31,13 +29,13 @@
         <el-table-column label="用户名" prop="userName" :show-overflow-tooltip="true" fixed="left" width="140"
                          align="center"/>
         <el-table-column label="昵称" prop="nickName" :show-overflow-tooltip="true" width="100" align="center"/>
-        <el-table-column label="类型" prop="userType" width="95" align="center">
+        <el-table-column label="类型" prop="userType" width="120" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.userType === '00'">系统用户</el-tag>
             <el-tag v-else type="warning">普通用户</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="性别" prop="sex" width="60" align="center">
+        <el-table-column label="性别" prop="sex" width="70" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.sex === '0'">男</el-tag>
             <el-tag v-else-if="scope.row.sex === '1'" type="warning">女</el-tag>
@@ -59,13 +57,13 @@
         <el-table-column prop="loginTime" label="最后登录时间" width="130" :show-overflow-tooltip="true"
                          align="center"/>
         <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column label="操作" width="160" min-width="160" fixed="right" align="center">
+        <el-table-column label="操作" width="180" min-width="160" fixed="right" align="center">
           <template #default="scope">
-            <el-button type="primary" size="default" link @click="updateUserHandler(scope.row.userId)">修改</el-button>
-            <el-button type="danger" size="default" link @click="deleteUserHandler(scope.row.userId)">删除</el-button>
-            <el-button type="primary" size="default" link>
+            <el-button type="primary" link @click="updateUserHandler(scope.row.userId)">修改</el-button>
+            <el-button type="danger" link @click="deleteUserHandler(scope.row.userId)">删除</el-button>
+            <el-button type="primary" link>
               <el-dropdown>
-                <el-button type="primary" size="default" link>更多</el-button>
+                <el-button type="primary" link>更多</el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item @click="resetPassword(scope.row.userId)">重置密码</el-dropdown-item>

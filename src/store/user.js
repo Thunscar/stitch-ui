@@ -27,13 +27,11 @@ export const useUserStore = defineStore("user", {
         GetUserInfo() {
             return new Promise((resolve, reject) => {
                 getUserInfo().then(res => {
-                    if (res) {
-                        this.name = res.user.nikeName
-                        this.avatar = res.user.avatar
-                        this.roles = res.roles
-                        this.permission = res.permission
-                        resolve()
-                    }
+                    this.name = res.user.nikeName
+                    this.avatar = res.user.avatar
+                    this.roles = res.roles
+                    this.permission = res.permission
+                    resolve()
                 }).catch(error => {
                     reject(error)
                 })
@@ -42,15 +40,13 @@ export const useUserStore = defineStore("user", {
         UserLoginOut() {
             return new Promise((resolve, reject) => {
                 logout().then(res => {
-                    if (res) {
-                        removeToken()
-                        this.name = ''
-                        this.avatar = ''
-                        this.roles = []
-                        this.permission = []
-                        this.token = ''
-                        resolve(res)
-                    }
+                    removeToken()
+                    this.name = ''
+                    this.avatar = ''
+                    this.roles = []
+                    this.permission = []
+                    this.token = ''
+                    resolve(res)
                 }).catch(error => {
                     reject(error)
                 })

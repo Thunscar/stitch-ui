@@ -17,11 +17,9 @@
       <span style="position: relative;right: 0">
         <el-button type="primary" @click="queryMenuDataList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
+        <el-button type="primary" text bg @click="createMenuHandler">新增</el-button>
+      <el-button type="info" text bg @click="expandAllHandler">展开/折叠</el-button>
       </span>
-    </div>
-    <div class="operation">
-      <el-button type="primary" size="default" @click="createMenuHandler">新增</el-button>
-      <el-button type="info" size="default" @click="expandAllHandler">展开/折叠</el-button>
     </div>
     <div class="table">
       <el-table :data="menuTreeData"
@@ -66,8 +64,8 @@
         </el-table-column>
         <el-table-column label="操作" width="120" min-width="120" fixed="right" align="center">
           <template #default="scope">
-            <el-button type="primary" size="default" link @click="updateMenuHandler(scope.row.menuId)">修改</el-button>
-            <el-button type="danger" size="default" link @click="deleteMenu(scope.row.menuId)">删除</el-button>
+            <el-button type="primary" link @click="updateMenuHandler(scope.row.menuId)">修改</el-button>
+            <el-button type="danger" link @click="deleteMenu(scope.row.menuId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

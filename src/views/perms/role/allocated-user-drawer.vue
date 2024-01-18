@@ -23,10 +23,10 @@
           </span>
         </div>
         <div class="operation">
-          <el-button type="primary" text bg size="default" :disabled="conferStatus === 0 || selectedUsers.length === 0"
+          <el-button type="primary" text bg :disabled="conferStatus === 0 || selectedUsers.length === 0"
                      @click="conferBatchRole">授予角色
           </el-button>
-          <el-button type="success" text bg size="default" :disabled="conferStatus === 1 || selectedUsers.length === 0"
+          <el-button type="success" text bg :disabled="conferStatus === 1 || selectedUsers.length === 0"
                      @click="cancelBatchConferRole">取消授予
           </el-button>
         </div>
@@ -44,13 +44,13 @@
             <el-table-column label="用户名" prop="userName" :show-overflow-tooltip="true" fixed="left" width="140"
                              align="center"/>
             <el-table-column label="昵称" prop="nickName" :show-overflow-tooltip="true" width="100" align="center"/>
-            <el-table-column label="类型" prop="userType" width="95" align="center">
+            <el-table-column label="类型" prop="userType" width="110" align="center">
               <template #default="scope">
                 <el-tag v-if="scope.row.userType === '00'">系统用户</el-tag>
                 <el-tag v-else type="warning">普通用户</el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="性别" prop="sex" width="60" align="center">
+            <el-table-column label="性别" prop="sex" width="70" align="center">
               <template #default="scope">
                 <el-tag v-if="scope.row.sex === '0'">男</el-tag>
                 <el-tag v-else-if="scope.row.sex === '1'" type="warning">女</el-tag>
@@ -75,10 +75,10 @@
             <el-table-column prop="remark" label="备注" width="500" :show-overflow-tooltip="true" align="center"/>
             <el-table-column label="操作" min-width="160" fixed="right" align="center">
               <template #default="scope">
-                <el-button type="primary" size="default" v-if="conferStatus === 1" link
+                <el-button type="primary" v-if="conferStatus === 1" link
                            @click="conferRole(scope.row.userId)">授予角色
                 </el-button>
-                <el-button type="primary" size="default" v-else-if="conferStatus === 0" link
+                <el-button type="primary" v-else-if="conferStatus === 0" link
                            @click="cancelConferRole(scope.row.userId)">取消授予
                 </el-button>
               </template>

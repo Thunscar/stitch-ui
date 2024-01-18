@@ -12,4 +12,7 @@
     --put-away-menu-icon: url('@/assets/img/put-away-menu-dark.svg');
     --expand-menu-icon: url('@/assets/img/expand-menu-dark.svg');
     --header-menu-hover-color: rgb(68, 68, 68);
+    --full-screen-icon:url('@/assets/img/full-screen-dark.svg');
+    --exit-full-screen-icon: url('@/assets/img/exit-full-screen-dark.svg');
+    --layout-size-icon:url('@/assets/img/layout-size-dark.svg');
 }
