@@ -1,7 +1,7 @@
 .dark {
     --backgroud-color: #141414;
     --login-bg-image: url('@/assets/img/login-bg-dark.svg');
-    --login-title-color: #ffffff;
+    --text-color: #ffffff;
     --login-bg-color: rgba(16, 16, 16, 0.3);
     --login-form-color: #191919;
     --login-form-shadow: rgba(99, 99, 99, 0.5);

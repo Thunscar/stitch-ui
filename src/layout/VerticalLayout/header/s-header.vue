@@ -35,8 +35,8 @@
           <img class="theme-mode-icon" src="" alt="">
         </div>
       </div>
-      <div class="operate-fullscreen" @click="fullScreenHandler">
-        <img class="operate-fullscreen-icon" :class="{'full-screen':!fullscreen,'exit-full-screen':fullscreen}" src=""
+      <div class="operate-fullscreen" @click="toggle">
+        <img class="operate-fullscreen-icon" :class="{'full-screen':!isFullscreen,'exit-full-screen':isFullscreen}" src=""
              alt=""/>
       </div>
       <div class="user-info">
@@ -66,12 +66,13 @@ import {computed, getCurrentInstance, ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {useStore} from "@/store/index.js";
 import {ArrowDownBold} from "@element-plus/icons-vue";
+import {useFullscreen} from "@vueuse/core";
 
 const instance = getCurrentInstance()
 const bus = instance.appContext.config.globalProperties.bus
 
 const collapse = ref(false)
-const fullscreen = ref(false)
+const {isFullscreen, toggle} = useFullscreen()
 const userStore = useStore().user
 const globalStore = useStore().global
 const size = computed(() => globalStore.size)
@@ -100,38 +101,6 @@ function setSize(size) {
   globalStore.SetUserSize(size)
 }
 
-
-// 点击全屏事件处理
-function fullScreenHandler() {
-  const element = document.documentElement;
-  if (fullscreen.value) {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitCancelFullScreen) {
-      document.webkitCancelFullScreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    } else {
-      ElMessage.warning('浏览器不支持该操作')
-    }
-  } else {
-    if (element.requestFullscreen) {
-      element.requestFullscreen();
-    } else if (element.webkitRequestFullScreen) {
-      element.webkitRequestFullScreen();
-    } else if (element.mozRequestFullScreen) {
-      element.mozRequestFullScreen();
-    } else if (element.msRequestFullscreen) {
-      // IE11
-      element.msRequestFullscreen();
-    } else {
-      ElMessage.warning('浏览器不支持该操作')
-    }
-  }
-  fullscreen.value = !fullscreen.value;
-}
 
 //用户退出登录
 async function loginOut() {
@@ -311,7 +280,7 @@ function toggleTheme() {
   outline: 0 !important;
 }
 
-.theme-mode:hover{
+.theme-mode:hover {
   background-color: var(--header-menu-hover-color);
 }
 

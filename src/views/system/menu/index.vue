@@ -55,7 +55,7 @@
             <el-tag v-else type="danger">未知</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="状态" width="80" align="center">
+        <el-table-column prop="status" label="状态" width="90" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.status === '0'">正常</el-tag>
             <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>

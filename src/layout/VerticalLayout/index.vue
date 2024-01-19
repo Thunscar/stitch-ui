@@ -15,7 +15,9 @@
           </router-view>
         </div>
       </el-main>
-      <el-footer class="footer" height="45">{{ copyRight }}</el-footer>
+      <el-footer class="footer" height="45">
+        <a href="https://blog.stitchcodes.com" target="_blank">{{ copyRight }}</a>
+      </el-footer>
     </el-container>
   </el-container>
 </template>
@@ -25,20 +27,22 @@ import SSidebar from "@/layout/VerticalLayout/siderBar/s-sidebar.vue"
 import SHeader from "@/layout/VerticalLayout/header/s-header.vue"
 import STabs from "@/layout/VerticalLayout/tabs/s-tabs.vue";
 
-const copyRight = import.meta.env.VITE_COPYRIGHT ? import.meta.env.VITE_COPYRIGHT : 'Copyright ©2023 Created by StitchCoder'
+const copyRight = import.meta.env.VITE_COPYRIGHT ? import.meta.env.VITE_COPYRIGHT : 'Copyright ©2024 Created by StitchCoder'
 </script>
 <style scoped>
-
 .footer {
-  background-color: var(--layout-backgroud-color);
   text-align: center;
+  background-color: var(--layout-backgroud-color);
+}
+
+.footer a {
+  text-decoration: none;
   font-size: 12px;
-  margin-bottom: 10px;
-  z-index: 1;
+  color: var(--text-color);
 }
 
 .main {
-  min-height: 70vh;
+  height: 70vh;
 }
 
 .fade-enter-active,

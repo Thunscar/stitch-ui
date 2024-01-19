@@ -9,8 +9,6 @@
 import {useStore} from "@/store/index.js";
 import {computed, onMounted, watch} from "vue";
 import router from "@/router/index.js";
-import {visitedStorageKey} from "@/store/modules/visit.js";
-import {textToImage} from "@/utils/test.js";
 
 const visitedStore = useStore().visit
 const noCloseViews = visitedStore.noCloseViews
@@ -29,7 +27,7 @@ watch(() => router.currentRoute.value.fullPath, () => {
 })
 
 function initTabs() {
-  if (!localStorage.getItem(visitedStorageKey)) {
+  if (visitedStore.visitedViews.length === 0) {
     const home = {
       title: '首页',
       path: '/home',
@@ -55,7 +53,6 @@ function closeHandler(view) {
 }
 
 function tabChange(view) {
-  textToImage()
   router.push(view)
 }
 
@@ -69,5 +66,6 @@ onMounted(() => {
   height: 40px;
   display: flex;
   flex-flow: row nowrap;
+  user-select: none;
 }
 </style>
