@@ -6,6 +6,7 @@ import 'virtual:svg-icons-register'
 import './permission.js'
 import router from '@/router/index.js'
 import {createPinia} from "pinia"
+import persistPlugin from 'pinia-plugin-persist'
 import '@/utils/modules.js'
 
 //引入主题相关文件
@@ -20,6 +21,7 @@ import bus from "@/utils/bus.js";
 
 
 const pinia = createPinia();
+pinia.use(persistPlugin)
 
 
 const app = createApp(App)

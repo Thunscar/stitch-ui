@@ -1,11 +1,12 @@
 import {defineStore} from "pinia";
-import {getToken, removeToken, setToken} from "@/utils/auth.js";
 import {login, logout} from "@/api/login.js";
 import {getUserInfo} from "@/api/router.js";
+import {persistConfig} from "@/store/config/persistConfig.js";
 
+export const userStorageKey = 'user'
 export const useUserStore = defineStore("user", {
     state: () => ({
-        name: "", avatar: "", roles: [], permission: [], token: getToken()
+        name: "", avatar: "", roles: [], permission: [], token: ''
     }), actions: {
         Login(userInfo) {
             const username = userInfo.username.trim()
@@ -15,7 +16,6 @@ export const useUserStore = defineStore("user", {
             return new Promise((resolve, reject) => {
                 login(username, password, code, uuid).then(res => {
                     if (res) {
-                        setToken(res.token)
                         this.token = res.token
                         resolve()
                     }
@@ -40,7 +40,6 @@ export const useUserStore = defineStore("user", {
         UserLoginOut() {
             return new Promise((resolve, reject) => {
                 logout().then(res => {
-                    removeToken()
                     this.name = ''
                     this.avatar = ''
                     this.roles = []
@@ -52,5 +51,6 @@ export const useUserStore = defineStore("user", {
                 })
             })
         }
-    }
+    },
+    persist: persistConfig(userStorageKey, ['name', 'avatar', 'token'])
 })

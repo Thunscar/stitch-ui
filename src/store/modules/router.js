@@ -4,7 +4,7 @@ import ParentView from "@/layout/VerticalLayout/parentView/index.vue"
 import OuterLink from "@/layout/VerticalLayout/outerLink/index.vue"
 import Layout from "@/layout/index.vue"
 import {modules} from "@/utils/modules.js"
-import {useGlobalStore} from "@/store/global.js"
+import {useGlobalStore} from "@/store/modules/global.js"
 
 export const useRouterStore = defineStore("router", {
     state: () => ({
@@ -60,9 +60,10 @@ function addHomePage(menuState) {
                 component: () => import('@/views/home/index.vue'),
                 meta: {
                     title: '首页',
-                    icon: 'f-home'
+                    icon: 'f-home',
+                    cache: true,
                 },
-                visible: true,
+                visible: false,
                 children: null
             }
         )

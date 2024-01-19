@@ -30,6 +30,11 @@
           </template>
         </el-dropdown>
       </div>
+      <div>
+        <div class="theme-mode" @click="toggleTheme">
+          <img class="theme-mode-icon" src="" alt="">
+        </div>
+      </div>
       <div class="operate-fullscreen" @click="fullScreenHandler">
         <img class="operate-fullscreen-icon" :class="{'full-screen':!fullscreen,'exit-full-screen':fullscreen}" src=""
              alt=""/>
@@ -141,6 +146,12 @@ async function loginOut() {
     })
   }).catch(() => {
   })
+}
+
+//主题切换
+function toggleTheme() {
+  const theme = globalStore.theme === 'dark' ? 'default' : 'dark'
+  globalStore.SetUserTheme(theme)
 }
 
 </script>
@@ -288,5 +299,28 @@ async function loginOut() {
   margin-top: 18px;
   align-self: center;
   content: var(--layout-size-icon);
+}
+
+.theme-mode {
+  display: block;
+  text-align: center;
+  margin-left: 0;
+  width: 45px;
+  height: 60px;
+  cursor: pointer;
+  outline: 0 !important;
+}
+
+.theme-mode:hover{
+  background-color: var(--header-menu-hover-color);
+}
+
+.theme-mode-icon {
+  user-select: none;
+  width: 24px;
+  height: 24px;
+  margin-top: 18px;
+  align-self: center;
+  content: var(--theme-mode-icon);
 }
 </style>

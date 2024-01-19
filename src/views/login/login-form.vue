@@ -54,6 +54,7 @@ const loginFormRule = reactive({
   verifyCode: ''
 })
 
+const visitedStore = useStore().visit
 
 function getVerifyCode() {
   getVerifyImage().then(res => {

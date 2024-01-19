@@ -22,6 +22,9 @@
 <script setup>
 import router from "@/router/index.js";
 import SvgIcon from "@/components/Icon/SvgIcon.vue";
+import {useStore} from "@/store/index.js";
+
+const visitedStore = useStore().visit
 
 const props = defineProps({
   menus: {

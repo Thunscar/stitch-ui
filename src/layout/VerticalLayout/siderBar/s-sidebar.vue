@@ -12,7 +12,7 @@
                  :collapse="collapse"
                  :router="false">
           <SubMenu :menus="menuList"/>
-        </el-menu>
+        </el-menu>Ï
       </el-scrollbar>
     </el-aside>
   </div>
@@ -36,11 +36,10 @@ const appName = computed(() => {
   return collapse.value ? (import.meta.env.VITE_APP_TITLE_COLLAPSE) : (import.meta.env.VITE_APP_TITLE)
 })
 
-// const appName = import.meta.env.VITE_APP_TITLE ? import.meta.env.VITE_APP_TITLE : 'Stitch Admin'
-
 const titleWidth = computed(() => {
   return collapse.value ? '60px' : '240px'
 })
+
 // 路由
 const routerStore = useStore().router
 

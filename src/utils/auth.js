@@ -1,17 +1,16 @@
-import Cookies from "js-cookie";
-
-const TokenKey = "Stitch-Token";
+export const userStorageKey = 'user'
 
 export function getToken() {
-    return Cookies.get(TokenKey)
-}
-
-export function setToken(token) {
-    Cookies.set(TokenKey, token)
+    const user = localStorage.getItem(userStorageKey)
+    if (!user) {
+        return undefined
+    }
+    return JSON.parse(user).token
 }
 
 export function removeToken() {
-    Cookies.remove(TokenKey)
+    localStorage.clear()
+    // localStorage.removeItem(userStorageKey)
 }
 
 

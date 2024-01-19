@@ -8,7 +8,7 @@ export const useGlobalStore = defineStore('global', {
         layout: getDefaultLayout(),
         homeEnable: true,
         size: getSize(),
-        locale:zhCn
+        locale: zhCn
     }),
     actions: {
         //切换用户主题为当前
