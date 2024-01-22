@@ -2,7 +2,7 @@ import {defineStore} from "pinia";
 import {login, logout} from "@/api/login.js";
 import {getUserInfo} from "@/api/router.js";
 import {persistConfig} from "@/store/config/persistConfig.js";
-import {useVisitedStore, visitedStorageKey} from "@/store/modules/visit.js";
+import {useVisitedStore} from "@/store/modules/visit.js";
 
 export const userStorageKey = 'user'
 export const useUserStore = defineStore("user", {
@@ -43,8 +43,7 @@ export const useUserStore = defineStore("user", {
             return new Promise((resolve, reject) => {
                 logout().then(res => {
                     visitedStore.visitedViews = []
-                    localStorage.removeItem('user')
-                    localStorage.removeItem('visit')
+                    localStorage.clear()
                     this.name = ''
                     this.avatar = ''
                     this.roles = []

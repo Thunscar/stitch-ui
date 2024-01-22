@@ -4,11 +4,12 @@ import ParentView from "@/layout/VerticalLayout/parentView/index.vue"
 import OuterLink from "@/layout/VerticalLayout/outerLink/index.vue"
 import Layout from "@/layout/index.vue"
 import {modules} from "@/utils/modules.js"
-import {useGlobalStore} from "@/store/modules/global.js"
+import router from "@/router/index.js";
 
 export const useRouterStore = defineStore("router", {
     state: () => ({
-        routerState: []
+        routerState: [],
+        cacheRouters: []
     }),
     actions: {
         GetRouters() {
@@ -17,15 +18,54 @@ export const useRouterStore = defineStore("router", {
                     const storeData = JSON.parse(JSON.stringify(res.data))
                     const routerData = JSON.parse(JSON.stringify(res.data))
                     let filterStoreState = filterRouterData(storeData)
-                    let filterRouter = filterRouterData(routerData)
-                    addHomePage(filterStoreState)
+                    const formatRoutes = formatRouter(routerData)
+                    appendHomePage(filterStoreState)
                     this.routerState = filterStoreState
-                    resolve(filterRouter)
+                    formatRoutes.forEach(item => {
+                        router.addRoute('Layout', item)
+                    })
+                    router.addRoute({path: '/:catchAll(.*)', redirect: '404'})
+
+                    //获取需要缓存的组件名称列表
+                    appendHomePage(formatRoutes)
+                    this.cacheRouters = getCacheComponentNames(formatRoutes)
+                    resolve()
                 })
             })
         }
     }
 })
+
+//扁平化路由
+function formatRouter(routes) {
+    let newRoutes = []
+    routes.forEach(item => {
+        if (item.children && item.children.length > 0) {
+            newRoutes.unshift(...formatRouter(item.children))
+        } else {
+            item.component = loadComponent(item.component)
+            newRoutes.push(item)
+        }
+    })
+    return newRoutes
+}
+
+//获取需要缓存的组件名称列表
+function getCacheComponentNames(routes) {
+    let caches = []
+    routes.forEach(item => {
+        if (item.meta.cache) {
+            caches.push(getComponentName(item.path))
+        }
+    })
+    return caches
+}
+
+//获取组件名称
+function getComponentName(itemPath) {
+    return itemPath.substring(itemPath.lastIndexOf('/') + 1)
+}
+
 
 // 过滤后台传来的路由字符串，转化为数组对象
 function filterRouterData(asyncRouterMap, lastRouter = false, filterChild = false) {
@@ -51,23 +91,21 @@ function filterRouterData(asyncRouterMap, lastRouter = false, filterChild = fals
     })
 }
 
-function addHomePage(menuState) {
-    if (useGlobalStore().homeEnable) {
-        menuState.unshift(
-            {
-                name: '/home',
-                path: '/home',
-                component: () => import('@/views/home/index.vue'),
-                meta: {
-                    title: '首页',
-                    icon: 'f-home',
-                    cache: true,
-                },
-                visible: false,
-                children: null
-            }
-        )
-    }
+function appendHomePage(menuState) {
+    menuState.unshift(
+        {
+            name: '/home',
+            path: '/home',
+            component: () => import('@/views/home/index.vue'),
+            meta: {
+                title: '首页',
+                icon: 'f-home',
+                cache: true
+            },
+            visible: false,
+            children: null
+        }
+    )
 }
 
 /**

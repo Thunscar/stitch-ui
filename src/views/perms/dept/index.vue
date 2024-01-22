@@ -20,7 +20,7 @@
                 border
                 :header-cell-style="{'text-align':'center'}">
         <el-table-column prop="deptName" label="部门名称" width="250" :show-overflow-tooltip="true"/>
-        <el-table-column prop="orderNum" label="菜单排序" width="85" :show-overflow-tooltip="true" align="center"/>
+        <el-table-column prop="orderNum" label="排序" width="85" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="leader" label="联系人" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="phone" label="联系电话" :show-overflow-tooltip="true" align="center"/>
         <el-table-column prop="email" label="邮箱" :show-overflow-tooltip="true" align="center"/>
@@ -37,6 +37,11 @@
     <dept-form ref="deptFormRef" @refresh-data-list="queryDeptDataList"/>
   </div>
 </template>
+<script>
+export default {
+  name: 'dept'
+}
+</script>
 <script setup>
 import '@/assets/css/table/table.css'
 import {onMounted, reactive, ref} from "vue";

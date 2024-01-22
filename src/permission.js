@@ -11,18 +11,17 @@ const RouteWhiteList = ['/login', '/register']
 
 /*路由守卫*/
 router.beforeEach((to, from, next) => {
+    const userStore = useStore().user
+    const routerStore = useStore().router
+
     qprogress.start()
     if (getToken()) {
         if (to.path === '/login') {
             next({path: '/'})
         } else {
-            if (useStore().user.roles.length === 0) {
-                useStore().user.GetUserInfo().then(() => {
-                    useStore().router.GetRouters().then(routes => {
-                        routes.forEach(item => {
-                            router.addRoute('Layout', item)
-                        })
-                        router.addRoute({path: '/:catchAll(.*)', redirect: '404'})
+            if (userStore.roles.length === 0) {
+                userStore.GetUserInfo().then(() => {
+                    routerStore.GetRouters().then(()=>{
                         next({...to, replace: true})
                     })
                 })
@@ -38,9 +37,17 @@ router.beforeEach((to, from, next) => {
             next(`/login?redirect=${to.fullPath}`)
         }
     }
-    qprogress.finish()
+
+
+    //应用主题
     const globalStore = useStore().global
     globalStore.ChangeUserTheme()
+
+    //修改title
+    if (to.meta.title) {
+        document.title = to.meta.title + ' - ' + 'Stitch Admin'
+    }
+    qprogress.finish()
 })
 
 /**

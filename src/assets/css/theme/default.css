@@ -1,13 +1,15 @@
 :root {
-    --backgroud-color: #ffffff;
     --login-bg-image: url('@/assets/img/login-bg.svg');
     --login-bg-color: rgba(233, 235, 237, 0.3);
     --text-color: #000000;
     --login-form-color: rgb(255, 255, 255);
     --login-form-shadow: rgba(99, 99, 99, 0.5);
 
-    --layout-backgroud-color: rgb(255, 255, 255);
-    --menu-backgroud-color: rgb(255, 255, 255);
+    --module-backgroud-color: rgb(255, 255, 255);
+    --layout-backgroud-color: rgb(240, 240, 240);
+
+    --menu-active-text-color:rgb(60,140,255);
+    --meun-active-backgroud-color: rgb(240, 240, 240);
 
     --put-away-menu-icon: url('@/assets/img/put-away-menu.svg');
     --expand-menu-icon: url('@/assets/img/expand-menu.svg');

@@ -1,8 +1,12 @@
 <template>
-  <el-tabs class="s-tabs" type="card" v-model="router.currentRoute.value.fullPath" @tabRemove="closeHandler"
+  <el-tabs class="s-tabs" v-model="router.currentRoute.value.fullPath" @tabRemove="closeHandler"
            @tabChange="tabChange">
-    <el-tab-pane v-for="view in visitedViews" :key="view.path" :name="view.path" :label="view.title"
-                 :closable="view.close"/>
+    <el-tab-pane v-for="view in visitedViews" :key="view.path" :name="view.path"
+                 :closable="view.close">
+      <template #label>
+        {{ view.title }}
+      </template>
+    </el-tab-pane>
   </el-tabs>
 </template>
 <script setup>
@@ -11,8 +15,6 @@ import {computed, onMounted, watch} from "vue";
 import router from "@/router/index.js";
 
 const visitedStore = useStore().visit
-const noCloseViews = visitedStore.noCloseViews
-
 const visitedViews = computed(() => visitedStore.visitedViews)
 
 watch(() => router.currentRoute.value.fullPath, () => {
@@ -20,8 +22,8 @@ watch(() => router.currentRoute.value.fullPath, () => {
   const view = {
     title: currentRouter.meta.title,
     path: currentRouter.fullPath,
-    close: !noCloseViews.includes(currentRouter.path),
-    cache: currentRouter.meta.cache
+    cache: currentRouter.meta.cache,
+    icon: currentRouter.meta.icon
   }
   visitedStore.AddView(view)
 })
@@ -31,8 +33,8 @@ function initTabs() {
     const home = {
       title: '首页',
       path: '/home',
-      close: !noCloseViews.includes('/home'),
-      cache: true
+      cache: true,
+      icon: 'f-home'
     }
     visitedStore.AddView(home)
     const currentRouter = router.currentRoute.value
@@ -40,8 +42,8 @@ function initTabs() {
       const view = {
         title: currentRouter.meta.title,
         path: currentRouter.fullPath,
-        close: !noCloseViews.includes(currentRouter.fullPath),
-        cache: currentRouter.meta.cache
+        cache: currentRouter.meta.cache,
+        icon: currentRouter.meta.icon
       }
       visitedStore.AddView(view)
     }
@@ -64,8 +66,10 @@ onMounted(() => {
 <style scoped>
 .s-tabs {
   height: 40px;
-  display: flex;
-  flex-flow: row nowrap;
+  padding-left: 40px;
   user-select: none;
+  background-color: var(--module-backgroud-color);
 }
+
+
 </style>

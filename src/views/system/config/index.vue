@@ -67,11 +67,14 @@
     <config-form ref="configFormRef" @refresh-data-list="queryConfigList"/>
   </div>
 </template>
+<script>
+export default {
+  name: 'config'
+}
+</script>
 <script setup>
-
-
 import {deleteConfig, getConfigList, refreshConfigCache} from "@/api/system/config.js";
-import {onMounted, reactive, ref} from "vue";
+import {onActivated, onMounted, reactive, ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import '@/assets/css/table/table.css'
 import {download} from "@/api/download.js";
@@ -168,6 +171,7 @@ function refreshCacheHandler() {
 onMounted(() => {
   queryConfigList()
 })
+
 </script>
 <style scoped>
 </style>

@@ -144,10 +144,10 @@ function toggleTheme() {
 
 .header-content {
   position: relative;
+  background-color: var(--module-backgroud-color);
   display: flex;
   flex-flow: row nowrap;
   height: 60px;
-  line-height: 30px;
   padding-left: 0;
   float: left;
 }
@@ -244,6 +244,7 @@ function toggleTheme() {
 .user-name {
   width: 60px;
   margin-top: 10px;
+  color: var(--text-color);
 }
 
 .arrow-down {

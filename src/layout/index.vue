@@ -19,5 +19,6 @@ const LayoutComponents = {
 <style scoped>
 .layout {
   min-height: 100vh;
+  color: var(--text-color);
 }
 </style>

@@ -89,6 +89,11 @@
     <user-form ref="userFormRef" @refresh-data-list="queryUserList"/>
   </div>
 </template>
+<script>
+export default {
+  name: 'user'
+}
+</script>
 <script setup>
 import {onMounted, reactive, ref} from "vue";
 import {deleteSysUser, getSysUserList, resetSysUserPassword} from "@/api/perms/user.js";

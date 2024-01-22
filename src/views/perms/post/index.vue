@@ -33,7 +33,7 @@
                          align="center"/>
         <el-table-column label="岗位名称" prop="postName" :show-overflow-tooltip="true" align="center"/>
         <el-table-column label="排序" prop="postSort" :show-overflow-tooltip="true" width="80" align="center"/>
-        <el-table-column label="岗位状态" prop="status" width="85" align="center">
+        <el-table-column label="状态" prop="status" width="85" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.status === '0'">正常</el-tag>
             <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
@@ -65,6 +65,11 @@
     <post_form ref="postFormRef" @refresh-data-list="queryPostList"/>
   </div>
 </template>
+<script>
+export default {
+  name: 'post'
+}
+</script>
 <script setup>
 import {onMounted, reactive, ref} from "vue";
 import '@/assets/css/table/table.css'

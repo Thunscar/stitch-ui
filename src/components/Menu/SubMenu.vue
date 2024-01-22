@@ -3,9 +3,9 @@
     <el-sub-menu v-if="item.children && item.visible" :index="item.path" :key="item.path">
       <template #title>
         <el-icon>
-          <svg-icon :icon-class="item.meta.icon"/>
+          <svg-icon :icon-class="item.meta.icon" class="sub-menu"/>
         </el-icon>
-        <span class="menu-item">{{ item.meta.title }}</span>
+        <span class="sub-menu">{{ item.meta.title }}</span>
       </template>
       <SubMenu :menus="item.children"/>
     </el-sub-menu>
@@ -14,7 +14,7 @@
         <svg-icon :icon-class="item.meta.icon"/>
       </el-icon>
       <template #title>
-        <span class="menu-item">{{ item.meta.title }}</span>
+        {{ item.meta.title }}
       </template>
     </el-menu-item>
   </template>
@@ -22,9 +22,6 @@
 <script setup>
 import router from "@/router/index.js";
 import SvgIcon from "@/components/Icon/SvgIcon.vue";
-import {useStore} from "@/store/index.js";
-
-const visitedStore = useStore().visit
 
 const props = defineProps({
   menus: {
@@ -42,7 +39,17 @@ function handleClick(item) {
 }
 </script>
 <style scoped>
-.menu-item {
-  margin-top: 4px;
+.sub-menu {
+  color: var(--text-color);
 }
+
+.el-menu-item {
+  color: var(--text-color);
+}
+
+.el-menu-item.is-active {
+  color: var(--menu-active-text-color);
+  background-color: var(--meun-active-backgroud-color);
+}
+
 </style>

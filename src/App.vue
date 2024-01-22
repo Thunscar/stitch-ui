@@ -13,3 +13,5 @@ const size = computed(() => globalStore.size || 'default')
 const locale = computed(() => globalStore.locale)
 
 </script>
+<style scoped>
+</style>

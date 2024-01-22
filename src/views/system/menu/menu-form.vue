@@ -22,13 +22,7 @@
       <el-form-item label="上级菜单">
         <el-tree-select v-model="menuInfo.parentId" :data="selectMenuData" check-strictly/>
       </el-form-item>
-      <el-form-item label="是否外链" v-if="menuInfo.menuType === 'M'">
-        <el-radio-group v-model="menuInfo.isFrame">
-          <el-radio label="0">否</el-radio>
-          <el-radio label="1">是</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="路由地址" prop="path" v-if="menuInfo.menuType === 'M'">
+      <el-form-item label="路由地址" v-if="menuInfo.menuType === 'M'">
         <el-input placeholder="路由地址" v-model="menuInfo.path" class="form-input"/>
       </el-form-item>
       <el-form-item label="组件地址" v-if="menuInfo.menuType === 'M'">
@@ -36,6 +30,18 @@
       </el-form-item>
       <el-form-item label="权限标识符">
         <el-input placeholder="权限标识符" v-model="menuInfo.perms" class="form-input"/>
+      </el-form-item>
+      <el-form-item label="是否外链" v-if="menuInfo.menuType === 'M'">
+        <el-radio-group v-model="menuInfo.isFrame">
+          <el-radio label="0">非外链</el-radio>
+          <el-radio label="1">外链</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="是否缓存" v-if="menuInfo.menuType === 'M'">
+        <el-radio-group v-model="menuInfo.isCache">
+          <el-radio label="1">缓存</el-radio>
+          <el-radio label="0">不缓存</el-radio>
+        </el-radio-group>
       </el-form-item>
       <el-form-item label="是否可见" v-if="menuInfo.menuType === 'M'">
         <el-radio-group v-model="menuInfo.visible">
@@ -64,8 +70,9 @@ import {reactive, ref} from "vue"
 import {createMenu, getMenuById, getMenuList, updateSysMenu} from "@/api/system/menu.js";
 import {initSelectTree} from "@/utils/tree.js";
 import '@/assets/css/form/form.css'
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 import IconSelector from "@/components/Icon/IconSelector.vue";
+import {useStore} from "@/store/index.js";
 
 const menuFormRef = ref()
 const menuFormTitle = ref('')
@@ -80,17 +87,18 @@ const menuInfo = reactive({
   icon: '',
   component: '',
   isFrame: "0",
+  isCache: '1',
   menuType: 'M',
   visible: "1",
   status: "0",
   perms: ''
 })
+const oldPath = ref()
 const selectMenuData = ref([{
   label: '顶级',
   value: 0,
   children: null
 }])
-
 const checkRoles = ref({
   menuName: {
     required: true,
@@ -101,27 +109,23 @@ const checkRoles = ref({
     required: true,
     message: '菜单图标不可为空',
     trigger: ['blur']
-  },
-  path: {
-    required: true,
-    message: '路由地址不可为空',
-    trigger: ['blur']
   }
 })
+const visitedStore = useStore().visit
 
 const emits = defineEmits(['refreshDataList'])
 
 //表单提交
 function submitMenuHandler(menuFormRef) {
-  menuFormRef.validate((valid,fields) => {
-    console.log(valid,fields)
-    console.log(menuInfo.icon)
-    console.log(menuInfo.path)
+  menuFormRef.validate((valid, fields) => {
     if (valid) {
       if (menuInfo.menuId) {
         //update
         updateSysMenu(menuInfo).then(res => {
           ElMessage.success('修改成功')
+          if (oldPath.value !== menuInfo.path) {
+            ElMessageBox.alert('菜单路由发生改变，为避免页面无法访问请退出重新登入','提示')
+          }
           visible.value = false
           emits('refreshDataList')
         })
@@ -166,6 +170,7 @@ function clearForm() {
   menuInfo.icon = ''
   menuInfo.component = ''
   menuInfo.isFrame = '0'
+  menuInfo.isCache = '1'
   menuInfo.menuType = 'M'
   menuInfo.visible = '1'
   menuInfo.status = '0'
@@ -190,10 +195,12 @@ const init = (menuId) => {
       menuInfo.icon = menuData.icon
       menuInfo.component = menuData.component
       menuInfo.isFrame = menuData.isFrame
+      menuInfo.isCache = menuData.isCache
       menuInfo.menuType = menuData.menuType
       menuInfo.visible = menuData.visible
       menuInfo.status = menuData.status
       menuInfo.perms = menuData.perms
+      oldPath.value = menuInfo.path
     })
   } else {
     menuFormTitle.value = '新增菜单'

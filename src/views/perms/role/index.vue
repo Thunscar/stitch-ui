@@ -12,7 +12,8 @@
         <el-button type="primary" @click="queryRoleList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
         <el-button type="primary" text bg @click="createRoleHandler">新增</el-button>
-        <el-button type="danger" text bg :disabled="selectedRoles.length === 0" @click="deleteBatchRoleHandler">批量删除</el-button>
+        <el-button type="danger" text bg :disabled="selectedRoles.length === 0"
+                   @click="deleteBatchRoleHandler">批量删除</el-button>
         <el-button type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
       </span>
     </div>
@@ -30,7 +31,7 @@
         <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" fixed="left"
                          align="center"/>
         <el-table-column label="角色编码" prop="roleKey" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column label="状态" prop="status" width="80" align="center">
+        <el-table-column label="状态" prop="status" width="90" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.status === '0'">正常</el-tag>
             <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
@@ -76,6 +77,11 @@
     <role-form ref="roleFormRef" @refresh-data-list="queryRoleList"/>
   </div>
 </template>
+<script>
+export default {
+  name: 'role'
+}
+</script>
 <script setup>
 
 import {onMounted, reactive, ref} from "vue";

@@ -6,13 +6,13 @@
         <span v-if="!collapse">{{ appName }}</span>
       </div>
       <el-scrollbar height="92vh">
-        <el-menu class="el-menu--vertical menu"
+        <el-menu class="menu"
                  :unique-opened="true"
                  :default-active="activeMenu"
                  :collapse="collapse"
                  :router="false">
           <SubMenu :menus="menuList"/>
-        </el-menu>Ï
+        </el-menu>
       </el-scrollbar>
     </el-aside>
   </div>
@@ -32,9 +32,7 @@ const bus = instance.appContext.config.globalProperties.bus
 const collapse = ref(false)
 
 // 程序logo标题
-const appName = computed(() => {
-  return collapse.value ? (import.meta.env.VITE_APP_TITLE_COLLAPSE) : (import.meta.env.VITE_APP_TITLE)
-})
+const appName = computed(() => collapse.value ? (import.meta.env.VITE_APP_TITLE_COLLAPSE) : (import.meta.env.VITE_APP_TITLE))
 
 const titleWidth = computed(() => {
   return collapse.value ? '60px' : '240px'
@@ -66,14 +64,15 @@ bus.on('getCollapseStatus', () => {
 </script>
 <style scoped>
 .aside {
+  height: 100vh;
+  background-color: var(--module-backgroud-color);
   width: fit-content;
   overflow-y: hidden;
 }
 
 .menu {
   user-select: none;
-  background-color: var(--menu-backgroud-color);
-  min-height: 92vh;
+  min-height: 90vh;
 }
 
 .logo {
@@ -94,7 +93,7 @@ bus.on('getCollapseStatus', () => {
   margin-left: 14px;
 }
 
-.logo span{
+.logo span {
   margin-left: 6px;
   margin-top: 20px;
 }
