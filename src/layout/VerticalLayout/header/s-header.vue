@@ -36,14 +36,15 @@
         </div>
       </div>
       <div class="operate-fullscreen" @click="toggle">
-        <img class="operate-fullscreen-icon" :class="{'full-screen':!isFullscreen,'exit-full-screen':isFullscreen}" src=""
+        <img class="operate-fullscreen-icon" :class="{'full-screen':!isFullscreen,'exit-full-screen':isFullscreen}"
+             src=""
              alt=""/>
       </div>
       <div class="user-info">
         <el-dropdown>
           <div class="avatar">
             <el-avatar :src="userStore.avatar" :size="40" class="user-avatar">User</el-avatar>
-            <el-text truncated tag="b" class="user-name">{{ userStore.name }}</el-text>
+            <el-text truncated tag="b" class="user-name">{{ nickName }}</el-text>
             <el-icon :size="14" class="arrow-down">
               <ArrowDownBold/>
             </el-icon>
@@ -74,6 +75,7 @@ const bus = instance.appContext.config.globalProperties.bus
 const collapse = ref(false)
 const {isFullscreen, toggle} = useFullscreen()
 const userStore = useStore().user
+const nickName = computed(() => userStore.name)
 const globalStore = useStore().global
 const size = computed(() => globalStore.size)
 

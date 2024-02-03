@@ -13,13 +13,12 @@ const RouteWhiteList = ['/login', '/register']
 router.beforeEach((to, from, next) => {
     const userStore = useStore().user
     const routerStore = useStore().router
-
     qprogress.start()
     if (getToken()) {
         if (to.path === '/login') {
             next({path: '/'})
         } else {
-            if (userStore.roles.length === 0) {
+            if (routerStore.routerState.length === 0) {
                 userStore.GetUserInfo().then(() => {
                     routerStore.GetRouters().then(()=>{
                         next({...to, replace: true})

@@ -1,9 +1,10 @@
 import axios from "axios";
-import {getToken, removeToken} from "./auth.js";
+import {getToken} from "./auth.js";
 import {transParams} from "./string.js";
 import cache from "@/plugins/cache.js";
 import router from "@/router/index.js";
 import {ElMessage, ElMessageBox} from "element-plus";
+import {useStore} from "@/store/index.js";
 
 export const ReLoginDialog = {
     title: '系统提示',
@@ -83,8 +84,10 @@ service.interceptors.response.use(response => {
             type: 'warning',
             closeOnClickModal: false
         }).then(() => {
-            removeToken()
-            router.push({path: `/login?redirect=${router.currentRoute.value.path}`}).catch()
+            const visitedStore = useStore().visit
+            visitedStore.visitedViews = []
+            localStorage.clear()
+            router.push({path: `/login?redirect=${router.currentRoute.value.fullPath}`}).catch()
         }).catch(() => {
         })
         return Promise.reject(message)

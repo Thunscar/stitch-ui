@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="visible"
              :title="configFormTitle"
-             width="600"
+             width="620"
              @close="closeForm">
     <el-form :model="configInfo" ref="configFormRef" :rules="checkRules" label-width="100" inline>
       <el-form-item label="参数名称" prop="configName">

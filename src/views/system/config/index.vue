@@ -9,7 +9,7 @@
           <el-option value="N" label="非内置"/>
         </el-select>
       </span>
-      <span style="position: relative;right: 0">
+      <span>
         <el-button type="primary" @click="queryConfigList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
         <el-button type="primary" text bg @click="createConfigHandler">新增</el-button>

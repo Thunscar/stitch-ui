@@ -45,3 +45,18 @@ export function resetSysUserPassword(userId) {
     })
 }
 
+export function getAllocatedRoles(sysRole) {
+    return request({
+        method: 'get',
+        url: '/sys/role/allocated',
+        params: sysRole
+    })
+}
+
+export function getUnallocatedRoles(sysRole) {
+    return request({
+        method: 'get',
+        url: '/sys/role/unallocated',
+        params: sysRole
+    })
+}

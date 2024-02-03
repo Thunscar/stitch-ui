@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="visible"
              :title="deptFormTitle"
-             width="600"
+             width="620"
              @close="closeForm">
     <el-form :model="deptInfo" ref="deptFormRef" :rules="checkRules" label-width="100" inline>
       <el-form-item label="部门名称" prop="deptName">
@@ -72,9 +72,7 @@ const emits = defineEmits(['refreshDataList'])
 //初始化菜单树选择框
 function initSelectDeptData() {
   getDeptList().then(res => {
-    if (res.code === 200 && res.data) {
-      selectDeptData.value[0].children = initSelectTree(res.data, 'deptId', 'deptName')
-    }
+    selectDeptData.value[0].children = initSelectTree(res.data, 'deptId', 'deptName')
   })
 }
 

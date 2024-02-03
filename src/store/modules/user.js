@@ -3,6 +3,7 @@ import {login, logout} from "@/api/login.js";
 import {getUserInfo} from "@/api/router.js";
 import {persistConfig} from "@/store/config/persistConfig.js";
 import {useVisitedStore} from "@/store/modules/visit.js";
+import {useRouterStore} from "@/store/modules/router.js";
 
 export const userStorageKey = 'user'
 export const useUserStore = defineStore("user", {
@@ -28,7 +29,8 @@ export const useUserStore = defineStore("user", {
         GetUserInfo() {
             return new Promise((resolve, reject) => {
                 getUserInfo().then(res => {
-                    this.name = res.user.nikeName
+                    console.log(res.user)
+                    this.name = res.user.nickName
                     this.avatar = res.user.avatar
                     this.roles = res.roles
                     this.permission = res.permission
@@ -40,9 +42,12 @@ export const useUserStore = defineStore("user", {
         },
         UserLoginOut() {
             const visitedStore = useVisitedStore()
+            const routerStore = useRouterStore()
             return new Promise((resolve, reject) => {
                 logout().then(res => {
                     visitedStore.visitedViews = []
+                    routerStore.routerState = []
+                    routerStore.cacheRouters = []
                     localStorage.clear()
                     this.name = ''
                     this.avatar = ''
@@ -56,5 +61,5 @@ export const useUserStore = defineStore("user", {
             })
         }
     },
-    persist: persistConfig(userStorageKey, ['name', 'avatar', 'token'])
+    persist: persistConfig(userStorageKey, ['name', 'avatar', 'roles', 'permission', 'token'])
 })

@@ -16,13 +16,8 @@ import '@/assets/css/theme/dark.css'
 import App from './App.vue'
 import bus from "@/utils/bus.js";
 
-
-//引入全局事件总线
-
-
 const pinia = createPinia();
 pinia.use(persistPlugin)
-
 
 const app = createApp(App)
 app.use(ElementPlus)

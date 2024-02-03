@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="visible"
              :title="postFormTitle"
-             width="600"
+             width="620"
              @close="closeForm">
     <el-form :model="postInfo" ref="postFormRef" :rules="checkRules" label-width="100" inline>
       <el-form-item label="岗位编码" prop="postCode">

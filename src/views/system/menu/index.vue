@@ -14,11 +14,11 @@
           <el-option value="1" label="停用"/>
         </el-select>
       </span>
-      <span style="position: relative;right: 0">
+      <span>
         <el-button type="primary" @click="queryMenuDataList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
         <el-button type="primary" text bg @click="createMenuHandler">新增</el-button>
-      <el-button type="info" text bg @click="expandAllHandler">展开/折叠</el-button>
+        <el-button type="info" text bg @click="expandAllHandler">展开/折叠</el-button>
       </span>
     </div>
     <div class="table">

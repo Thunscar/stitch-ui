@@ -8,7 +8,7 @@
           <el-option value="1" label="停用"/>
         </el-select>
       </span>
-      <span style="position: relative;right: 0">
+      <span>
         <el-button type="primary" @click="queryRoleList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
         <el-button type="primary" text bg @click="createRoleHandler">新增</el-button>

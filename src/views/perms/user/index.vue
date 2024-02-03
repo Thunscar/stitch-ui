@@ -4,7 +4,7 @@
       <span><el-input class="s-search-input" placeholder="用户名" v-model="queryUser.roleName"/></span>
       <span><el-input class="s-search-input" placeholder="手机号" v-model="queryUser.phone"/></span>
       <span><el-input class="s-search-input" placeholder="邮箱" v-model="queryUser.email"/></span>
-      <span style="position: relative;right: 0">
+      <span>
         <el-button type="primary" @click="queryUserList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
         <el-button type="success" text bg @click="createUserHandler">新增</el-button>
@@ -42,7 +42,7 @@
             <el-tag v-else type="danger">未知</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="状态" prop="status" width="80" align="center">
+        <el-table-column label="状态" prop="status" width="90" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.status === '0'">正常</el-tag>
             <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
@@ -67,7 +67,8 @@
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item @click="resetPassword(scope.row.userId)">重置密码</el-dropdown-item>
-                    <el-dropdown-item @click="allocatedRoles(scope.row.userId)">分配角色</el-dropdown-item>
+                    <el-dropdown-item @click="allocatedRoles(scope.row.userId,scope.row.userName)">分配角色
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -87,6 +88,7 @@
       />
     </div>
     <user-form ref="userFormRef" @refresh-data-list="queryUserList"/>
+    <allocated-role-drawer ref="allocatedRoleDrawerRef"/>
   </div>
 </template>
 <script>
@@ -101,9 +103,12 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import '@/assets/css/table/table.css'
 import UserForm from "@/views/perms/user/user-form.vue";
 import {download} from "@/api/download.js";
+import AllocatedRoleDrawer from "@/views/perms/user/allocated-role-drawer.vue";
 
 const userList = ref([])
 const selectedUsers = ref([])
+const userFormRef = ref()
+const allocatedRoleDrawerRef = ref()
 const queryUser = reactive({
   userName: '',
   phone: '',
@@ -116,7 +121,7 @@ const queryUser = reactive({
 
 //新增用户
 function createUserHandler() {
-
+  userFormRef.value.init()
 }
 
 //勾选事件
@@ -151,7 +156,7 @@ function importExcelHandler() {
 
 //更新用户信息
 function updateUserHandler(userId) {
-
+  userFormRef.value.init(userId)
 }
 
 //删除用户
@@ -177,8 +182,8 @@ function resetPassword(userId) {
 }
 
 // 分配角色
-function allocatedRoles(userId) {
-
+function allocatedRoles(userId, userName) {
+  allocatedRoleDrawerRef.value.initDrawer(userId, userName)
 }
 
 function queryUserList() {

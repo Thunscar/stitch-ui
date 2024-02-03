@@ -24,6 +24,7 @@ export const useRouterStore = defineStore("router", {
                     formatRoutes.forEach(item => {
                         router.addRoute('Layout', item)
                     })
+                    //添加404路由
                     router.addRoute({path: '/:catchAll(.*)', redirect: '404'})
 
                     //获取需要缓存的组件名称列表

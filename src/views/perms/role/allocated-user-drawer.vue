@@ -1,7 +1,7 @@
 <template>
   <el-drawer v-model="visible"
              :close-on-click-modal="false"
-             size="60%"
+             size="80%"
              :title="title"
              destroy-on-close>
     <template #default>
@@ -17,18 +17,22 @@
               <el-option :value="1" label="未授予"/>
             </el-select>
           </span>
-          <span style="position: relative;right: 0">
+          <span>
             <el-button type="primary" @click="queryUserList">搜索</el-button>
             <el-button type="default" @click="resetQueryCondition">重置</el-button>
           </span>
-        </div>
-        <div class="operation">
-          <el-button type="primary" text bg :disabled="conferStatus === 0 || selectedUsers.length === 0"
-                     @click="conferBatchRole">授予角色
-          </el-button>
-          <el-button type="success" text bg :disabled="conferStatus === 1 || selectedUsers.length === 0"
-                     @click="cancelBatchConferRole">取消授予
-          </el-button>
+          <span>
+            <el-button type="primary" text bg v-if="conferStatus === 1"
+                       :disabled="conferStatus === 0 || selectedUsers.length === 0"
+                       @click="conferBatchRole">授予角色
+            </el-button>
+          </span>
+          <span>
+            <el-button type="success" text bg v-if="conferStatus === 0"
+                       :disabled="conferStatus === 1 || selectedUsers.length === 0"
+                       @click="cancelBatchConferRole">取消授予
+            </el-button>
+          </span>
         </div>
         <div class="table">
           <el-table :data="userList"
@@ -133,21 +137,17 @@ function conferRole(userId) {
   ).then(() => {
     const userRole = {
       roleId: queryUser.roleId,
-      userIds: [].unshift(userId)
+      userIds: userId
     }
-    conferRoles(userRole).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('授予成功')
-        queryUserList()
-      } else {
-        ElMessage.success(res.msg)
-      }
+    conferRoles(userRole).then(() => {
+      ElMessage.success('授予成功')
+      queryUserList()
     })
   }).catch(() => {
   })
 }
 
-function conferBatchRole() {
+const conferBatchRole = () => {
   ElMessageBox.confirm('确认要将角色[' + queryUser.roleName + ']授予选中的用户?', '提示', {
         confirmButtonText: '确认',
         cancelButtonText: '取消',
@@ -156,22 +156,18 @@ function conferBatchRole() {
   ).then(() => {
     const userRole = {
       roleId: queryUser.roleId,
-      userIds: [].unshift(...selectedUsers.value)
+      userIds: selectedUsers.value
     }
-    conferRoles(userRole).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('授予成功')
-        queryUserList()
-      } else {
-        ElMessage.success(res.msg)
-      }
+    conferRoles(userRole).then(() => {
+      ElMessage.success('授予成功')
+      queryUserList()
     })
   }).catch(() => {
   })
 }
 
 
-function cancelConferRole(userId) {
+const cancelConferRole = (userId) => {
   ElMessageBox.confirm('确认要取消授予该用户的角色[' + queryUser.roleName + ']?', '提示', {
         confirmButtonText: '确认',
         cancelButtonText: '取消',
@@ -180,21 +176,17 @@ function cancelConferRole(userId) {
   ).then(() => {
     const userRole = {
       roleId: queryUser.roleId,
-      userIds: [].unshift(userId)
+      userIds: userId
     }
-    cancelConferRoles(userRole).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('操作成功')
-        queryUserList()
-      } else {
-        ElMessage.success(res.msg)
-      }
+    cancelConferRoles(userRole).then(() => {
+      ElMessage.success('操作成功')
+      queryUserList()
     })
   }).catch(() => {
   })
 }
 
-function cancelBatchConferRole() {
+const cancelBatchConferRole = () => {
   ElMessageBox.confirm('确认要取消授予选中用户的角色[' + queryUser.roleName + ']?', '提示', {
         confirmButtonText: '确认',
         cancelButtonText: '取消',
@@ -203,21 +195,17 @@ function cancelBatchConferRole() {
   ).then(() => {
     const userRole = {
       roleId: queryUser.roleId,
-      userIds: [].unshift(...selectedUsers.value)
+      userIds: selectedUsers.value
     }
-    cancelConferRoles(userRole).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('操作成功')
-        queryUserList()
-      } else {
-        ElMessage.success(res.msg)
-      }
+    cancelConferRoles(userRole).then(() => {
+      ElMessage.success('操作成功')
+      queryUserList()
     })
   }).catch(() => {
   })
 }
 
-function getAllocatedUsers() {
+const getAllocatedUsers = () => {
   selectAllocatedUsers(queryUser).then(res => {
     userList.value = res.list
     queryUser.total = res.total

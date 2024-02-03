@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="visible"
              :title="menuFormTitle"
-             width="600"
+             width="620"
              @close="closeForm">
     <el-form :model="menuInfo" ref="menuFormRef" label-width="100" :rules="checkRoles" inline>
       <el-form-item label="菜单类型">

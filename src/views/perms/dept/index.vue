@@ -3,7 +3,7 @@
     <div class="search">
       <span><el-input class="s-search-input" placeholder="部门名称" v-model="queryDept.deptName"/></span>
       <span><el-input class="s-search-input" placeholder="联系人" v-model="queryDept.leader"/></span>
-      <span style="position: relative;right: 0">
+      <span>
         <el-button type="primary" @click="queryDeptDataList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
         <el-button type="success" text bg @click="createDeptHandler">新增</el-button>

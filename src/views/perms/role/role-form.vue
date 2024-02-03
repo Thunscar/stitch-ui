@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="visible"
              :title="roleFormTitle"
-             width="600"
+             width="620"
              @close="closeForm">
     <el-form :model="roleInfo" ref="roleFormRef" :rules="checkRules" label-width="100" inline>
       <el-form-item label="角色名称" prop="roleName">
@@ -10,27 +10,28 @@
       <el-form-item label="角色编码" prop="roleKey">
         <el-input placeholder="角色编码" v-model="roleInfo.roleKey" class="form-input"/>
       </el-form-item>
-      <el-form-item label="排序">
+      <el-form-item label="排序" prop="roleSort">
         <el-input type="number" :min="0" :max="999" placeholder="排序" v-model="roleInfo.roleSort"/>
       </el-form-item>
-      <el-form-item label="状态">
+      <el-form-item label="状态" prop="status">
         <el-radio-group v-model="roleInfo.status" style="width: 220px">
           <el-radio label="0">正常</el-radio>
           <el-radio label="1">停用</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="功能权限">
+      <el-form-item label="功能权限" prop="menuIds">
         <el-tree
             ref="menuTreeComponent"
             @check-change="checkChangeHandler"
             :data="selectMenuData"
             :props="defaultProps"
             :default-checked-keys="roleInfo.menuIds"
+            check-strictly
             node-key="value"
             show-checkbox
         />
       </el-form-item>
-      <el-form-item label="备注">
+      <el-form-item label="备注" prop="remark">
         <el-input type="textarea" placeholder="备注" v-model="roleInfo.remark" class="form-input"/>
       </el-form-item>
     </el-form>
@@ -87,6 +88,9 @@ function submitRoleHandler() {
   roleFormRef.value.validate((valid) => {
     if (valid) {
       if (roleInfo.roleId) {
+        const checkMenus = []
+        checkMenus.unshift(...menuTreeComponent.value.getCheckedKeys())
+        roleInfo.menuIds = checkMenus
         updateSysRole(roleInfo).then(res => {
           ElMessage.success('修改成功')
           closeForm()
@@ -124,14 +128,15 @@ function clearForm() {
 //初始化菜单树选择框
 function initSelectMenuData() {
   getMenuList().then(res => {
-    if (res.code === 200 && res.data) {
-      selectMenuData.value = initSelectTree(res.data, 'menuId', 'menuName')
-    }
+    selectMenuData.value = initSelectTree(res.data, 'menuId', 'menuName')
   })
 }
 
 function checkChangeHandler() {
-  roleInfo.menuIds = menuTreeComponent.value.getCheckedKeys()
+  const checkedKeys = []
+  checkedKeys.unshift(...menuTreeComponent.value.getCheckedKeys())
+  checkedKeys.unshift(...menuTreeComponent.value.getHalfCheckedKeys())
+  console.log('checkedKeys',checkedKeys)
 }
 
 function init(roleId) {
