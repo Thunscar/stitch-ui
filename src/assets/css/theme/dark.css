@@ -1,6 +1,6 @@
 .dark {
-
     --login-bg-image: url('@/assets/img/login-bg-dark.svg');
+    --login-form-slide-color: rgb(53, 91, 183);
     --text-color: rgb(204, 204, 204);
     --login-bg-color: rgba(16, 16, 16, 0.3);
     --login-form-color: #191919;
@@ -9,7 +9,7 @@
     --module-backgroud-color: rgb(21, 21, 21);
     --layout-backgroud-color: rgb(10, 10, 10);
 
-    --menu-active-text-color:rgb(60,140,255);
+    --menu-active-text-color: rgb(60, 140, 255);
     --meun-active-backgroud-color: rgb(10, 10, 10);
 
     --put-away-menu-icon: url('@/assets/img/put-away-menu-dark.svg');

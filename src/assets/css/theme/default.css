@@ -1,5 +1,6 @@
 :root {
     --login-bg-image: url('@/assets/img/login-bg.svg');
+    --login-form-slide-color: rgb(53, 91, 183);
     --login-bg-color: rgba(233, 235, 237, 0.3);
     --text-color: #000000;
     --login-form-color: rgb(255, 255, 255);

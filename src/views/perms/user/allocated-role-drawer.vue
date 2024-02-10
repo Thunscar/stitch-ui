@@ -9,28 +9,25 @@
         <div class="search">
           <span><el-input class="s-search-input" placeholder="角色名" v-model="queryRole.roleName"/></span>
           <span>
-            <el-select class="s-search-input" @change="conferStatusChange" placeholder="授予状态"
+            <el-select class="s-search-input" @change="conferStatusChange" placeholder="分配状态"
                        v-model="conferStatus">
-              <el-option :value="0" label="已授予"/>
-              <el-option :value="1" label="未授予"/>
+              <el-option :value="0" label="已分配"/>
+              <el-option :value="1" label="未分配"/>
             </el-select>
           </span>
           <span>
             <el-button type="primary" @click="queryRoleList">搜索</el-button>
             <el-button type="default" @click="resetQueryCondition">重置</el-button>
           </span>
-          <span>
-            <el-button type="primary" text bg v-if="conferStatus === 1"
+          <span v-if="conferStatus === 1">
+            <el-button type="primary" text bg
                        :disabled="conferStatus === 0 || selectRoles.length === 0"
-                       @click="conferBatchUser">授予用户
+                       @click="conferBatchUser">分配用户
           </el-button>
           </span>
-          <span>
-            <el-button type="success" text bg v-if="conferStatus === 0"
-                       :disabled="conferStatus === 1 || selectRoles.length === 0"
-                       @click="cancelBatchConferRole">取消授予
-            </el-button>
-          </span>
+          <span v-if="conferStatus === 0"><el-button type="success" text bg
+                                                     :disabled="conferStatus === 1 || selectRoles.length === 0"
+                                                     @click="cancelBatchConferRole">取消分配</el-button></span>
         </div>
         <div class="table">
           <el-table :data="roleList"
@@ -46,13 +43,6 @@
             <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" fixed="left"
                              align="center"/>
             <el-table-column label="角色编码" prop="roleKey" :show-overflow-tooltip="true" align="center"/>
-            <el-table-column label="状态" prop="status" width="90" align="center">
-              <template #default="scope">
-                <el-tag v-if="scope.row.status === '0'">正常</el-tag>
-                <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
-                <el-tag v-else type="danger">未知</el-tag>
-              </template>
-            </el-table-column>
             <el-table-column label="排序" prop="roleSort" :show-overflow-tooltip="true" width="80" align="center"/>
             <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true"
                              align="center"/>
@@ -60,10 +50,10 @@
             <el-table-column label="操作" min-width="160" fixed="right" align="center">
               <template #default="scope">
                 <el-button type="primary" v-if="conferStatus === 1" link
-                           @click="conferRole(scope.row.roleId)">授予角色
+                           @click="conferRole(scope.row.roleId)">分配角色
                 </el-button>
                 <el-button type="primary" v-else-if="conferStatus === 0" link
-                           @click="cancelConferRole(scope.row.roleId)">取消授予
+                           @click="cancelConferRole(scope.row.roleId)">取消分配
                 </el-button>
               </template>
             </el-table-column>
@@ -110,7 +100,7 @@ const selectRoleHandler = (rows) => {
   selectRoles.value = rows.map(row => row.roleId)
 }
 
-//是否授予选择框改变事件
+//是否分配选择框改变事件
 const conferStatusChange = () => {
   queryRoleList()
 }
@@ -147,7 +137,7 @@ const resetQueryCondition = () => {
 }
 
 const conferBatchUser = () => {
-  ElMessageBox.confirm('确认要将选中的角色授予用户[' + queryRole.userName + ']?', '提示', {
+  ElMessageBox.confirm('确认要将选中的角色分配给用户[' + queryRole.userName + ']?', '提示', {
         confirmButtonText: '确认',
         cancelButtonText: '取消',
         type: 'info'
@@ -158,8 +148,8 @@ const conferBatchUser = () => {
       userIds: selectedUsers.value
     }
     conferRoles(userRole).then(() => {
-      ElMessage.success('授予成功')
-      queryUserList()
+      ElMessage.success('分配成功')
+      queryRoleList()
     })
   }).catch(() => {
   })
@@ -178,14 +168,19 @@ const cancelConferRole = (roleId) => {
 }
 
 function initDrawer(userId, userName) {
+  //清空drawer
+  resetQueryCondition()
+  conferStatus.value = 0
 
+  //设置title并展示
   title.value = '分配角色 - ' + userName
   visible.value = true
 
   queryRole.userId = userId
   queryRole.userName = userName
 
-
+  //查询角色列表
+  queryRoleList()
 }
 
 defineExpose({

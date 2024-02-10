@@ -60,7 +60,7 @@
             <el-tag v-else type="danger">未知</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="isFrame" label="是否外链" width="90" align="center">
+        <el-table-column prop="isFrame" label="是否外链" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.isFrame === '0'">非外链</el-tag>
             <el-tag v-else-if="scope.row.isFrame === '1'" type="warning">外链</el-tag>

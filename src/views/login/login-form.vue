@@ -1,7 +1,7 @@
 <template>
   <div class="login-form" :class="{'code-form':loginForm.verifyCodeEnable}">
     <div class="form-title">
-      <p>{{ appTitle }}</p>
+      <h2>{{ appTitle }}</h2>
     </div>
     <div class="form-content">
       <el-form :model="loginFormRule">
@@ -38,7 +38,7 @@ import {ElMessage} from "element-plus";
 import {decrypt, encrypt} from "@/utils/encrypt.js";
 import Cookies from 'js-cookie'
 
-const appTitle = import.meta.env.VITE_APP_TITLE
+const appTitle = import.meta.env.VITE_APP_TITLE ? import.meta.env.VITE_APP_TITLE : 'Stitch Admin'
 const loginForm = reactive({
   username: 'admin',
   password: '001010',
@@ -145,10 +145,18 @@ onMounted(() => {
   height: 150px;
 }
 
-.form-title p {
+.form-title h2 {
   color: var(--text-color);
   font-size: 40px;
   font-weight: 900;
+  animation: slide 5s ease-in-out infinite alternate;
+}
+
+@keyframes slide {
+  to {
+    color: var(--login-form-slide-color);
+    text-shadow: 20px 0 70px var(--login-form-slide-color);
+  }
 }
 
 .form-content {
