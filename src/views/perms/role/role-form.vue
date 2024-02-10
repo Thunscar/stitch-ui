@@ -22,7 +22,6 @@
       <el-form-item label="功能权限" prop="menuIds">
         <el-tree
             ref="menuTreeComponent"
-            @check-change="checkChangeHandler"
             :data="selectMenuData"
             :props="defaultProps"
             :default-checked-keys="roleInfo.menuIds"
@@ -130,13 +129,6 @@ function initSelectMenuData() {
   getMenuList().then(res => {
     selectMenuData.value = initSelectTree(res.data, 'menuId', 'menuName')
   })
-}
-
-function checkChangeHandler() {
-  const checkedKeys = []
-  checkedKeys.unshift(...menuTreeComponent.value.getCheckedKeys())
-  checkedKeys.unshift(...menuTreeComponent.value.getHalfCheckedKeys())
-  console.log('checkedKeys',checkedKeys)
 }
 
 function init(roleId) {

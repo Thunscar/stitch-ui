@@ -88,7 +88,6 @@ service.interceptors.response.use(response => {
             visitedStore.visitedViews = []
             localStorage.clear()
             router.push({path: `/login?redirect=${router.currentRoute.value.fullPath}`}).catch()
-        }).catch(() => {
         })
         return Promise.reject(message)
     }

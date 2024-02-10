@@ -60,3 +60,19 @@ export function getUnallocatedRoles(sysRole) {
         params: sysRole
     })
 }
+
+export function allocateRoles(sysUserRole) {
+    return request({
+        method: 'post',
+        url: '/sys/user/allocate',
+        params: sysUserRole
+    })
+}
+
+export function cancelAllocateRoles(sysUserRole) {
+    return request({
+        method: 'post',
+        url: '/sys/user/allocate/cancel',
+        params: sysUserRole
+    })
+}

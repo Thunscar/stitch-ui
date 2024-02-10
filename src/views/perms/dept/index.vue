@@ -93,7 +93,6 @@ function deleteDeptHandler(deptId) {
       queryDeptDataList()
       ElMessage.success('删除成功')
     })
-  }).catch(() => {
   })
 }
 

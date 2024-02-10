@@ -137,7 +137,6 @@ function deleteConfigHandler(configId) {
       ElMessage.success('删除成功')
       queryConfigList()
     })
-  }).catch(() => {
   })
 }
 
@@ -152,7 +151,6 @@ function deleteBatchConfigHandler() {
       ElMessage.success('删除成功')
       queryConfigList()
     })
-  }).catch(() => {
   })
 }
 

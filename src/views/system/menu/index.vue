@@ -161,7 +161,6 @@ function deleteMenu(menuId) {
       ElMessage.success('删除成功')
       queryMenuDataList()
     })
-  }).catch(() => {
   })
 }
 

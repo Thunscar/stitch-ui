@@ -73,7 +73,7 @@
       />
     </div>
     <data-scope-drawer ref="dataScopeDrawerRef"/>
-    <allocated-user-drawer ref="allocatedUserDrawerRef"/>
+    <allocate-user-drawer ref="allocatedUserDrawerRef"/>
     <role-form ref="roleFormRef" @refresh-data-list="queryRoleList"/>
   </div>
 </template>
@@ -87,10 +87,11 @@ export default {
 import {onMounted, reactive, ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {deleteBatchSysRoles, selectSysRoleList} from "@/api/perms/role.js";
+import {download} from "@/api/download.js";
 import RoleForm from "@/views/perms/role/role-form.vue";
 import '@/assets/css/table/table.css'
 import DataScopeDrawer from "@/views/perms/role/data-scope-drawer.vue";
-import AllocatedUserDrawer from "@/views/perms/role/allocated-user-drawer.vue";
+import AllocateUserDrawer from "@/views/perms/role/allocate-user-drawer.vue";
 
 const dataScopeDrawerRef = ref(false)
 const allocatedUserDrawerRef = ref(false)
@@ -126,7 +127,6 @@ function deleteBatchRoleHandler() {
       ElMessage.success('删除成功')
       queryRoleList()
     })
-  }).catch(() => {
   })
 }
 
@@ -153,7 +153,6 @@ function deleteRoleHandler(userId) {
         queryRoleList()
       }
     })
-  }).catch(() => {
   })
 }
 

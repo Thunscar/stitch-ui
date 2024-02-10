@@ -3,14 +3,15 @@
              :close-on-click-modal="false"
              size="60%"
              :title="title"
+             @closed="clearDrawer"
              destroy-on-close>
     <template #default>
       <div>
         <div class="search">
           <span><el-input class="s-search-input" placeholder="角色名" v-model="queryRole.roleName"/></span>
           <span>
-            <el-select class="s-search-input" @change="conferStatusChange" placeholder="分配状态"
-                       v-model="conferStatus">
+            <el-select class="s-search-input" @change="onAllocateStatusChange" placeholder="分配状态"
+                       v-model="allocateStatus">
               <el-option :value="0" label="已分配"/>
               <el-option :value="1" label="未分配"/>
             </el-select>
@@ -19,15 +20,15 @@
             <el-button type="primary" @click="queryRoleList">搜索</el-button>
             <el-button type="default" @click="resetQueryCondition">重置</el-button>
           </span>
-          <span v-if="conferStatus === 1">
+          <span v-if="allocateStatus === 1">
             <el-button type="primary" text bg
-                       :disabled="conferStatus === 0 || selectRoles.length === 0"
-                       @click="conferBatchUser">分配用户
+                       :disabled="allocateStatus === 0 || selectRoles.length === 0"
+                       @click="allocateBatchRoles">分配角色
           </el-button>
           </span>
-          <span v-if="conferStatus === 0"><el-button type="success" text bg
-                                                     :disabled="conferStatus === 1 || selectRoles.length === 0"
-                                                     @click="cancelBatchConferRole">取消分配</el-button></span>
+          <span v-if="allocateStatus === 0"><el-button type="success" text bg
+                                                       :disabled="allocateStatus === 1 || selectRoles.length === 0"
+                                                       @click="cancelAllocateBatchRoles">取消分配</el-button></span>
         </div>
         <div class="table">
           <el-table :data="roleList"
@@ -49,11 +50,11 @@
             <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
             <el-table-column label="操作" min-width="160" fixed="right" align="center">
               <template #default="scope">
-                <el-button type="primary" v-if="conferStatus === 1" link
-                           @click="conferRole(scope.row.roleId)">分配角色
+                <el-button type="primary" v-if="allocateStatus === 1" link
+                           @click="allocateRole(scope.row.roleId)">分配角色
                 </el-button>
-                <el-button type="primary" v-else-if="conferStatus === 0" link
-                           @click="cancelConferRole(scope.row.roleId)">取消分配
+                <el-button type="primary" v-else-if="allocateStatus === 0" link
+                           @click="cancelAllocateRole(scope.row.roleId)">取消分配
                 </el-button>
               </template>
             </el-table-column>
@@ -76,13 +77,12 @@
 <script setup>
 
 import {reactive, ref} from "vue";
-import {getAllocatedRoles, getUnallocatedRoles} from "@/api/perms/user.js";
+import {allocateRoles, cancelAllocateRoles, getAllocatedRoles, getUnallocatedRoles} from "@/api/perms/user.js";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {conferRoles} from "@/api/perms/role.js";
 
 const visible = ref(false)
 const title = ref()
-const conferStatus = ref(0)
+const allocateStatus = ref(0)
 const roleList = ref([])
 const selectRoles = ref([])
 const queryRole = reactive({
@@ -101,33 +101,36 @@ const selectRoleHandler = (rows) => {
 }
 
 //是否分配选择框改变事件
-const conferStatusChange = () => {
+const onAllocateStatusChange = () => {
   queryRoleList()
 }
 
+//查询分配角色列表
 const queryRoleList = () => {
-  if (conferStatus.value === 0) {
+  if (allocateStatus.value === 0) {
     selectAllocatedRoles()
   } else {
     selectUnallocatedRoles()
   }
 }
 
+//查询已分配给改用户的角色
 const selectAllocatedRoles = () => {
   getAllocatedRoles(queryRole).then(res => {
     roleList.value = res.list
     queryRole.total = res.total
-  }).catch(() => {
   })
 }
 
+//查询未分配给改用户的角色
 const selectUnallocatedRoles = () => {
   getUnallocatedRoles(queryRole).then(res => {
     roleList.value = res.list
-  }).catch(() => {
+    queryRole.total = res.total
   })
 }
 
+//清空查询条件并查询
 const resetQueryCondition = () => {
   queryRole.roleName = ''
   queryRole.pageNum = 1
@@ -136,7 +139,8 @@ const resetQueryCondition = () => {
   queryRoleList()
 }
 
-const conferBatchUser = () => {
+//批量分配角色
+const allocateBatchRoles = () => {
   ElMessageBox.confirm('确认要将选中的角色分配给用户[' + queryRole.userName + ']?', '提示', {
         confirmButtonText: '确认',
         cancelButtonText: '取消',
@@ -144,33 +148,77 @@ const conferBatchUser = () => {
       }
   ).then(() => {
     const userRole = {
-      roleId: queryUser.roleId,
-      userIds: selectedUsers.value
+      userId: queryRole.userId,
+      roleIds: selectRoles.value.toString()
     }
-    conferRoles(userRole).then(() => {
+    allocateRoles(userRole).then(() => {
       ElMessage.success('分配成功')
       queryRoleList()
     })
-  }).catch(() => {
   })
 }
 
-const cancelBatchConferRole = () => {
-
+//批量取消分配给用户的角色
+const cancelAllocateBatchRoles = () => {
+  ElMessageBox.confirm('确认要取消分配给用户选中的角色?', '提示', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'info'
+      }
+  ).then(() => {
+    const userRole = {
+      userId: queryRole.userId,
+      roleIds: selectRoles.value.toString()
+    }
+    cancelAllocateRoles(userRole).then(() => {
+      ElMessage.success('取消分配成功')
+      queryRoleList()
+    })
+  })
 }
 
-const conferRole = (roleId) => {
-
+//分配给用户角色
+const allocateRole = (roleId) => {
+  ElMessageBox.confirm('确认要将该角色分配给用户[' + queryRole.userName + ']?', '提示', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'info'
+      }
+  ).then(() => {
+    const userRole = {
+      userId: queryRole.userId,
+      roleIds: roleId
+    }
+    allocateRoles(userRole).then(() => {
+      ElMessage.success('分配成功')
+      queryRoleList()
+    })
+  })
 }
 
-const cancelConferRole = (roleId) => {
-
+//取消分配给用户的角色
+const cancelAllocateRole = (roleId) => {
+  ElMessageBox.confirm('确认要取消用户分配的该角色?', '提示', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'info'
+      }
+  ).then(() => {
+    const userRole = {
+      userId: queryRole.userId,
+      roleIds: roleId
+    }
+    cancelAllocateRoles(userRole).then(() => {
+      ElMessage.success('取消分配成功')
+      queryRoleList()
+    })
+  })
 }
 
-function initDrawer(userId, userName) {
+//初始化drawer
+const initDrawer = (userId, userName) => {
   //清空drawer
-  resetQueryCondition()
-  conferStatus.value = 0
+  allocateStatus.value = 0
 
   //设置title并展示
   title.value = '分配角色 - ' + userName
@@ -179,8 +227,17 @@ function initDrawer(userId, userName) {
   queryRole.userId = userId
   queryRole.userName = userName
 
-  //查询角色列表
+  //查询查询角色列表
   queryRoleList()
+}
+
+const clearDrawer = () => {
+  queryRole.roleName = ''
+  queryRole.userId = ''
+  queryRole.userName = ''
+  queryRole.pageNum = 1
+  queryRole.pageSize = 10
+  queryRole.total = 0
 }
 
 defineExpose({

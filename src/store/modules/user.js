@@ -29,7 +29,6 @@ export const useUserStore = defineStore("user", {
         GetUserInfo() {
             return new Promise((resolve, reject) => {
                 getUserInfo().then(res => {
-                    console.log(res.user)
                     this.name = res.user.nickName
                     this.avatar = res.user.avatar
                     this.roles = res.roles

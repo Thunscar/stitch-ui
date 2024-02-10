@@ -105,7 +105,6 @@ function deleteBatchPostHandler() {
       ElMessage.success('删除成功')
       queryPostList()
     })
-  }).catch(() => {
   })
 }
 
@@ -131,7 +130,6 @@ function deletePostHandler(postId) {
       ElMessage.success('删除成功')
       queryPostList()
     })
-  }).catch(() => {
   })
 }
 

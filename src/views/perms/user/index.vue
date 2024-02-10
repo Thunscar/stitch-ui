@@ -88,7 +88,7 @@
       />
     </div>
     <user-form ref="userFormRef" @refresh-data-list="queryUserList"/>
-    <allocated-role-drawer ref="allocatedRoleDrawerRef"/>
+    <allocate-role-drawer ref="allocatedRoleDrawerRef"/>
   </div>
 </template>
 <script>
@@ -103,7 +103,7 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import '@/assets/css/table/table.css'
 import UserForm from "@/views/perms/user/user-form.vue";
 import {download} from "@/api/download.js";
-import AllocatedRoleDrawer from "@/views/perms/user/allocated-role-drawer.vue";
+import AllocateRoleDrawer from "@/views/perms/user/allocate-role-drawer.vue";
 
 const userList = ref([])
 const selectedUsers = ref([])
@@ -140,7 +140,6 @@ function deleteBatchUserHandler() {
       ElMessage.success('删除成功')
       queryUserList()
     })
-  }).catch(() => {
   })
 }
 
@@ -170,7 +169,6 @@ function deleteUserHandler(userId) {
       ElMessage.success('删除成功')
       queryUserList()
     })
-  }).catch(() => {
   })
 }
 

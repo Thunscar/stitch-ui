@@ -115,7 +115,6 @@ async function loginOut() {
       ElMessage.success('退出登录成功')
       router.push({path: '/login', replace: true})
     })
-  }).catch(() => {
   })
 }
 
@@ -226,10 +225,7 @@ function toggleTheme() {
   width: 140px;
   text-align: center;
   position: relative;
-}
-
-.user-info:hover {
-  background-color: var(--header-menu-hover-color);
+  user-select: none;
 }
 
 .avatar {

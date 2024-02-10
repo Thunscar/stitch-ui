@@ -69,17 +69,17 @@ export function selectUnAllocatedUsers(sysUser) {
     })
 }
 
-export function conferRoles(sysUserRole) {
+export function allocateUsers(sysUserRole) {
     return request({
-        url: '/sys/role/confer',
+        url: '/sys/role/allocate',
         method: 'post',
         params: sysUserRole
     })
 }
 
-export function cancelConferRoles(sysUserRole) {
+export function cancelAllocateUsers(sysUserRole) {
     return request({
-        url: '/sys/role/confer/cancel',
+        url: '/sys/role/allocate/cancel',
         method: 'post',
         params: sysUserRole
     })

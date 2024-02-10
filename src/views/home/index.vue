@@ -24,13 +24,6 @@ export default {
 
 import {onActivated, onMounted} from "vue";
 
-onMounted(() => {
-  console.log('home init')
-})
-
-onActivated(() => {
-  console.log('home active')
-})
 </script>
 <style scoped>
 .home-welcome-img {
