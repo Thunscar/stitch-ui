@@ -8,8 +8,7 @@ import router from "@/router/index.js";
 
 export const useRouterStore = defineStore("router", {
     state: () => ({
-        routerState: [],
-        cacheRouters: []
+        routerState: []
     }),
     actions: {
         GetRouters() {
@@ -26,10 +25,6 @@ export const useRouterStore = defineStore("router", {
                     })
                     //添加404路由
                     router.addRoute({path: '/:catchAll(.*)', redirect: '404'})
-
-                    //获取需要缓存的组件名称列表
-                    appendHomePage(formatRoutes)
-                    this.cacheRouters = getCacheComponentNames(formatRoutes)
                     resolve()
                 })
             })
@@ -50,23 +45,6 @@ function formatRouter(routes) {
     })
     return newRoutes
 }
-
-//获取需要缓存的组件名称列表
-function getCacheComponentNames(routes) {
-    let caches = []
-    routes.forEach(item => {
-        if (item.meta.cache) {
-            caches.push(getComponentName(item.path))
-        }
-    })
-    return caches
-}
-
-//获取组件名称
-function getComponentName(itemPath) {
-    return itemPath.substring(itemPath.lastIndexOf('/') + 1)
-}
-
 
 // 过滤后台传来的路由字符串，转化为数组对象
 function filterRouterData(asyncRouterMap, lastRouter = false, filterChild = false) {

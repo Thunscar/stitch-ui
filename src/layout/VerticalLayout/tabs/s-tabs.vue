@@ -51,8 +51,9 @@ function initTabs() {
   }
 }
 
-function closeHandler(view) {
-  visitedStore.RemoveView(view)
+//关闭标签页
+const closeHandler = (viewPath) => {
+  visitedStore.RemoveView(viewPath)
 }
 
 function tabChange(view) {

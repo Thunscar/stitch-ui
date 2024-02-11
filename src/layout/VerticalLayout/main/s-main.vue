@@ -2,7 +2,7 @@
   <el-main class="main">
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
-        <KeepAlive :include="[...caches]">
+        <KeepAlive :include="[...cacheViews]">
           <component :is="Component"/>
         </KeepAlive>
       </transition>
@@ -12,9 +12,12 @@
 <script setup>
 
 import {useStore} from "@/store/index.js";
+import {computed} from "vue";
 
-const routerStore = useStore().router
-const caches = routerStore.cacheRouters
+const visitStore = useStore().visit
+const cacheViews = computed(() => {
+  return visitStore.keepAliveViews
+})
 
 </script>
 <style scoped>

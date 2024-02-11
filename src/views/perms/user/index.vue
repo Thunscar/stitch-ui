@@ -97,7 +97,7 @@ export default {
 }
 </script>
 <script setup>
-import {onMounted, reactive, ref} from "vue";
+import {onActivated, onMounted, reactive, ref} from "vue";
 import {deleteSysUser, getSysUserList, resetSysUserPassword} from "@/api/perms/user.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 import '@/assets/css/table/table.css'
@@ -150,7 +150,7 @@ function exportExcelHandler() {
 
 //导入用户信息
 function importExcelHandler() {
-
+  ElMessage.info('开发中...')
 }
 
 //更新用户信息
