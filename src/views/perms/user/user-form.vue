@@ -37,6 +37,15 @@
           <el-option v-for="item in selectRoleData" :key="item.roleId" :label="item.roleName" :value="item.roleId"/>
         </el-select>
       </el-form-item>
+      <el-form-item label="岗位配置">
+        <el-select
+            v-model="userInfo.postIds"
+            multiple
+            placeholder="岗位配置"
+            style="width: 240px">
+          <el-option v-for="item in selectPostData" :key="item.postId" :label="item.postName" :value="item.postId"/>
+        </el-select>
+      </el-form-item>
       <el-form-item label="电话">
         <el-input placeholder="电话" v-model="userInfo.phone" class="form-input"/>
       </el-form-item>
@@ -59,17 +68,16 @@
 
 import {reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
-import {getDeptList} from "@/api/system/dept.js";
 import {initSelectTree} from "@/utils/tree.js";
 import {getSysUserById, insertSysUser, updateSysUser} from "@/api/perms/user.js";
 import '@/assets/css/form/form.css'
-import {selectSysRoleList} from "@/api/perms/role.js";
 
 const emits = defineEmits(['refreshDataList'])
 const userFormTitle = ref('')
 const visible = ref(false)
 const selectDeptData = ref([])
 const selectRoleData = ref([])
+const selectPostData = ref([])
 const userInfo = reactive({
   userId: null,
   userName: '',
@@ -78,6 +86,7 @@ const userInfo = reactive({
   status: '0',
   deptId: '',
   roleIds: [],
+  postIds:[],
   phone: '',
   email: '',
   password: '',
@@ -85,7 +94,7 @@ const userInfo = reactive({
 })
 
 //提交表单
-function submitConfigHandler() {
+const submitConfigHandler = () => {
   if (userInfo.userId) {
     updateSysUser(userInfo).then(res => {
       ElMessage.success('修改成功')
@@ -102,7 +111,7 @@ function submitConfigHandler() {
 }
 
 //清空表单
-function clearForm() {
+const clearForm = () => {
   userInfo.userId = null
   userInfo.userName = ''
   userInfo.nickName = ''
@@ -110,55 +119,59 @@ function clearForm() {
   userInfo.status = '0'
   userInfo.deptId = ''
   userInfo.roleIds = []
+  userInfo.postIds = []
   userInfo.phone = ''
   userInfo.email = ''
   userInfo.password = ''
   userInfo.remark = ''
 }
 
-//初始化部门选择数据
-function initSelectDeptData() {
-  getDeptList().then(res => {
-    selectDeptData.value = initSelectTree(res.data, 'deptId', 'deptName')
-  })
-}
-
-//初始化角色选择配置
-function initSelectRoleData() {
-  selectSysRoleList().then(res => {
-    selectRoleData.value = res.list
-  })
-}
-
-function init(userId) {
-  //清空表单
-  clearForm()
-
-  //初始化部门选择树
-  initSelectDeptData()
-  //出丝滑角色数据
-  initSelectRoleData()
-
-  visible.value = true
-
-  if (userId) {
-    userFormTitle.value = '修改用户'
-    getSysUserById(userId).then(res => {
-      const user = res.data
+//初始化表单
+const initFormData = (userId) => {
+  userId = userId ? userId : ''
+  getSysUserById(userId).then(res => {
+    if (res.user) {
+      const user = res.user
       userInfo.userId = userId
       userInfo.userName = user.userName
       userInfo.nickName = user.nickName
       userInfo.sex = user.sex
       userInfo.deptId = user.deptId
       userInfo.roleIds = user.roleIds
+      userInfo.postIds = user.postIds
       userInfo.phone = user.phone
       userInfo.email = user.email
       userInfo.status = user.status
       userInfo.remark = user.remark
-    })
+    }
+    //初始化部门树
+    selectDeptData.value = initSelectTree(res.depts, 'deptId', 'deptName')
+    //初始化角色选择框
+    selectRoleData.value = res.roles
+    //初始化岗位选择框
+    selectPostData.value = res.posts
+  })
+}
+
+//生成标题
+const initFormTitle = (userId) => {
+  if (userId) {
+    userFormTitle.value = '修改用户'
   } else {
     userFormTitle.value = '新增用户'
   }
+}
+
+//初始化角色选择配置
+function init(userId) {
+  //清空表单
+  clearForm()
+  //设置标题
+  initFormTitle(userId)
+  //初始化表单数据
+  initFormData(userId)
+  //展示表单
+  visible.value = true
 }
 
 // 暴露初始化函数
