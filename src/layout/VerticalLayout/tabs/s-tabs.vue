@@ -1,8 +1,7 @@
 <template>
   <el-tabs class="s-tabs" v-model="router.currentRoute.value.fullPath" @tabRemove="closeHandler"
            @tabChange="tabChange">
-    <el-tab-pane v-for="view in visitedViews" :key="view.path" :name="view.path"
-                 :closable="view.close">
+    <el-tab-pane v-for="view in visitedViews" :key="view.path" :name="view.path" :closable="view.close">
       <template #label>
         {{ view.title }}
       </template>
@@ -23,7 +22,8 @@ watch(() => router.currentRoute.value.fullPath, () => {
     title: currentRouter.meta.title,
     path: currentRouter.fullPath,
     cache: currentRouter.meta.cache,
-    icon: currentRouter.meta.icon
+    icon: currentRouter.meta.icon,
+    close: true
   }
   visitedStore.AddView(view)
 })
@@ -34,7 +34,8 @@ function initTabs() {
       title: '首页',
       path: '/home',
       cache: true,
-      icon: 'f-home'
+      icon: 'f-home',
+      close: false
     }
     visitedStore.AddView(home)
     const currentRouter = router.currentRoute.value
