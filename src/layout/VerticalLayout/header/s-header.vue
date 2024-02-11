@@ -163,8 +163,8 @@ function toggleTheme() {
   display: block;
   margin: auto;
   user-select: none;
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
 }
 
 .put-away-icon {
@@ -205,8 +205,8 @@ function toggleTheme() {
   display: block;
   margin: auto;
   user-select: none;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 
 .full-screen {
@@ -253,8 +253,8 @@ function toggleTheme() {
   user-select: none;
   display: block;
   margin: auto;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   content: var(--layout-size-icon);
 }
 
@@ -275,8 +275,8 @@ function toggleTheme() {
   user-select: none;
   display: block;
   margin: auto;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   content: var(--theme-mode-icon);
 }
 </style>
