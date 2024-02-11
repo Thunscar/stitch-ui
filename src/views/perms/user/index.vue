@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <el-card>
     <div class="search">
       <span><el-input class="s-search-input" placeholder="用户名" v-model="queryUser.roleName"/></span>
       <span><el-input class="s-search-input" placeholder="手机号" v-model="queryUser.phone"/></span>
@@ -15,81 +15,78 @@
         <el-button type="success" text bg @click="importExcelHandler">导入用户</el-button>
       </span>
     </div>
-    <div class="table">
-      <el-table :data="userList"
-                :row-key="(record) => record.userId"
-                max-height="64vh"
-                :default-expand-all="false"
-                :indent="8"
-                border
-                :header-cell-style="{'text-align':'center'}"
-                @selection-change="selectUserHandler"
-                class="table-content">
-        <el-table-column type="selection" width="50" align="center"/>
-        <el-table-column label="用户名" prop="userName" :show-overflow-tooltip="true" fixed="left" width="140"
-                         align="center"/>
-        <el-table-column label="昵称" prop="nickName" :show-overflow-tooltip="true" width="100" align="center"/>
-        <el-table-column label="类型" prop="userType" width="120" align="center">
-          <template #default="scope">
-            <el-tag v-if="scope.row.userType === '00'">系统用户</el-tag>
-            <el-tag v-else type="warning">普通用户</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="性别" prop="sex" width="70" align="center">
-          <template #default="scope">
-            <el-tag v-if="scope.row.sex === '0'">男</el-tag>
-            <el-tag v-else-if="scope.row.sex === '1'" type="warning">女</el-tag>
-            <el-tag v-else type="danger">未知</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="状态" prop="status" width="90" align="center">
-          <template #default="scope">
-            <el-tag v-if="scope.row.status === '0'">正常</el-tag>
-            <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
-            <el-tag v-else type="danger">未知</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="所属部门" prop="dept.deptName" :show-overflow-tooltip="true" width="120"
-                         align="center"/>
-        <el-table-column label="电话" prop="phone" :show-overflow-tooltip="true" width="130" align="center"/>
-        <el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true" width="180" align="center"/>
-        <el-table-column prop="createTime" label="创建时间" width="130" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="loginTime" label="最后登录时间" width="130" :show-overflow-tooltip="true"
-                         align="center"/>
-        <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column label="操作" width="180" min-width="160" fixed="right" align="center">
-          <template #default="scope">
-            <el-button type="primary" link @click="updateUserHandler(scope.row.userId)">修改</el-button>
-            <el-button type="danger" link @click="deleteUserHandler(scope.row.userId)">删除</el-button>
-            <el-button type="primary" link>
-              <el-dropdown>
-                <el-button type="primary" link>更多</el-button>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item @click="resetPassword(scope.row.userId)">重置密码</el-dropdown-item>
-                    <el-dropdown-item @click="allocatedRoles(scope.row.userId,scope.row.userName)">分配角色
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-          v-model:current-page="queryUser.pageNum"
-          v-model:page-size="queryUser.pageSize"
-          :page-sizes="[5, 10, 20, 50]"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="queryUser.total"
-          @size-change="queryUserList"
-          @current-change="queryUserList"
-          class="table-pagination"
-      />
-    </div>
+
+    <el-table :data="userList"
+              :row-key="(record) => record.userId"
+              :default-expand-all="false"
+              :indent="8"
+              border
+              :header-cell-style="{'text-align':'center'}"
+              @selection-change="selectUserHandler">
+      <el-table-column type="selection" width="50" align="center"/>
+      <el-table-column label="用户名" prop="userName" :show-overflow-tooltip="true" fixed="left" width="140"
+                       align="center"/>
+      <el-table-column label="昵称" prop="nickName" :show-overflow-tooltip="true" width="100" align="center"/>
+      <el-table-column label="类型" prop="userType" width="120" align="center">
+        <template #default="scope">
+          <el-tag v-if="scope.row.userType === '00'">系统用户</el-tag>
+          <el-tag v-else type="warning">普通用户</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="性别" prop="sex" width="70" align="center">
+        <template #default="scope">
+          <el-tag v-if="scope.row.sex === '0'">男</el-tag>
+          <el-tag v-else-if="scope.row.sex === '1'" type="warning">女</el-tag>
+          <el-tag v-else type="danger">未知</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" prop="status" width="90" align="center">
+        <template #default="scope">
+          <el-tag v-if="scope.row.status === '0'">正常</el-tag>
+          <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
+          <el-tag v-else type="danger">未知</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="所属部门" prop="dept.deptName" :show-overflow-tooltip="true" width="120"
+                       align="center"/>
+      <el-table-column label="电话" prop="phone" :show-overflow-tooltip="true" width="130" align="center"/>
+      <el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true" width="180" align="center"/>
+      <el-table-column prop="createTime" label="创建时间" width="130" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column prop="loginTime" label="最后登录时间" width="130" :show-overflow-tooltip="true"
+                       align="center"/>
+      <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column label="操作" width="180" min-width="160" fixed="right" align="center">
+        <template #default="scope">
+          <el-button type="primary" link @click="updateUserHandler(scope.row.userId)">修改</el-button>
+          <el-button type="danger" link @click="deleteUserHandler(scope.row.userId)">删除</el-button>
+          <el-button type="primary" link>
+            <el-dropdown>
+              <el-button type="primary" link>更多</el-button>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item @click="resetPassword(scope.row.userId)">重置密码</el-dropdown-item>
+                  <el-dropdown-item @click="allocatedRoles(scope.row.userId,scope.row.userName)">分配角色
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+        v-model:current-page="queryUser.pageNum"
+        v-model:page-size="queryUser.pageSize"
+        :page-sizes="[5, 10, 20, 50]"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="queryUser.total"
+        @size-change="queryUserList"
+        @current-change="queryUserList"
+        class="table-pagination"
+    />
     <user-form ref="userFormRef" @refresh-data-list="queryUserList"/>
     <allocate-role-drawer ref="allocatedRoleDrawerRef"/>
-  </div>
+  </el-card>
 </template>
 <script>
 export default {

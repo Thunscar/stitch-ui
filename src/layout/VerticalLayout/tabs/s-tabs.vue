@@ -68,7 +68,7 @@ onMounted(() => {
 <style scoped>
 .s-tabs {
   height: 40px;
-  padding-left: 40px;
+  padding-left: 20px;
   user-select: none;
   background-color: var(--module-backgroud-color);
 }

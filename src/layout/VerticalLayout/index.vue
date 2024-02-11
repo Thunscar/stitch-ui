@@ -10,7 +10,6 @@
   </el-container>
 </template>
 <script setup>
-import '@/assets/css/layout/layout.css'
 import SSidebar from "@/layout/VerticalLayout/siderBar/s-sidebar.vue"
 import SHeader from "@/layout/VerticalLayout/header/s-header.vue"
 import STabs from "@/layout/VerticalLayout/tabs/s-tabs.vue";
@@ -19,7 +18,7 @@ import SFooter from "@/layout/VerticalLayout/footer/s-footer.vue";
 </script>
 <style scoped>
 .layout-back {
-  background-color: var(--layout-backgroud-color)
+  background-color: var(--module-backgroud-color)
 }
 
 .vertical-layout {

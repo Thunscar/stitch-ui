@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <el-card>
     <div class="search">
       <span><el-input class="s-search-input" placeholder="岗位编码" v-model="queryPost.postCode"/></span>
       <span><el-input class="s-search-input" placeholder="岗位名称" v-model="queryPost.postName"/></span>
@@ -18,52 +18,48 @@
       <el-button type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
       </span>
     </div>
-    <div class="table">
-      <el-table :data="postList"
-                :row-key="(record) => record.postId"
-                max-height="64vh"
-                :default-expand-all="false"
-                :indent="8"
-                border
-                :header-cell-style="{'text-align':'center'}"
-                @selection-change="selectPostHandler"
-                class="table-content">
-        <el-table-column type="selection" width="50" align="center"/>
-        <el-table-column label="岗位编码" prop="postCode" :show-overflow-tooltip="true" width="180" fixed="left"
-                         align="center"/>
-        <el-table-column label="岗位名称" prop="postName" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column label="排序" prop="postSort" :show-overflow-tooltip="true" width="80" align="center"/>
-        <el-table-column label="状态" prop="status" width="85" align="center">
-          <template #default="scope">
-            <el-tag v-if="scope.row.status === '0'">正常</el-tag>
-            <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
-            <el-tag v-else type="danger">未知</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column label="操作" width="120" min-width="120" fixed="right" align="center">
-          <template #default="scope">
-            <el-button type="primary" link @click="updatePostHandler(scope.row.postId)">修改
-            </el-button>
-            <el-button type="danger" link @click="deletePostHandler(scope.row.postId)">删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-          v-model:current-page="queryPost.pageNum"
-          v-model:page-size="queryPost.pageSize"
-          :page-sizes="[5, 10, 20, 50]"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="queryPost.total"
-          @size-change="queryPostList"
-          @current-change="queryPostList"
-          class="table-pagination"
-      />
-    </div>
+    <el-table :data="postList"
+              :row-key="(record) => record.postId"
+              :default-expand-all="false"
+              :indent="8"
+              border
+              :header-cell-style="{'text-align':'center'}"
+              @selection-change="selectPostHandler">
+      <el-table-column type="selection" width="50" align="center"/>
+      <el-table-column label="岗位编码" prop="postCode" :show-overflow-tooltip="true" width="180" fixed="left"
+                       align="center"/>
+      <el-table-column label="岗位名称" prop="postName" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column label="排序" prop="postSort" :show-overflow-tooltip="true" width="80" align="center"/>
+      <el-table-column label="状态" prop="status" width="85" align="center">
+        <template #default="scope">
+          <el-tag v-if="scope.row.status === '0'">正常</el-tag>
+          <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
+          <el-tag v-else type="danger">未知</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column label="操作" width="120" min-width="120" fixed="right" align="center">
+        <template #default="scope">
+          <el-button type="primary" link @click="updatePostHandler(scope.row.postId)">修改
+          </el-button>
+          <el-button type="danger" link @click="deletePostHandler(scope.row.postId)">删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+        v-model:current-page="queryPost.pageNum"
+        v-model:page-size="queryPost.pageSize"
+        :page-sizes="[5, 10, 20, 50]"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="queryPost.total"
+        @size-change="queryPostList"
+        @current-change="queryPostList"
+        class="table-pagination"
+    />
     <post_form ref="postFormRef" @refresh-data-list="queryPostList"/>
-  </div>
+  </el-card>
 </template>
 <script>
 export default {

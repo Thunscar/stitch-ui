@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <el-card>
     <div class="search">
       <span><el-input class="s-search-input" placeholder="角色名称" v-model="queryRole.roleName"/></span>
       <span>
@@ -17,65 +17,61 @@
         <el-button type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
       </span>
     </div>
-    <div class="table">
-      <el-table :data="roleList"
-                :row-key="(record) => record.roleId"
-                max-height="64vh"
-                :default-expand-all="false"
-                :indent="8"
-                border
-                :header-cell-style="{'text-align':'center'}"
-                @selection-change="selectRoleHandler"
-                class="table-content">
-        <el-table-column type="selection" width="50" align="center"/>
-        <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" fixed="left"
-                         align="center"/>
-        <el-table-column label="角色编码" prop="roleKey" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column label="状态" prop="status" width="90" align="center">
-          <template #default="scope">
-            <el-tag v-if="scope.row.status === '0'">正常</el-tag>
-            <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
-            <el-tag v-else type="danger">未知</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="排序" prop="roleSort" :show-overflow-tooltip="true" width="80" align="center"/>
-        <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column label="操作" width="180" min-width="160" fixed="right" align="center">
-          <template #default="scope">
-            <el-button type="primary" link @click="updateRoleHandler(scope.row.roleId)">修改</el-button>
-            <el-button type="danger" link @click="deleteRoleHandler(scope.row.roleId)">删除</el-button>
-            <el-button type="primary" link>
-              <el-dropdown>
-                <el-button type="primary" link style="outline: 0 !important;">更多</el-button>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item @click="allocatedDataAuthority(scope.row.roleId,scope.row.roleName)">数据权限
-                    </el-dropdown-item>
-                    <el-dropdown-item @click="allocatedUsers(scope.row.roleId,scope.row.roleName)">分配用户
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-          v-model:current-page="queryRole.pageNum"
-          v-model:page-size="queryRole.pageSize"
-          :page-sizes="[5, 10, 20, 50]"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="queryRole.total"
-          @size-change="queryRoleList"
-          @current-change="queryRoleList"
-          class="table-pagination"
-      />
-    </div>
+    <el-table :data="roleList"
+              :row-key="(record) => record.roleId"
+              :default-expand-all="false"
+              :indent="8"
+              border
+              :header-cell-style="{'text-align':'center'}"
+              @selection-change="selectRoleHandler">
+      <el-table-column type="selection" width="50" align="center"/>
+      <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" fixed="left"
+                       align="center"/>
+      <el-table-column label="角色编码" prop="roleKey" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column label="状态" prop="status" width="90" align="center">
+        <template #default="scope">
+          <el-tag v-if="scope.row.status === '0'">正常</el-tag>
+          <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
+          <el-tag v-else type="danger">未知</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="排序" prop="roleSort" :show-overflow-tooltip="true" width="80" align="center"/>
+      <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column label="操作" width="180" min-width="160" fixed="right" align="center">
+        <template #default="scope">
+          <el-button type="primary" link @click="updateRoleHandler(scope.row.roleId)">修改</el-button>
+          <el-button type="danger" link @click="deleteRoleHandler(scope.row.roleId)">删除</el-button>
+          <el-button type="primary" link>
+            <el-dropdown>
+              <el-button type="primary" link style="outline: 0 !important;">更多</el-button>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item @click="allocatedDataAuthority(scope.row.roleId,scope.row.roleName)">数据权限
+                  </el-dropdown-item>
+                  <el-dropdown-item @click="allocatedUsers(scope.row.roleId,scope.row.roleName)">分配用户
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+        v-model:current-page="queryRole.pageNum"
+        v-model:page-size="queryRole.pageSize"
+        :page-sizes="[5, 10, 20, 50]"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="queryRole.total"
+        @size-change="queryRoleList"
+        @current-change="queryRoleList"
+        class="table-pagination"
+    />
     <data-scope-drawer ref="dataScopeDrawerRef"/>
     <allocate-user-drawer ref="allocatedUserDrawerRef"/>
     <role-form ref="roleFormRef" @refresh-data-list="queryRoleList"/>
-  </div>
+  </el-card>
 </template>
 <script>
 export default {

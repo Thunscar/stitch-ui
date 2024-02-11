@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <el-card>
     <div class="search">
       <span><el-input class="s-search-input" placeholder="菜单名称" v-model="queryMenu.menuName"/></span>
       <span>
@@ -7,13 +7,13 @@
           <el-option value="1" label="可见"/>
           <el-option value="0" label="不可见"/>
         </el-select>
-      </span>
+        </span>
       <span>
         <el-select class="s-search-input" placeholder="状态" v-model="queryMenu.status">
           <el-option value="0" label="正常"/>
           <el-option value="1" label="停用"/>
         </el-select>
-      </span>
+        </span>
       <span>
         <el-button type="primary" @click="queryMenuDataList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
@@ -21,70 +21,67 @@
         <el-button type="info" text bg @click="expandAllHandler">展开/折叠</el-button>
       </span>
     </div>
-    <div class="table">
-      <el-table :data="menuTreeData"
-                :row-key="(record) => record.menuId"
-                v-model:expand-row-keys="expandColumns"
-                max-height="70vh"
-                :default-expand-all="false"
-                :indent="8"
-                border
-                :header-cell-style="{'text-align':'center'}">
-        <el-table-column prop="menuName" label="菜单名称" :show-overflow-tooltip="true"/>
-        <el-table-column prop="menuType" label="类型" width="90" align="center">
-          <template #default="scope">
-            <el-tag v-if="scope.row.menuType === 'M'">菜单</el-tag>
-            <el-tag v-else-if="scope.row.menuType === 'B'" type="warning">按钮</el-tag>
-            <el-tag v-else type="danger">未知</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="path" label="路由地址" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="component" label="组件地址" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="orderNum" label="排序" width="90" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="icon" label="图标" width="85" align="center">
-          <template #default="scope">
-            <svg-icon :icon-class="scope.row.icon"/>
-          </template>
-        </el-table-column>
-        <el-table-column prop="visible" label="是否可见" width="90" align="center">
-          <template #default="scope">
-            <el-tag v-if="scope.row.visible === '1'">可见</el-tag>
-            <el-tag v-else-if="scope.row.visible === '0'" type="warning">不可见</el-tag>
-            <el-tag v-else type="danger">未知</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="isCache" label="是否缓存" width="90" align="center">
-          <template #default="scope">
-            <el-tag v-if="scope.row.isCache === '1'">缓存</el-tag>
-            <el-tag v-else-if="scope.row.isCache === '0'" type="warning">不缓存</el-tag>
-            <el-tag v-else type="danger">未知</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="isFrame" label="是否外链" align="center">
-          <template #default="scope">
-            <el-tag v-if="scope.row.isFrame === '0'">非外链</el-tag>
-            <el-tag v-else-if="scope.row.isFrame === '1'" type="warning">外链</el-tag>
-            <el-tag v-else type="danger">未知</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="status" label="状态" width="90" align="center">
-          <template #default="scope">
-            <el-tag v-if="scope.row.status === '0'">正常</el-tag>
-            <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
-            <el-tag v-else type="danger">未知</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column label="操作" width="120" min-width="120" fixed="right" align="center">
-          <template #default="scope">
-            <el-button type="primary" link @click="updateMenuHandler(scope.row.menuId)">修改</el-button>
-            <el-button type="danger" link @click="deleteMenu(scope.row.menuId)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
+    <el-table :data="menuTreeData"
+              :row-key="(record) => record.menuId"
+              v-model:expand-row-keys="expandColumns"
+              :default-expand-all="false"
+              :indent="8"
+              border
+              :header-cell-style="{'text-align':'center'}">
+      <el-table-column prop="menuName" label="菜单名称" width="120" :show-overflow-tooltip="true"/>
+      <el-table-column prop="menuType" label="类型" width="90" align="center">
+        <template #default="scope">
+          <el-tag v-if="scope.row.menuType === 'M'">菜单</el-tag>
+          <el-tag v-else-if="scope.row.menuType === 'B'" type="warning">按钮</el-tag>
+          <el-tag v-else type="danger">未知</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="path" label="路由地址" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column prop="component" label="组件地址" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column prop="orderNum" label="排序" width="90" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column prop="icon" label="图标" width="85" align="center">
+        <template #default="scope">
+          <svg-icon :icon-class="scope.row.icon"/>
+        </template>
+      </el-table-column>
+      <el-table-column prop="visible" label="是否可见" width="90" align="center">
+        <template #default="scope">
+          <el-tag v-if="scope.row.visible === '1'">可见</el-tag>
+          <el-tag v-else-if="scope.row.visible === '0'" type="warning">不可见</el-tag>
+          <el-tag v-else type="danger">未知</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="isCache" label="是否缓存" width="90" align="center">
+        <template #default="scope">
+          <el-tag v-if="scope.row.isCache === '1'">缓存</el-tag>
+          <el-tag v-else-if="scope.row.isCache === '0'" type="warning">不缓存</el-tag>
+          <el-tag v-else type="danger">未知</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="isFrame" label="是否外链" width="100" align="center">
+        <template #default="scope">
+          <el-tag v-if="scope.row.isFrame === '0'">非外链</el-tag>
+          <el-tag v-else-if="scope.row.isFrame === '1'" type="warning">外链</el-tag>
+          <el-tag v-else type="danger">未知</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="status" label="状态" width="90" align="center">
+        <template #default="scope">
+          <el-tag v-if="scope.row.status === '0'">正常</el-tag>
+          <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
+          <el-tag v-else type="danger">未知</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="createTime" label="创建时间" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column label="操作" width="120" min-width="120" fixed="right" align="center">
+        <template #default="scope">
+          <el-button type="primary" link @click="updateMenuHandler(scope.row.menuId)">修改</el-button>
+          <el-button type="danger" link @click="deleteMenu(scope.row.menuId)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
     <menu-form ref="menuFormRef" @refresh-data-list="queryMenuDataList"/>
-  </div>
+  </el-card>
 </template>
 <script>
 export default {

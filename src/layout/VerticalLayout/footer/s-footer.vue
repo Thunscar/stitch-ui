@@ -9,7 +9,7 @@ const copyRight = import.meta.env.VITE_COPYRIGHT ? import.meta.env.VITE_COPYRIGH
 <style scoped>
 .footer {
   bottom: 0;
-  height: 30px;
+  height: 24px;
   text-align: center;
   background-color: var(--module-backgroud-color);
 }

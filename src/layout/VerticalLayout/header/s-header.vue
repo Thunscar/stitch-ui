@@ -13,39 +13,34 @@
       </div>
     </div>
     <div class="right-header">
-      <div>
-        <el-dropdown>
-          <div class="layout-size">
-            <img class="layout-size-icon" src="" alt="">
-          </div>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item text-value="large" :disabled="size === 'large'" @click="setSize('large')">大型
-              </el-dropdown-item>
-              <el-dropdown-item text-value="default" :disabled="size === 'default'" @click="setSize('default')">默认
-              </el-dropdown-item>
-              <el-dropdown-item text-value="small" :disabled="size === 'small'" @click="setSize('small')">小型
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </div>
-      <div>
-        <div class="theme-mode" @click="toggleTheme">
-          <img class="theme-mode-icon" src="" alt="">
+      <el-dropdown>
+        <div class="layout-size">
+          <img class="layout-size-icon" src="" alt="">
         </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item text-value="large" :disabled="size === 'large'" @click="setSize('large')">大型
+            </el-dropdown-item>
+            <el-dropdown-item text-value="default" :disabled="size === 'default'" @click="setSize('default')">默认
+            </el-dropdown-item>
+            <el-dropdown-item text-value="small" :disabled="size === 'small'" @click="setSize('small')">小型
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+      <div class="theme-mode" @click="toggleTheme">
+        <img class="theme-mode-icon" src="" alt="">
       </div>
       <div class="operate-fullscreen" @click="toggle">
         <img class="operate-fullscreen-icon" :class="{'full-screen':!isFullscreen,'exit-full-screen':isFullscreen}"
-             src=""
-             alt=""/>
+             src="" alt=""/>
       </div>
       <div class="user-info">
         <el-dropdown>
           <div class="avatar">
-            <el-avatar :src="userStore.avatar" :size="40" class="user-avatar">User</el-avatar>
+            <el-avatar :src="userStore.avatar" :size="32" class="user-avatar">User</el-avatar>
             <el-text truncated tag="b" class="user-name">{{ nickName }}</el-text>
-            <el-icon :size="14" class="arrow-down">
+            <el-icon :size="14">
               <ArrowDownBold/>
             </el-icon>
           </div>
@@ -138,7 +133,6 @@ function toggleTheme() {
   display: flex;
   flex-flow: row nowrap;
   max-width: max-content;
-  height: 60px;
   position: absolute;
   right: 0;
 }
@@ -147,18 +141,17 @@ function toggleTheme() {
   position: relative;
   background-color: var(--module-backgroud-color);
   display: flex;
+  align-items: center;
   flex-flow: row nowrap;
-  height: 60px;
-  padding-left: 0;
+  height: 50px;
   float: left;
 }
 
 .operate-menu {
-  display: block;
-  text-align: center;
-  margin-left: 0;
+  display: flex;
+  align-items: center;
   width: 45px;
-  height: 60px;
+  height: 50px;
   cursor: pointer;
 }
 
@@ -167,10 +160,11 @@ function toggleTheme() {
 }
 
 .operate-menu-icon {
+  display: block;
+  margin: auto;
   user-select: none;
   width: 34px;
   height: 34px;
-  padding-top: 13px;
 }
 
 .put-away-icon {
@@ -182,10 +176,11 @@ function toggleTheme() {
 }
 
 .breadcrumb {
+  display: flex;
+  align-items: center;
   user-select: none;
   text-align: left;
   padding-left: 10px;
-  padding-top: 23px;
 }
 
 .breadcrumb span {
@@ -193,11 +188,12 @@ function toggleTheme() {
 }
 
 .operate-fullscreen {
-  display: block;
+  display: flex;
+  align-items: center;
   text-align: center;
-  margin-left: 0;
+  margin: auto;
   width: 45px;
-  height: 60px;
+  height: 50px;
   cursor: pointer;
 }
 
@@ -206,11 +202,11 @@ function toggleTheme() {
 }
 
 .operate-fullscreen-icon {
+  display: block;
+  margin: auto;
   user-select: none;
   width: 24px;
   height: 24px;
-  margin-top: 18px;
-  align-self: center;
 }
 
 .full-screen {
@@ -223,58 +219,50 @@ function toggleTheme() {
 
 .user-info {
   width: 140px;
-  text-align: center;
   position: relative;
+  display: flex;
+  align-items: center;
   user-select: none;
+  margin-left: 10px;
 }
 
 .avatar {
-  text-align: center;
   display: flex;
+  align-items: center;
   flex-flow: row nowrap;
   outline: 0 !important;
 }
 
-.user-avatar {
-  margin-top: 10px;
-}
-
 .user-name {
-  width: 60px;
-  margin-top: 10px;
+  max-width: 80px;
+  margin-left: 6px;
+  margin-right: 6px;
   color: var(--text-color);
 }
 
-.arrow-down {
-  margin-top: 23px;
-}
-
-
 .layout-size {
-  display: block;
-  text-align: center;
-  margin-left: 0;
+  display: flex;
+  align-items: center;
   width: 45px;
-  height: 60px;
+  height: 50px;
   cursor: pointer;
   outline: 0 !important;
 }
 
 .layout-size-icon {
   user-select: none;
+  display: block;
+  margin: auto;
   width: 24px;
   height: 24px;
-  margin-top: 18px;
-  align-self: center;
   content: var(--layout-size-icon);
 }
 
 .theme-mode {
-  display: block;
-  text-align: center;
-  margin-left: 0;
+  display: flex;
+  align-items: center;
   width: 45px;
-  height: 60px;
+  height: 50px;
   cursor: pointer;
   outline: 0 !important;
 }
@@ -285,10 +273,10 @@ function toggleTheme() {
 
 .theme-mode-icon {
   user-select: none;
+  display: block;
+  margin: auto;
   width: 24px;
   height: 24px;
-  margin-top: 18px;
-  align-self: center;
   content: var(--theme-mode-icon);
 }
 </style>

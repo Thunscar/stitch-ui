@@ -1,56 +1,22 @@
-/**
-    表格相关
- */
-.table-search span {
-    margin-right: 12px;
-}
-
-.table-header {
-    margin-top: 10px;
-}
-
-.table-header > span {
-    margin-right: 10px;
-}
-
-.table-content {
-    margin-top: 10px;
-}
-
 /*搜索输入框*/
 .s-search-input {
     width: 160px;
 }
 
-/*搜索日期框*/
-.s-search-date {
-    width: 350px;
-}
-
-/*分页插件*/
-.s-table-pagination {
-    margin-top: 10px;
-    text-align: right;
+.search{
+    margin-top: -6px;
+    margin-bottom: 10px;
 }
 
 /* 搜索框间隔样式 */
-.search {
-    margin-bottom: 12px;
-    margin-right: 12px;
-}
-
 .search > span {
-    margin-right: 12px;
-}
-
-/* 表格间隔 */
-.table-content {
-    margin-bottom: 12px;
+    margin-right: 10px;
 }
 
 .table-pagination {
-    position: absolute;
-    right: 20px;
+    position: relative;
+    float: right;
+    margin: 10px 0 10px 0;
 }
 
 

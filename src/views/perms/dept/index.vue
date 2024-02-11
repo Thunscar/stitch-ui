@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <el-card>
     <div class="search">
       <span><el-input class="s-search-input" placeholder="部门名称" v-model="queryDept.deptName"/></span>
       <span><el-input class="s-search-input" placeholder="联系人" v-model="queryDept.leader"/></span>
@@ -10,32 +10,29 @@
         <el-button type="info" text bg @click="expandAllHandler">展开/折叠</el-button>
       </span>
     </div>
-    <div class="table">
-      <el-table :data="deptTreeData"
-                :row-key="(record) => record.deptId"
-                v-model:expand-row-keys="expandColumns"
-                max-height="70vh"
-                :default-expand-all="false"
-                :indent="8"
-                border
-                :header-cell-style="{'text-align':'center'}">
-        <el-table-column prop="deptName" label="部门名称" width="250" :show-overflow-tooltip="true"/>
-        <el-table-column prop="orderNum" label="排序" width="85" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="leader" label="联系人" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="phone" label="联系电话" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="email" label="邮箱" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="createUser" label="创建人" width="120" :show-overflow-tooltip="true" align="center"/>
-        <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true"/>
-        <el-table-column label="操作" width="120" min-width="120" fixed="right" align="center">
-          <template #default="scope">
-            <el-button type="primary" link @click="updateDeptHandler(scope.row.deptId)">修改</el-button>
-            <el-button type="danger" link @click="deleteDeptHandler(scope.row.deptId)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
+    <el-table :data="deptTreeData"
+              :row-key="(record) => record.deptId"
+              v-model:expand-row-keys="expandColumns"
+              :default-expand-all="false"
+              :indent="8"
+              border
+              :header-cell-style="{'text-align':'center'}">
+      <el-table-column prop="deptName" label="部门名称" width="250" :show-overflow-tooltip="true"/>
+      <el-table-column prop="orderNum" label="排序" width="85" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column prop="leader" label="联系人" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column prop="phone" label="联系电话" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column prop="email" label="邮箱" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column prop="createUser" label="创建人" width="120" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true"/>
+      <el-table-column label="操作" width="120" min-width="120" fixed="right" align="center">
+        <template #default="scope">
+          <el-button type="primary" link @click="updateDeptHandler(scope.row.deptId)">修改</el-button>
+          <el-button type="danger" link @click="deleteDeptHandler(scope.row.deptId)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
     <dept-form ref="deptFormRef" @refresh-data-list="queryDeptDataList"/>
-  </div>
+  </el-card>
 </template>
 <script>
 export default {

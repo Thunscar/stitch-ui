@@ -1,13 +1,15 @@
 <template>
-  <el-main class="main">
-    <router-view v-slot="{ Component }">
-      <transition name="fade" mode="out-in">
-        <KeepAlive :include="[...cacheViews]">
-          <component :is="Component"/>
-        </KeepAlive>
-      </transition>
-    </router-view>
-  </el-main>
+  <el-scrollbar>
+    <el-main class="main">
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <KeepAlive :include="[...cacheViews]">
+            <component :is="Component"/>
+          </KeepAlive>
+        </transition>
+      </router-view>
+    </el-main>
+  </el-scrollbar>
 </template>
 <script setup>
 
@@ -22,12 +24,7 @@ const cacheViews = computed(() => {
 </script>
 <style scoped>
 .main {
-  max-height: calc(100vh - 142px);
-  overflow: hidden;
-  border-color: black;
-  margin: 6px 6px 6px 6px;
-  padding-bottom: 10px;
-  border-radius: 10px;
+  max-height: calc(100vh - 114px);
   background-color: var(--module-backgroud-color);
 }
 
