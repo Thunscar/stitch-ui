@@ -4,13 +4,13 @@
       <h2>{{ appTitle }}</h2>
     </div>
     <div class="form-content">
-      <el-form :model="loginFormRule">
-        <el-form-item prop="username">
-          <el-input v-model="loginForm.username" class="login-input" :prefix-icon="User" style="letter-spacing:2px"
-                    placeholder="请输入用户名" autocomplete="off"/>
+      <el-form :model="loginForm" ref="loginFormRef" :rules="checkRules">
+        <el-form-item prop="username" class="login-input">
+          <el-input v-model="loginForm.username" :prefix-icon="User"
+                    autocomplete="off"/>
         </el-form-item>
-        <el-form-item prop="password">
-          <el-input v-model="loginForm.password" class="login-input" :prefix-icon="Lock" placeholder="请输入密码"
+        <el-form-item prop="password" class="login-input">
+          <el-input v-model="loginForm.password" :prefix-icon="Lock"
                     type="password" autocomplete="off"/>
         </el-form-item>
         <el-form-item prop="verifyCode" v-if="loginForm.verifyCodeEnable">
@@ -21,7 +21,7 @@
         </el-form-item>
       </el-form>
       <div class="login-btn-group">
-        <el-button class="login-btn" :icon="UserFilled" @click="handlerLogin">登录</el-button>
+        <el-button class="login-btn" :icon="UserFilled" @click="handlerLogin(loginFormRef)">登录</el-button>
         <el-button class="login-btn reset" :icon="Refresh" @click="handlerReset">重置</el-button>
       </div>
     </div>
@@ -30,7 +30,7 @@
 <script setup>
 
 import {Lock, Refresh, User, UserFilled} from "@element-plus/icons-vue";
-import {onMounted, reactive} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import {getVerifyImage} from "@/api/login.js";
 import router from "@/router/index.js";
 import {useStore} from "@/store/index.js";
@@ -48,13 +48,21 @@ const loginForm = reactive({
   rememberMe: false,
   verifyCodeEnable: false
 })
-const loginFormRule = reactive({
-  username: '',
-  password: '',
-  verifyCode: ''
+const loginFormRef = ref()
+
+const checkRules = ref({
+  username: {
+    required: true,
+    message: '用户名不可为空',
+    trigger: ['blur']
+  },
+  password: {
+    required: true,
+    message: '密码不可为空',
+    trigger: ['blur']
+  }
 })
 
-const visitedStore = useStore().visit
 
 function getVerifyCode() {
   getVerifyImage().then(res => {
@@ -87,27 +95,31 @@ function removeCookie() {
   Cookies.remove("remember")
 }
 
-function handlerLogin() {
-  loginForm.loading = true
-  const userInfo = {
-    username: loginForm.username,
-    password: loginForm.password,
-    uuid: loginForm.uuid,
-    code: loginForm.code
-  }
-  useStore().user.Login(userInfo).then(() => {
-    ElMessage.success('登录成功')
-    if (loginForm.remember) {
-      setCookie()
-    } else {
-      removeCookie()
+function handlerLogin(loginFormRef) {
+  loginFormRef.validate((valid) => {
+    if (valid) {
+      loginForm.loading = true
+      const userInfo = {
+        username: loginForm.username,
+        password: loginForm.password,
+        uuid: loginForm.uuid,
+        code: loginForm.code
+      }
+      useStore().user.Login(userInfo).then(() => {
+        ElMessage.success('登录成功')
+        if (loginForm.remember) {
+          setCookie()
+        } else {
+          removeCookie()
+        }
+        //路由跳转
+        router.push({path: router.currentRoute.value.query.redirect || "/"})
+      }).catch(res => {
+        loginForm.loading = false
+        getVerifyCode()
+        loginForm.code = ''
+      })
     }
-    //路由跳转
-    router.push({path: router.currentRoute.value.query.redirect || "/"})
-  }).catch(res => {
-    loginForm.loading = false
-    getVerifyCode()
-    loginForm.code = ''
   })
 }
 
@@ -167,9 +179,7 @@ onMounted(() => {
 
 .login-input {
   width: 80%;
-  height: 40px;
-  margin-bottom: 15px;
-  margin-left: 10%;
+  margin: auto auto 20px auto;
 }
 
 .login-btn-group {
@@ -181,7 +191,6 @@ onMounted(() => {
 .login-btn {
   width: 48%;
   height: 40px;
-  margin-left: 0;
   font-size: 14px;
 }
 

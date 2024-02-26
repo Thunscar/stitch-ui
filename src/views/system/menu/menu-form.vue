@@ -3,7 +3,7 @@
              :title="menuFormTitle"
              width="620"
              @close="closeForm">
-    <el-form :model="menuInfo" ref="menuFormRef" label-width="100" :rules="checkRoles" inline>
+    <el-form :model="menuInfo" ref="menuFormRef" label-width="100" :rules="checkRules" inline>
       <el-form-item label="菜单类型">
         <el-radio-group v-model="menuInfo.menuType" :disabled="menuTypeDisabled">
           <el-radio label="M">菜单</el-radio>
@@ -99,7 +99,7 @@ const selectMenuData = ref([{
   value: 0,
   children: null
 }])
-const checkRoles = ref({
+const checkRules = ref({
   menuName: {
     required: true,
     message: '菜单名称不可为空',

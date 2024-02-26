@@ -1,6 +1,9 @@
 <template>
   <div class="container">
     <div class="container-view">
+      <div>
+        <div class="bug"></div>
+      </div>
       <div class="logo-image">
         <img src="@/assets/img/login.svg" alt="">
       </div>
