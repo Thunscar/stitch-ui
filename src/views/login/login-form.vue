@@ -6,18 +6,16 @@
     <div class="form-content">
       <el-form :model="loginForm" ref="loginFormRef" :rules="checkRules">
         <el-form-item prop="username" class="login-input">
-          <el-input v-model="loginForm.username" :prefix-icon="User"
+          <el-input v-model="loginForm.username" :prefix-icon="User" class="u-p-input"
                     autocomplete="off"/>
         </el-form-item>
         <el-form-item prop="password" class="login-input">
-          <el-input v-model="loginForm.password" :prefix-icon="Lock"
+          <el-input v-model="loginForm.password" :prefix-icon="Lock" class="u-p-input"
                     type="password" autocomplete="off"/>
         </el-form-item>
-        <el-form-item prop="verifyCode" v-if="loginForm.verifyCodeEnable">
-          <div class="code-img-group">
-            <el-input v-model="loginForm.code" class="code-input" :prefix-icon="Lock" placeholder="验证码"/>
-            <img :src="loginForm.verifyImage" alt="" class="code-img" @click="getVerifyCode">
-          </div>
+        <el-form-item prop="code" v-if="loginForm.verifyCodeEnable" class="login-input">
+          <el-input v-model="loginForm.code" class="code-input" :prefix-icon="Lock" placeholder="验证码"/>
+          <img :src="loginForm.verifyImage" alt="" class="code-img" @click="getVerifyCode">
         </el-form-item>
       </el-form>
       <div class="login-btn-group">
@@ -59,6 +57,11 @@ const checkRules = ref({
   password: {
     required: true,
     message: '密码不可为空',
+    trigger: ['blur']
+  },
+  code: {
+    required: true,
+    message: '验证码不可为空',
     trigger: ['blur']
   }
 })
@@ -180,6 +183,10 @@ onMounted(() => {
 .login-input {
   width: 80%;
   margin: auto auto 20px auto;
+}
+
+.u-p-input {
+  height: 40px;
 }
 
 .login-btn-group {
