@@ -1,5 +1,7 @@
 <template>
-  <div>文件管理</div>
+  <el-card>
+    开发中...
+  </el-card>
 </template>
 <script>
 export default {
