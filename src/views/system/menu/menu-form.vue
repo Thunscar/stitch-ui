@@ -6,15 +6,15 @@
     <el-form :model="menuInfo" ref="menuFormRef" label-width="100" :rules="checkRules" inline>
       <el-form-item label="菜单类型">
         <el-radio-group v-model="menuInfo.menuType" :disabled="menuTypeDisabled">
-          <el-radio value="M">菜单</el-radio>
-          <el-radio value="B">按钮</el-radio>
+          <el-radio label="M">菜单</el-radio>
+          <el-radio label="B">按钮</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="菜单名称" prop="menuName">
         <el-input placeholder="菜单名称" v-model="menuInfo.menuName" class="form-input"/>
       </el-form-item>
       <el-form-item label="菜单图标" v-if="menuInfo.menuType === 'M'" prop="icon">
-        <icon-selector :icon="menuInfo.icon" @icon-selected="iconSelected"/>
+        <icon-selector :icon="menuInfo.icon" @icon-selected="iconSelected" class="select-input"/>
       </el-form-item>
       <el-form-item label="菜单排序">
         <el-input type="number" placeholder="菜单排序" v-model="menuInfo.orderNum" :min="0" :max="999"
@@ -182,6 +182,7 @@ const init = (menuId) => {
 
   if (menuId) {
     menuFormTitle.value = '修改菜单'
+    menuTypeDisabled.value = true
     getMenuById(menuId).then(res => {
       const menuData = res.data
       menuInfo.menuId = menuId
