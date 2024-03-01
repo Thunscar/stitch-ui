@@ -8,7 +8,7 @@
         <el-input placeholder="部门名称" v-model="deptInfo.deptName" class="form-input"/>
       </el-form-item>
       <el-form-item label="上级部门" prop="parentId">
-        <el-tree-select placeholder="上级部门" v-model="deptInfo.parentId" :data="selectDeptData" check-strictly/>
+        <el-tree-select placeholder="上级部门" v-model="deptInfo.parentId" :data="selectDeptData" check-strictly class="select-input"/>
       </el-form-item>
       <el-form-item label="部门排序">
         <el-input type="number" placeholder="部门排序" v-model="deptInfo.orderNum" :min="0" :max="999" class="sort-input"/>

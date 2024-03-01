@@ -16,18 +16,15 @@
       <el-form-item label="性别">
         <stitch-radio-group v-model="userInfo.sex" dict-type="user_gender"/>
       </el-form-item>
-      <el-form-item label="状态">
-        <stitch-radio-group v-model="userInfo.status" dict-type="user_status"/>
-      </el-form-item>
       <el-form-item label="所属部门" prop="deptId">
-        <el-tree-select placeholder="所属部门" v-model="userInfo.deptId" :data="selectDeptData" check-strictly/>
+        <el-tree-select placeholder="所属部门" v-model="userInfo.deptId" :data="selectDeptData" check-strictly class="select-input"/>
       </el-form-item>
       <el-form-item label="角色配置">
         <el-select
             v-model="userInfo.roleIds"
             multiple
             placeholder="角色配置"
-            style="width: 240px">
+            class="select-input">
           <el-option v-for="item in selectRoleData" :key="item.roleId" :label="item.roleName" :value="item.roleId"/>
         </el-select>
       </el-form-item>
@@ -36,7 +33,7 @@
             v-model="userInfo.postIds"
             multiple
             placeholder="岗位配置"
-            style="width: 240px">
+            class="select-input">
           <el-option v-for="item in selectPostData" :key="item.postId" :label="item.postName" :value="item.postId"/>
         </el-select>
       </el-form-item>
@@ -48,6 +45,9 @@
       </el-form-item>
       <el-form-item label="备注">
         <el-input type="textarea" placeholder="备注" v-model="userInfo.remark" class="form-input"/>
+      </el-form-item>
+      <el-form-item label="状态">
+        <stitch-radio-group v-model="userInfo.status" dict-type="user_status"/>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -98,11 +98,6 @@ const checkRules = ref({
   nickName: {
     required: true,
     message: '昵称不可为空',
-    trigger: ['blur']
-  },
-  password: {
-    required: true,
-    message: '密码不可为空',
     trigger: ['blur']
   },
   deptId: {

@@ -17,10 +17,11 @@
         <icon-selector :icon="menuInfo.icon" @icon-selected="iconSelected"/>
       </el-form-item>
       <el-form-item label="菜单排序">
-        <el-input type="number" placeholder="菜单排序" v-model="menuInfo.orderNum" :min="0" :max="999" class="sort-input"/>
+        <el-input type="number" placeholder="菜单排序" v-model="menuInfo.orderNum" :min="0" :max="999"
+                  class="sort-input"/>
       </el-form-item>
       <el-form-item label="上级菜单">
-        <el-tree-select v-model="menuInfo.parentId" :data="selectMenuData" check-strictly/>
+        <el-tree-select v-model="menuInfo.parentId" :data="selectMenuData" check-strictly class="select-input"/>
       </el-form-item>
       <el-form-item label="路由地址" v-if="menuInfo.menuType === 'M'">
         <el-input placeholder="路由地址" v-model="menuInfo.path" class="form-input"/>
