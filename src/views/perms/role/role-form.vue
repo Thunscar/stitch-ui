@@ -3,7 +3,7 @@
              :title="roleFormTitle"
              width="620"
              @close="closeForm">
-    <el-form :model="roleInfo" ref="roleFormRef" :rules="checkRules" label-width="100" inline>
+    <el-form :model="roleInfo" ref="roleFormRef" :rules="checkRules" label-width="100">
       <el-form-item label="角色名称" prop="roleName">
         <el-input placeholder="角色名称" v-model="roleInfo.roleName" class="form-input"/>
       </el-form-item>
@@ -11,7 +11,7 @@
         <el-input placeholder="角色编码" v-model="roleInfo.roleKey" class="form-input"/>
       </el-form-item>
       <el-form-item label="排序" prop="roleSort">
-        <el-input type="number" :min="0" :max="999" placeholder="排序" v-model="roleInfo.roleSort"/>
+        <el-input type="number" :min="0" :max="999" placeholder="排序" v-model="roleInfo.roleSort" class="sort-input"/>
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <stitch-radio-group v-model="roleInfo.status" dict-type="role_status"/>

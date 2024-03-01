@@ -11,7 +11,7 @@
         <el-tree-select placeholder="上级部门" v-model="deptInfo.parentId" :data="selectDeptData" check-strictly/>
       </el-form-item>
       <el-form-item label="部门排序">
-        <el-input type="number" placeholder="部门排序" v-model="deptInfo.orderNum" :min="0" :max="999"/>
+        <el-input type="number" placeholder="部门排序" v-model="deptInfo.orderNum" :min="0" :max="999" class="sort-input"/>
       </el-form-item>
       <el-form-item label="联系人">
         <el-input placeholder="联系人" v-model="deptInfo.leader" class="form-input"/>

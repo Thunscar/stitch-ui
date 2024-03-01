@@ -11,7 +11,7 @@
         <el-input placeholder="岗位名称" v-model="postInfo.postName" class="form-input"/>
       </el-form-item>
       <el-form-item label="岗位排序">
-        <el-input type="number" :min="0" :max="999" placeholder="排序" v-model="postInfo.postSort"/>
+        <el-input type="number" :min="0" :max="999" placeholder="排序" v-model="postInfo.postSort" class="sort-input"/>
       </el-form-item>
       <el-form-item label="状态">
         <stitch-radio-group v-model="postInfo.status" dict-type="post_status"/>

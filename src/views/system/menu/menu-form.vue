@@ -17,7 +17,7 @@
         <icon-selector :icon="menuInfo.icon" @icon-selected="iconSelected"/>
       </el-form-item>
       <el-form-item label="菜单排序">
-        <el-input type="number" placeholder="菜单排序" v-model="menuInfo.orderNum" :min="0" :max="999"/>
+        <el-input type="number" placeholder="菜单排序" v-model="menuInfo.orderNum" :min="0" :max="999" class="sort-input"/>
       </el-form-item>
       <el-form-item label="上级菜单">
         <el-tree-select v-model="menuInfo.parentId" :data="selectMenuData" check-strictly/>
