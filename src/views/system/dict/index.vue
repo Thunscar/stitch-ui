@@ -7,7 +7,7 @@
         <el-button type="primary" @click="queryDictTypeList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
         <el-button type="primary" text bg @click="createTypeHandler">新增</el-button>
-        <el-button type="danger" text bg @click="deleteBatchTypeHandler">批量删除</el-button>
+        <el-button type="danger" text bg @click="deleteBatchTypeHandler" :disabled="selectedTypes.length === 0">批量删除</el-button>
         <el-button type="success" text bg @click="refreshCacheHandler">刷新缓存</el-button>
       </span>
     </div>
@@ -49,11 +49,12 @@ export default {
 <script setup>
 import {onMounted, reactive, ref} from "vue";
 import '@/assets/css/table/table.css'
-import {getDictList, refreshDictCache} from "@/api/system/dict.js";
+import {deleteDict, getDictList, refreshDictCache} from "@/api/system/dict.js";
 import DictForm from "@/views/system/dict/dict-form.vue";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 import StitchTag from "@/components/Dict/stitch-tag.vue";
 import {useStore} from "@/store/index.js";
+import {deleteConfig} from "@/api/system/config.js";
 
 const queryDictType = reactive({
   dictName: '',
@@ -79,12 +80,34 @@ const updateTypeHandler = (dictId) => {
 
 //删除字典类型信息
 const deleteTypeHandler = (dictId) => {
-
+  ElMessageBox.confirm('确认删除该字典类型?', '警告', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    deleteDict(dictId).then(res => {
+      ElMessage.success('删除成功')
+      queryDictTypeList()
+    }).catch(() => {
+      queryDictTypeList()
+    })
+  })
 }
 
 //批量删除字典类型信息
 const deleteBatchTypeHandler = () => {
-
+  ElMessageBox.confirm('确认删除选中的数据类型?', '警告', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    deleteDict(selectedTypes.value).then(res => {
+      ElMessage.success('删除成功')
+      queryDictTypeList()
+    }).catch(() => {
+      queryDictTypeList()
+    })
+  })
 }
 
 // 选择框选中事件
