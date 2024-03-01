@@ -4,10 +4,7 @@
       <span><el-input class="s-search-input" placeholder="岗位编码" v-model="queryPost.postCode"/></span>
       <span><el-input class="s-search-input" placeholder="岗位名称" v-model="queryPost.postName"/></span>
       <span>
-        <el-select class="s-search-input" placeholder="状态" v-model="queryPost.status">
-          <el-option value="0" label="正常"/>
-          <el-option value="1" label="停用"/>
-        </el-select>
+        <stitch-select class="s-search-input" v-model="queryPost.status" dict-type="post_status"/>
       </span>
       <span>
         <el-button type="primary" @click="queryPostList">搜索</el-button>
@@ -32,9 +29,7 @@
       <el-table-column label="排序" prop="postSort" :show-overflow-tooltip="true" width="80" align="center"/>
       <el-table-column label="状态" prop="status" width="85" align="center">
         <template #default="scope">
-          <el-tag v-if="scope.row.status === '0'">正常</el-tag>
-          <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
-          <el-tag v-else type="danger">未知</el-tag>
+          <stitch-tag :tag-value="scope.row.status" dict-type="post_status"/>
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true" align="center"/>
@@ -73,6 +68,8 @@ import {deleteBatchSysPost, querySysPostList} from "@/api/perms/post.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 import Post_form from "@/views/perms/post/post_form.vue";
 import {download} from "@/api/download.js";
+import StitchTag from "@/components/Dict/stitch-tag.vue";
+import StitchSelect from "@/components/Dict/stitch-select.vue";
 
 const postFormRef = ref()
 const postList = ref([])

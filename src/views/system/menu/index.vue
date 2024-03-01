@@ -7,13 +7,10 @@
           <el-option value="1" label="可见"/>
           <el-option value="0" label="不可见"/>
         </el-select>
-        </span>
+      </span>
       <span>
-        <el-select class="s-search-input" placeholder="状态" v-model="queryMenu.status">
-          <el-option value="0" label="正常"/>
-          <el-option value="1" label="停用"/>
-        </el-select>
-        </span>
+        <stitch-select class="s-search-input" v-model="queryMenu.status" dict-type="menu_status" placeholder="状态"/>
+      </span>
       <span>
         <el-button type="primary" @click="queryMenuDataList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
@@ -67,9 +64,7 @@
       </el-table-column>
       <el-table-column prop="status" label="状态" width="90" align="center">
         <template #default="scope">
-          <el-tag v-if="scope.row.status === '0'">正常</el-tag>
-          <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
-          <el-tag v-else type="danger">未知</el-tag>
+          <stitch-tag :tag-value="scope.row.status" dict-type="menu_status"/>
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" :show-overflow-tooltip="true" align="center"/>
@@ -96,6 +91,8 @@ import '@/assets/css/table/table.css'
 import MenuForm from "@/views/system/menu/menu-form.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import SvgIcon from "@/components/Icon/SvgIcon.vue";
+import StitchSelect from "@/components/Dict/stitch-select.vue";
+import StitchTag from "@/components/Dict/stitch-tag.vue";
 
 const menuTreeData = ref([])
 const menuListData = ref([])

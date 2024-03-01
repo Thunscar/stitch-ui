@@ -13,6 +13,7 @@ const RouteWhiteList = ['/login', '/register']
 router.beforeEach((to, from, next) => {
     const userStore = useStore().user
     const routerStore = useStore().router
+    const dictStore = useStore().dict
     qprogress.start()
     if (getToken()) {
         if (to.path === '/login') {
@@ -20,9 +21,10 @@ router.beforeEach((to, from, next) => {
         } else {
             if (routerStore.routerState.length === 0) {
                 userStore.GetUserInfo().then(() => {
-                    routerStore.GetRouters().then(()=>{
+                    routerStore.GetRouters().then(() => {
                         next({...to, replace: true})
                     })
+                    dictStore.InitDictData()
                 })
             } else {
                 next()

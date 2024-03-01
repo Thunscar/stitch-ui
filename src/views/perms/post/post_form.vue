@@ -14,10 +14,7 @@
         <el-input type="number" :min="0" :max="999" placeholder="排序" v-model="postInfo.postSort"/>
       </el-form-item>
       <el-form-item label="状态">
-        <el-radio-group v-model="postInfo.status">
-          <el-radio label="0">正常</el-radio>
-          <el-radio label="1">停用</el-radio>
-        </el-radio-group>
+        <stitch-radio-group v-model="postInfo.status" dict-type="post_status"/>
       </el-form-item>
       <el-form-item label="备注">
         <el-input type="textarea" placeholder="备注" v-model="postInfo.remark" class="form-input"/>
@@ -36,6 +33,7 @@ import {reactive, ref} from "vue";
 import '@/assets/css/form/form.css'
 import {getSysPostById, insertSysPost, updateSysPost} from "@/api/perms/post.js";
 import {ElMessage} from "element-plus";
+import StitchRadioGroup from "@/components/Dict/stitch-radio-group.vue";
 
 const emits = defineEmits(['refreshDataList'])
 const postFormTitle = ref('')

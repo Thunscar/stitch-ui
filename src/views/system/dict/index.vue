@@ -4,9 +4,6 @@
       <span><el-input class="s-search-input" placeholder="字典名称" v-model="queryDictType.dictName"/></span>
       <span><el-input class="s-search-input" placeholder="字典类型" v-model="queryDictType.dictType"/></span>
       <span>
-        <stitch-select class="s-search-input" v-model="queryDictType.status" dict-type="normal_status" placeholder="状态"/>
-      </span>
-      <span>
         <el-button type="primary" @click="queryDictTypeList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
         <el-button type="primary" text bg @click="createTypeHandler">新增</el-button>
@@ -14,21 +11,14 @@
         <el-button type="success" text bg @click="refreshCacheHandler">刷新缓存</el-button>
       </span>
     </div>
-    <el-table :data="typeList"
-              :row-key="(record) => record.dictId"
-              :default-expand-all="false"
-              :indent="8"
-              border
-              :header-cell-style="{'text-align':'center'}"
-              @selection-change="selectDictTypeHandler">
+    <el-table :data="typeList" :row-key="(record) => record.dictId" :default-expand-all="false" :indent="8" border
+              :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectDictTypeHandler">
       <el-table-column type="selection" width="50" align="center"/>
       <el-table-column label="字典名称" prop="dictName" :show-overflow-tooltip="true" align="center"/>
       <el-table-column label="字典类型编码" prop="dictType" :show-overflow-tooltip="true" align="center"/>
-      <el-table-column label="状态" prop="status" width="85" align="center">
+      <el-table-column label="是否内置" prop="isSystem" width="85" align="center">
         <template #default="scope">
-          <el-tag v-if="scope.row.status === '0'">正常</el-tag>
-          <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
-          <el-tag v-else type="danger">未知</el-tag>
+          <stitch-tag :tag-value="scope.row.isSystem" dict-type="normal_system"/>
         </template>
       </el-table-column>
       <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
@@ -44,16 +34,10 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-        v-model:current-page="queryDictType.pageNum"
-        v-model:page-size="queryDictType.pageSize"
-        :page-sizes="[5, 10, 20, 50]"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="queryDictType.total"
-        @size-change="queryDictTypeList"
-        @current-change="queryDictTypeList"
-        class="table-pagination"
-    />
+    <el-pagination v-model:current-page="queryDictType.pageNum" v-model:page-size="queryDictType.pageSize"
+                   :page-sizes="[5, 10, 20, 50]" layout="total, sizes, prev, pager, next, jumper"
+                   :total="queryDictType.total"
+                   @size-change="queryDictTypeList" @current-change="queryDictTypeList" class="table-pagination"/>
     <dict-form ref="dictFormRef" @refresh-data-list="queryDictTypeList"/>
   </el-card>
 </template>
@@ -67,13 +51,13 @@ import {onMounted, reactive, ref} from "vue";
 import '@/assets/css/table/table.css'
 import {getDictList, refreshDictCache} from "@/api/system/dict.js";
 import DictForm from "@/views/system/dict/dict-form.vue";
-import StitchSelect from "@/components/Dict/stitch-select.vue";
 import {ElMessage} from "element-plus";
+import StitchTag from "@/components/Dict/stitch-tag.vue";
+import {useStore} from "@/store/index.js";
 
 const queryDictType = reactive({
   dictName: '',
   dictType: '',
-  status: '',
   pageNum: 1,
   pageSize: 10,
   total: 0
@@ -81,6 +65,7 @@ const queryDictType = reactive({
 const typeList = ref([])
 const selectedTypes = ref([])
 const dictFormRef = ref()
+const dictStore = useStore().dict
 
 //配置字典
 const dictConfig = (dictType) => {
@@ -123,7 +108,6 @@ const refreshCacheHandler = () => {
 const resetQueryCondition = () => {
   queryDictType.dictType = ''
   queryDictType.dictName = ''
-  queryDictType.status = ''
   queryDictType.pageNum = 1
   queryDictType.pageSize = 10
   queryDictType.total = 0
@@ -142,6 +126,4 @@ onMounted(() => {
   queryDictTypeList()
 })
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

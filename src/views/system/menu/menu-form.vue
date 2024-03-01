@@ -6,8 +6,8 @@
     <el-form :model="menuInfo" ref="menuFormRef" label-width="100" :rules="checkRules" inline>
       <el-form-item label="菜单类型">
         <el-radio-group v-model="menuInfo.menuType" :disabled="menuTypeDisabled">
-          <el-radio label="M">菜单</el-radio>
-          <el-radio label="B">按钮</el-radio>
+          <el-radio value="M">菜单</el-radio>
+          <el-radio value="B">按钮</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="菜单名称" prop="menuName">
@@ -50,10 +50,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="菜单状态" v-if="menuInfo.menuType === 'M'">
-        <el-radio-group v-model="menuInfo.status">
-          <el-radio label="0">正常</el-radio>
-          <el-radio label="1">停用</el-radio>
-        </el-radio-group>
+        <stitch-radio-group v-model="menuInfo.status" dict-type="menu_status"/>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -72,7 +69,7 @@ import {initSelectTree} from "@/utils/tree.js";
 import '@/assets/css/form/form.css'
 import {ElMessage, ElMessageBox} from "element-plus";
 import IconSelector from "@/components/Icon/IconSelector.vue";
-import {useStore} from "@/store/index.js";
+import StitchRadioGroup from "@/components/Dict/stitch-radio-group.vue";
 
 const menuFormRef = ref()
 const menuFormTitle = ref('')
@@ -86,11 +83,11 @@ const menuInfo = reactive({
   path: '',
   icon: '',
   component: '',
-  isFrame: "0",
+  isFrame: '0',
   isCache: '1',
   menuType: 'M',
   visible: "1",
-  status: "0",
+  status: '0',
   perms: ''
 })
 const oldPath = ref()
@@ -111,7 +108,6 @@ const checkRules = ref({
     trigger: ['blur']
   }
 })
-const visitedStore = useStore().visit
 
 const emits = defineEmits(['refreshDataList'])
 
@@ -124,7 +120,7 @@ function submitMenuHandler(menuFormRef) {
         updateSysMenu(menuInfo).then(res => {
           ElMessage.success('修改成功')
           if (oldPath.value !== menuInfo.path) {
-            ElMessageBox.alert('菜单路由发生改变，为避免页面无法访问请退出重新登入','提示')
+            ElMessageBox.alert('菜单路由发生改变，为避免页面无法访问请退出重新登入', '提示')
           }
           visible.value = false
           emits('refreshDataList')

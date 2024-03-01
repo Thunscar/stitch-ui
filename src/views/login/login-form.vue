@@ -1,20 +1,19 @@
 <template>
-  <div class="login-form" :class="{'code-form':loginForm.verifyCodeEnable}">
+  <div class="login-form" :class="{ 'code-form': loginForm.verifyCodeEnable }">
     <div class="form-title">
       <h2>{{ appTitle }}</h2>
     </div>
     <div class="form-content">
       <el-form :model="loginForm" ref="loginFormRef" :rules="checkRules">
         <el-form-item prop="username" class="login-input">
-          <el-input v-model="loginForm.username" :prefix-icon="User" class="u-p-input"
-                    autocomplete="off"/>
+          <el-input v-model="loginForm.username" :prefix-icon="User" class="u-p-input" autocomplete="off" />
         </el-form-item>
         <el-form-item prop="password" class="login-input">
-          <el-input v-model="loginForm.password" :prefix-icon="Lock" class="u-p-input"
-                    type="password" autocomplete="off"/>
+          <el-input v-model="loginForm.password" :prefix-icon="Lock" class="u-p-input" type="password"
+            autocomplete="off" />
         </el-form-item>
         <el-form-item prop="code" v-if="loginForm.verifyCodeEnable" class="login-input">
-          <el-input v-model="loginForm.code" class="code-input" :prefix-icon="Lock" placeholder="验证码"/>
+          <el-input v-model="loginForm.code" class="code-input" :prefix-icon="Lock" placeholder="验证码" />
           <img :src="loginForm.verifyImage" alt="" class="code-img" @click="getVerifyCode">
         </el-form-item>
       </el-form>
@@ -27,18 +26,18 @@
 </template>
 <script setup>
 
-import {Lock, Refresh, User, UserFilled} from "@element-plus/icons-vue";
-import {onMounted, reactive, ref} from "vue";
-import {getVerifyImage} from "@/api/login.js";
+import { Lock, Refresh, User, UserFilled } from "@element-plus/icons-vue";
+import { onMounted, reactive, ref } from "vue";
+import { getVerifyImage } from "@/api/login.js";
 import router from "@/router/index.js";
-import {useStore} from "@/store/index.js";
-import {ElMessage} from "element-plus";
-import {decrypt, encrypt} from "@/utils/encrypt.js";
+import { useStore } from "@/store/index.js";
+import { ElMessage } from "element-plus";
+import { decrypt, encrypt } from "@/utils/encrypt.js";
 import Cookies from 'js-cookie'
 
 const appTitle = import.meta.env.VITE_APP_TITLE ? import.meta.env.VITE_APP_TITLE : 'Stitch Admin'
 const loginForm = reactive({
-  username: 'admin',
+  username: 'stitch',
   password: '001010',
   code: '',
   uuid: '',
@@ -87,9 +86,9 @@ function getCookies() {
 }
 
 function setCookie() {
-  Cookies.set("username", loginForm.username, {expires: 7})
-  Cookies.set("password", encrypt(loginForm.password), {expires: 7})
-  Cookies.set("remember", loginForm.remember, {expires: 7})
+  Cookies.set("username", loginForm.username, { expires: 7 })
+  Cookies.set("password", encrypt(loginForm.password), { expires: 7 })
+  Cookies.set("remember", loginForm.remember, { expires: 7 })
 }
 
 function removeCookie() {
@@ -116,7 +115,7 @@ function handlerLogin(loginFormRef) {
           removeCookie()
         }
         //路由跳转
-        router.push({path: router.currentRoute.value.query.redirect || "/"})
+        router.push({ path: router.currentRoute.value.query.redirect || "/" })
       }).catch(res => {
         loginForm.loading = false
         getVerifyCode()

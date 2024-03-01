@@ -1,31 +1,25 @@
 <template>
   <el-dialog v-model="visible"
              :title="userFormTitle"
+             @close="closeForm"
              width="620">
-    <el-form :model="userInfo" label-width="100" inline>
-      <el-form-item label="用户名">
+    <el-form :model="userInfo" ref="userFormRef" label-width="100" :rules="checkRules" inline>
+      <el-form-item label="用户名" prop="userName">
         <el-input placeholder="用户名" v-model="userInfo.userName" class="form-input"/>
       </el-form-item>
-      <el-form-item label="昵称">
+      <el-form-item label="昵称" prop="nickName">
         <el-input placeholder="昵称" v-model="userInfo.nickName" class="form-input"/>
       </el-form-item>
-      <el-form-item label="密码" v-if="!userInfo.userId">
+      <el-form-item label="密码" v-if="!userInfo.userId" prop="password">
         <el-input placeholder="密码(若为空，则设置为默认密码)" v-model="userInfo.password" class="form-input"/>
       </el-form-item>
       <el-form-item label="性别">
-        <el-radio-group v-model="userInfo.sex">
-          <el-radio label="0">男</el-radio>
-          <el-radio label="1">女</el-radio>
-          <el-radio label="2">未知</el-radio>
-        </el-radio-group>
+        <stitch-radio-group v-model="userInfo.sex" dict-type="user_gender"/>
       </el-form-item>
       <el-form-item label="状态">
-        <el-radio-group v-model="userInfo.status">
-          <el-radio label="0">正常</el-radio>
-          <el-radio label="1">停用</el-radio>
-        </el-radio-group>
+        <stitch-radio-group v-model="userInfo.status" dict-type="user_status"/>
       </el-form-item>
-      <el-form-item label="所属部门">
+      <el-form-item label="所属部门" prop="deptId">
         <el-tree-select placeholder="所属部门" v-model="userInfo.deptId" :data="selectDeptData" check-strictly/>
       </el-form-item>
       <el-form-item label="角色配置">
@@ -59,7 +53,7 @@
     <template #footer>
         <span class="dialog-footer">
           <el-button @click="visible = false">取消</el-button>
-          <el-button type="primary" @click="submitConfigHandler">确认</el-button>
+          <el-button type="primary" @click="submitConfigHandler(userFormRef)">确认</el-button>
         </span>
     </template>
   </el-dialog>
@@ -71,6 +65,7 @@ import {ElMessage} from "element-plus";
 import {initSelectTree} from "@/utils/tree.js";
 import {getSysUserById, insertSysUser, updateSysUser} from "@/api/perms/user.js";
 import '@/assets/css/form/form.css'
+import StitchRadioGroup from "@/components/Dict/stitch-radio-group.vue";
 
 const emits = defineEmits(['refreshDataList'])
 const userFormTitle = ref('')
@@ -78,6 +73,7 @@ const visible = ref(false)
 const selectDeptData = ref([])
 const selectRoleData = ref([])
 const selectPostData = ref([])
+const userFormRef = ref()
 const userInfo = reactive({
   userId: null,
   userName: '',
@@ -86,28 +82,55 @@ const userInfo = reactive({
   status: '0',
   deptId: '',
   roleIds: [],
-  postIds:[],
+  postIds: [],
   phone: '',
   email: '',
   password: '',
   remark: ''
 })
 
-//提交表单
-const submitConfigHandler = () => {
-  if (userInfo.userId) {
-    updateSysUser(userInfo).then(res => {
-      ElMessage.success('修改成功')
-      visible.value = false
-      emits('refreshDataList')
-    })
-  } else {
-    insertSysUser(userInfo).then(res => {
-      ElMessage.success('新增成功')
-      visible.value = false
-      emits('refreshDataList')
-    })
+const checkRules = ref({
+  userName: {
+    required: true,
+    message: '用户名不可为空',
+    trigger: ['blur']
+  },
+  nickName: {
+    required: true,
+    message: '昵称不可为空',
+    trigger: ['blur']
+  },
+  password: {
+    required: true,
+    message: '密码不可为空',
+    trigger: ['blur']
+  },
+  deptId: {
+    required: true,
+    message: '请选择所述部门',
+    trigger: ['blur']
   }
+})
+
+//提交表单
+const submitConfigHandler = (userFormRef) => {
+  userFormRef.validate((valid, fields) => {
+    if (valid) {
+      if (userInfo.userId) {
+        updateSysUser(userInfo).then(res => {
+          ElMessage.success('修改成功')
+          visible.value = false
+          emits('refreshDataList')
+        })
+      } else {
+        insertSysUser(userInfo).then(res => {
+          ElMessage.success('新增成功')
+          visible.value = false
+          emits('refreshDataList')
+        })
+      }
+    }
+  })
 }
 
 //清空表单
@@ -160,6 +183,13 @@ const initFormTitle = (userId) => {
   } else {
     userFormTitle.value = '新增用户'
   }
+}
+
+//关闭表单事件
+function closeForm() {
+  visible.value = false
+  userFormRef.value.resetFields()
+  clearForm()
 }
 
 //初始化角色选择配置

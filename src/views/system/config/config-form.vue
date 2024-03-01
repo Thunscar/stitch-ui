@@ -14,10 +14,7 @@
         <el-input placeholder="参数值" v-model="configInfo.configValue" class="form-input"/>
       </el-form-item>
       <el-form-item label="是否内置">
-        <el-radio-group v-model="configInfo.configType">
-          <el-radio label="Y">内置</el-radio>
-          <el-radio label="N">非内置</el-radio>
-        </el-radio-group>
+        <stitch-radio-group dict-type="normal_system" v-model="configInfo.configType"/>
       </el-form-item>
       <el-form-item label="备注">
         <el-input type="textarea" placeholder="备注" v-model="configInfo.remark" class="form-input"/>
@@ -38,6 +35,7 @@ import {reactive, ref} from "vue";
 import '@/assets/css/form/form.css'
 import {addConfig, getConfig, updateConfig} from "@/api/system/config.js";
 import {ElMessage} from "element-plus";
+import StitchRadioGroup from "@/components/Dict/stitch-radio-group.vue";
 
 const emits = defineEmits(['refreshDataList'])
 const configFormTitle = ref('')
@@ -47,7 +45,7 @@ const configInfo = reactive({
   configName: '',
   configKey: '',
   configValue: '',
-  configType: 'Y',
+  configType: '0',
   remark: ''
 })
 const configFormRef = ref()
@@ -97,7 +95,7 @@ function clearForm() {
   configInfo.configName = ''
   configInfo.configKey = ''
   configInfo.configValue = ''
-  configInfo.configType = 'Y'
+  configInfo.configType = '0'
   configInfo.remark = ''
 }
 

@@ -35,16 +35,12 @@
       </el-table-column>
       <el-table-column label="性别" prop="sex" width="70" align="center">
         <template #default="scope">
-          <el-tag v-if="scope.row.sex === '0'">男</el-tag>
-          <el-tag v-else-if="scope.row.sex === '1'" type="warning">女</el-tag>
-          <el-tag v-else type="danger">未知</el-tag>
+          <stitch-tag :tag-value="scope.row.sex" dict-type="user_gender"/>
         </template>
       </el-table-column>
       <el-table-column label="状态" prop="status" width="90" align="center">
         <template #default="scope">
-          <el-tag v-if="scope.row.status === '0'">正常</el-tag>
-          <el-tag v-else-if="scope.row.status === '1'" type="warning">停用</el-tag>
-          <el-tag v-else type="danger">未知</el-tag>
+          <stitch-tag :tag-value="scope.row.status" dict-type="user_status"/>
         </template>
       </el-table-column>
       <el-table-column label="所属部门" prop="dept.deptName" :show-overflow-tooltip="true" width="120"
@@ -101,6 +97,7 @@ import '@/assets/css/table/table.css'
 import UserForm from "@/views/perms/user/user-form.vue";
 import {download} from "@/api/download.js";
 import AllocateRoleDrawer from "@/views/perms/user/allocate-role-drawer.vue";
+import StitchTag from "@/components/Dict/stitch-tag.vue";
 
 const userList = ref([])
 const selectedUsers = ref([])

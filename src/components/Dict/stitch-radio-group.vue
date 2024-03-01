@@ -8,6 +8,9 @@
 <script setup>
 
 import {useStore} from "@/store/index.js";
+import {onMounted, ref} from "vue";
+
+const dictStore = useStore().dict
 
 const props = defineProps({
   dictType: {
@@ -19,7 +22,6 @@ const props = defineProps({
     required: true
   }
 })
-const dictStore = useStore().dict
 </script>
 <style scoped>
 

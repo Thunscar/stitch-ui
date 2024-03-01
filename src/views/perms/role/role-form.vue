@@ -14,10 +14,7 @@
         <el-input type="number" :min="0" :max="999" placeholder="排序" v-model="roleInfo.roleSort"/>
       </el-form-item>
       <el-form-item label="状态" prop="status">
-        <el-radio-group v-model="roleInfo.status" style="width: 220px">
-          <el-radio label="0">正常</el-radio>
-          <el-radio label="1">停用</el-radio>
-        </el-radio-group>
+        <stitch-radio-group v-model="roleInfo.status" dict-type="role_status"/>
       </el-form-item>
       <el-form-item label="功能权限" prop="menuIds">
         <el-tree
@@ -49,6 +46,7 @@ import '@/assets/css/form/form.css'
 import {insertSysRole, selectAuthMenu, updateSysRole} from "@/api/perms/role.js";
 import {getMenuList} from "@/api/system/menu.js";
 import {initSelectTree} from "@/utils/tree.js";
+import StitchRadioGroup from "@/components/Dict/stitch-radio-group.vue";
 
 const emits = defineEmits(['refreshDataList'])
 const roleFormTitle = ref('')

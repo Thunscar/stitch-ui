@@ -3,10 +3,7 @@
     <div class="search">
       <span><el-input class="s-search-input" placeholder="角色名称" v-model="queryRole.roleName"/></span>
       <span>
-        <el-select class="s-search-input" placeholder="状态" v-model="queryRole.status">
-          <el-option value="0" label="正常"/>
-          <el-option value="1" label="停用"/>
-        </el-select>
+        <stitch-select class="s-search-input" v-model="queryRole.status" dict-type="role_status" placeholder="状态"/>
       </span>
       <span>
         <el-button type="primary" @click="queryRoleList">搜索</el-button>
@@ -88,6 +85,7 @@ import RoleForm from "@/views/perms/role/role-form.vue";
 import '@/assets/css/table/table.css'
 import DataScopeDrawer from "@/views/perms/role/data-scope-drawer.vue";
 import AllocateUserDrawer from "@/views/perms/role/allocate-user-drawer.vue";
+import StitchSelect from "@/components/Dict/stitch-select.vue";
 
 const dataScopeDrawerRef = ref(false)
 const allocatedUserDrawerRef = ref(false)

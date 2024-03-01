@@ -4,10 +4,7 @@
       <span><el-input class="s-search-input" placeholder="参数名称" v-model="queryConfig.configName"/></span>
       <span><el-input class="s-search-input" placeholder="参数键名" v-model="queryConfig.configKey"/></span>
       <span>
-        <el-select class="s-search-input" placeholder="是否内置" v-model="queryConfig.configType">
-          <el-option value="Y" label="内置"/>
-          <el-option value="N" label="非内置"/>
-        </el-select>
+        <stitch-select class="s-search-input" v-model="queryConfig.configType" dict-type="normal_system"/>
       </span>
       <span>
         <el-button type="primary" @click="queryConfigList">搜索</el-button>
@@ -33,9 +30,7 @@
       <el-table-column label="参数值" prop="configValue" :show-overflow-tooltip="true" align="center"/>
       <el-table-column label="是否内置" prop="configType" width="100" align="center">
         <template #default="scope">
-          <el-tag v-if="scope.row.configType === 'Y'">内置</el-tag>
-          <el-tag v-else-if="scope.row.configType === 'N'" type="warning">非内置</el-tag>
-          <el-tag v-else type="danger">未知</el-tag>
+          <stitch-tag :tag-value="scope.row.configType" dict-type="normal_system"/>
         </template>
       </el-table-column>
       <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
@@ -75,6 +70,8 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import '@/assets/css/table/table.css'
 import {download} from "@/api/download.js";
 import ConfigForm from "@/views/system/config/config-form.vue";
+import StitchTag from "@/components/Dict/stitch-tag.vue";
+import StitchSelect from "@/components/Dict/stitch-select.vue";
 
 const configList = ref([])
 const selectedConfigs = ref([])

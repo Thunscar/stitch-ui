@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {getDictData} from "@/api/system/dict-data.js";
+import {getDictDataByType, initDictData} from "@/api/system/dict-data.js";
 
 export const useDictStore = defineStore('dict', {
     state: () => ({
@@ -8,17 +8,22 @@ export const useDictStore = defineStore('dict', {
     actions: {
         GetDictData(dictTypeCode) {
             const findDictType = this.dictList.find(item => item.dictTypeCode === dictTypeCode);
-            if (findDictType) {
+            if (findDictType || findDictType === []) {
                 return findDictType.dictDataList
             }
-            getDictData(dictTypeCode).then(res => {
+            getDictDataByType(dictTypeCode).then(res => {
                 const dictType = {
                     dictTypeCode: dictTypeCode,
                     dictDataList: res.data
                 }
                 this.dictList.push(dictType)
-            });
+            })
             return []
+        },
+        InitDictData() {
+            initDictData().then(res => {
+                this.dictList.unshift(...res.data)
+            })
         }
     }
 })
