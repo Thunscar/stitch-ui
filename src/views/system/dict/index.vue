@@ -7,7 +7,8 @@
         <el-button type="primary" @click="queryDictTypeList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
         <el-button type="primary" text bg @click="createTypeHandler">新增</el-button>
-        <el-button type="danger" text bg @click="deleteBatchTypeHandler" :disabled="selectedTypes.length === 0">批量删除</el-button>
+        <el-button type="danger" text bg @click="deleteBatchTypeHandler"
+                   :disabled="selectedTypes.length === 0">批量删除</el-button>
         <el-button type="success" text bg @click="refreshCacheHandler">刷新缓存</el-button>
       </span>
     </div>
@@ -25,7 +26,7 @@
       <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true" align="center"/>
       <el-table-column label="操作" width="200" min-width="120" fixed="right" align="center">
         <template #default="scope">
-          <el-button type="primary" link @click="dictConfig(scope.row.dictType)">字典配置
+          <el-button type="primary" link @click="dictConfig(scope.row.dictType,scope.row.dictName)">字典配置
           </el-button>
           <el-button type="primary" link @click="updateTypeHandler(scope.row.dictId)">修改
           </el-button>
@@ -39,6 +40,7 @@
                    :total="queryDictType.total"
                    @size-change="queryDictTypeList" @current-change="queryDictTypeList" class="table-pagination"/>
     <dict-form ref="dictFormRef" @refresh-data-list="queryDictTypeList"/>
+    <dict-data-drawer ref="dictDataDrawerRef"/>
   </el-card>
 </template>
 <script>
@@ -53,8 +55,8 @@ import {deleteDict, getDictList, refreshDictCache} from "@/api/system/dict.js";
 import DictForm from "@/views/system/dict/dict-form.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import StitchTag from "@/components/Dict/stitch-tag.vue";
+import DictDataDrawer from "@/views/system/dict/data/dict-data-drawer.vue";
 import {useStore} from "@/store/index.js";
-import {deleteConfig} from "@/api/system/config.js";
 
 const queryDictType = reactive({
   dictName: '',
@@ -66,11 +68,12 @@ const queryDictType = reactive({
 const typeList = ref([])
 const selectedTypes = ref([])
 const dictFormRef = ref()
+const dictDataDrawerRef = ref()
 const dictStore = useStore().dict
 
 //配置字典
-const dictConfig = (dictType) => {
-
+const dictConfig = (dictType, dictTypeName) => {
+  dictDataDrawerRef.value.initDrawer(dictType, dictTypeName)
 }
 
 //更新字典类型信息
@@ -123,6 +126,7 @@ const createTypeHandler = () => {
 //刷新缓存事件
 const refreshCacheHandler = () => {
   refreshDictCache().then(() => {
+    dictStore.InitDictData()
     ElMessage.success('刷新缓存成功')
   })
 }

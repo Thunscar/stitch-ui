@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
-import {getDictDataByType, initDictData} from "@/api/system/dict-data.js";
+import {initDictData} from "@/api/system/dict.js";
+import {getDictDataByType} from "@/api/system/dict-data.js";
 
 export const useDictStore = defineStore('dict', {
     state: () => ({
@@ -22,7 +23,7 @@ export const useDictStore = defineStore('dict', {
         },
         InitDictData() {
             initDictData().then(res => {
-                this.dictList.unshift(...res.data)
+                this.dictList = res.data
             })
         }
     }

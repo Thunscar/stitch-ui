@@ -49,7 +49,6 @@ service.interceptors.request.use(config => {
             const interval = 2000
             if (s_data === requestObj.data && s_url === requestObj.url && requestObj.time - s_time < interval) {
                 const repeatMsg = '数据正在处理，请勿重复提交'
-                ElMessage.warning(repeatMsg)
                 return new Promise((resolve, reject) => {
                     reject(new Error(repeatMsg))
                 })
@@ -94,7 +93,6 @@ service.interceptors.response.use(response => {
     return response.data
 }, error => {
     //请求失败拦截处理
-    console.log('err' + error)
     let {message} = error;
     if (message === "Network Error") {
         message = "后端接口连接异常";

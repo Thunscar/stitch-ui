@@ -45,3 +45,10 @@ export function refreshDictCache() {
         method: 'post'
     })
 }
+
+export function initDictData() {
+    return request({
+        url: '/sys/dict/type/init',
+        method: 'get'
+    })
+}
