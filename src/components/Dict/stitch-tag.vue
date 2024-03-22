@@ -1,5 +1,5 @@
 <template>
-  <el-tag v-if="dictData !== undefined && dictData !== []" :type="dictData.cssClass === 'primary'?'':dictData.cssClass">
+  <el-tag v-if="dictData !== undefined && dictData != []" :type="dictData.cssClass === 'primary'?'':dictData.cssClass">
     {{ dictData.dictLabel }}
   </el-tag>
   <el-tag v-else type="danger">未知</el-tag>
