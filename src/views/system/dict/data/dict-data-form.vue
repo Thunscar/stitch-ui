@@ -123,13 +123,7 @@ function init(dictType, dictCode) {
   if (dictCode) {
     dataFormTitle.value = '修改字典数据'
     getDictDataByCode(dictCode).then(res => {
-      const dict = res.data
-      dictDataInfo.dictCode = dictCode
-      dictDataInfo.dictLabel = dict.dictLabel
-      dictDataInfo.dictValue = dict.dictValue
-      dictDataInfo.cssClass = dict.cssClass
-      dictDataInfo.dictSort = dict.dictSort
-      dictDataInfo.remark = dict.remark
+      Object.assign(dictDataInfo,res.data)
     })
   } else {
     dataFormTitle.value = '新增字典数据'

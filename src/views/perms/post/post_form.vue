@@ -109,13 +109,7 @@ function init(postId) {
   if (postId) {
     postFormTitle.value = '修改岗位'
     getSysPostById(postId).then(res => {
-      const post = res.data
-      postInfo.postId = postId
-      postInfo.postCode = post.postCode
-      postInfo.postName = post.postName
-      postInfo.postSort = post.postSort
-      postInfo.status = post.status
-      postInfo.remark = post.remark
+      Object.assign(postInfo,res.data)
     })
   } else {
     postFormTitle.value = '新增参数'

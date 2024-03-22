@@ -1,40 +1,37 @@
 <template>
-  <el-dialog v-model="visible"
-             :title="configFormTitle"
-             width="620"
-             @close="closeForm">
+  <el-dialog v-model="visible" :title="configFormTitle" width="620" @close="closeForm">
     <el-form :model="configInfo" ref="configFormRef" :rules="checkRules" label-width="100" inline>
       <el-form-item label="参数名称" prop="configName">
-        <el-input placeholder="参数名称" v-model="configInfo.configName" class="form-input"/>
+        <el-input placeholder="参数名称" v-model="configInfo.configName" class="form-input" />
       </el-form-item>
       <el-form-item label="参数键名" prop="configKey">
-        <el-input placeholder="参数键名" v-model="configInfo.configKey" class="form-input"/>
+        <el-input placeholder="参数键名" v-model="configInfo.configKey" class="form-input" />
       </el-form-item>
       <el-form-item label="参数值">
-        <el-input placeholder="参数值" v-model="configInfo.configValue" class="form-input"/>
+        <el-input placeholder="参数值" v-model="configInfo.configValue" class="form-input" />
       </el-form-item>
       <el-form-item label="是否内置">
-        <stitch-radio-group dict-type="normal_system" v-model="configInfo.configType"/>
+        <stitch-radio-group dict-type="normal_system" v-model="configInfo.configType" />
       </el-form-item>
       <el-form-item label="备注">
-        <el-input type="textarea" placeholder="备注" v-model="configInfo.remark" class="form-input"/>
+        <el-input type="textarea" placeholder="备注" v-model="configInfo.remark" class="form-input" />
       </el-form-item>
     </el-form>
     <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="closeForm">取消</el-button>
-          <el-button type="primary" @click="submitConfigHandler">确认</el-button>
-        </span>
+      <span class="dialog-footer">
+        <el-button @click="closeForm">取消</el-button>
+        <el-button type="primary" @click="submitConfigHandler">确认</el-button>
+      </span>
     </template>
   </el-dialog>
 </template>
 <script setup>
 
 
-import {reactive, ref} from "vue";
+import { reactive, ref } from "vue";
 import '@/assets/css/form/form.css'
-import {addConfig, getConfig, updateConfig} from "@/api/system/config.js";
-import {ElMessage} from "element-plus";
+import { addConfig, getConfig, updateConfig } from "@/api/system/config.js";
+import { ElMessage } from "element-plus";
 import StitchRadioGroup from "@/components/Dict/stitch-radio-group.vue";
 
 const emits = defineEmits(['refreshDataList'])
@@ -108,13 +105,7 @@ function init(configId) {
   if (configId) {
     configFormTitle.value = '修改参数'
     getConfig(configId).then(res => {
-      const config = res.data
-      configInfo.configId = configId
-      configInfo.configName = config.configName
-      configInfo.configKey = config.configKey
-      configInfo.configValue = config.configValue
-      configInfo.configType = config.configType
-      configInfo.remark = config.remark
+      Object.assign(configInfo, res.data)
     })
   } else {
     configFormTitle.value = '新增参数'
@@ -127,6 +118,4 @@ defineExpose({
 })
 
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

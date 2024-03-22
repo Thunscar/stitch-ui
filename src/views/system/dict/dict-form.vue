@@ -100,12 +100,7 @@ function init(dictId) {
   if (dictId) {
     dictFormTitle.value = '修改字典'
     getDict(dictId).then(res => {
-      const dict = res.data
-      dictInfo.dictId = dictId
-      dictInfo.dictName = dict.dictName
-      dictInfo.dictType = dict.dictType
-      dictInfo.isSystem = dict.isSystem
-      dictInfo.remark = dict.remark
+      Object.assign(dictInfo,res.data)
     })
   } else {
     dictFormTitle.value = '新增字典'
