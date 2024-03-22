@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <div class="search">
-      <span><el-input class="s-search-input" placeholder="用户名" v-model="queryUser.roleName"/></span>
+      <span><el-input class="s-search-input" placeholder="用户名" v-model="queryUser.userName"/></span>
       <span><el-input class="s-search-input" placeholder="手机号" v-model="queryUser.phone"/></span>
       <span><el-input class="s-search-input" placeholder="邮箱" v-model="queryUser.email"/></span>
       <span>

@@ -1,3 +1,6 @@
+# Config
+jsconfig.json
+tsconfig.json
 
 # System
 .DS_Store

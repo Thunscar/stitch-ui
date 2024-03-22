@@ -9,7 +9,7 @@ export const useDictStore = defineStore('dict', {
     actions: {
         GetDictData(dictTypeCode) {
             const findDictType = this.dictList.find(item => item.dictTypeCode === dictTypeCode);
-            if (findDictType || findDictType === []) {
+            if (findDictType || findDictType == []) {
                 return findDictType.dictDataList
             }
             getDictDataByType(dictTypeCode).then(res => {
