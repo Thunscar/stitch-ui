@@ -1,51 +1,41 @@
 <template>
-  <el-dialog v-model="visible"
-             :title="roleFormTitle"
-             width="620"
-             @close="closeForm">
+  <el-dialog v-model="visible" :title="roleFormTitle" width="620" @close="closeForm">
     <el-form :model="roleInfo" ref="roleFormRef" :rules="checkRules" label-width="100">
       <el-form-item label="角色名称" prop="roleName">
-        <el-input placeholder="角色名称" v-model="roleInfo.roleName" class="form-input"/>
+        <el-input placeholder="角色名称" v-model="roleInfo.roleName" class="form-input" />
       </el-form-item>
       <el-form-item label="角色编码" prop="roleKey">
-        <el-input placeholder="角色编码" v-model="roleInfo.roleKey" class="form-input"/>
+        <el-input placeholder="角色编码" v-model="roleInfo.roleKey" class="form-input" />
       </el-form-item>
       <el-form-item label="排序" prop="roleSort">
-        <el-input type="number" :min="0" :max="999" placeholder="排序" v-model="roleInfo.roleSort" class="sort-input"/>
+        <el-input type="number" :min="0" :max="999" placeholder="排序" v-model="roleInfo.roleSort" class="sort-input" />
       </el-form-item>
       <el-form-item label="状态" prop="status">
-        <stitch-radio-group v-model="roleInfo.status" dict-type="role_status"/>
+        <stitch-radio-group v-model="roleInfo.status" dict-type="role_status" />
       </el-form-item>
       <el-form-item label="功能权限" prop="menuIds">
-        <el-tree
-            ref="menuTreeComponent"
-            :data="selectMenuData"
-            :props="defaultProps"
-            :default-checked-keys="roleInfo.menuIds"
-            check-strictly
-            node-key="value"
-            show-checkbox
-        />
+        <el-tree ref="menuTreeComponent" :data="selectMenuData" :props="defaultProps"
+          :default-checked-keys="roleInfo.menuIds" check-strictly node-key="value" show-checkbox />
       </el-form-item>
       <el-form-item label="备注" prop="remark">
-        <el-input type="textarea" placeholder="备注" v-model="roleInfo.remark" class="form-input"/>
+        <el-input type="textarea" placeholder="备注" v-model="roleInfo.remark" class="form-input" />
       </el-form-item>
     </el-form>
     <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="closeForm">取消</el-button>
-          <el-button type="primary" @click="submitRoleHandler">确认</el-button>
-        </span>
+      <span class="dialog-footer">
+        <el-button @click="closeForm">取消</el-button>
+        <el-button type="primary" @click="submitRoleHandler">确认</el-button>
+      </span>
     </template>
   </el-dialog>
 </template>
 <script setup>
-import {reactive, ref} from "vue";
-import {ElMessage} from "element-plus";
+import { reactive, ref } from "vue";
+import { ElMessage } from "element-plus";
 import '@/assets/css/form/form.css'
-import {insertSysRole, selectAuthMenu, updateSysRole} from "@/api/perms/role.js";
-import {getMenuList} from "@/api/system/menu.js";
-import {initSelectTree} from "@/utils/tree.js";
+import { insertSysRole, selectAuthMenu, updateSysRole } from "@/api/perms/role.js";
+import { getMenuList } from "@/api/system/menu.js";
+import { initSelectTree } from "@/utils/tree.js";
 import StitchRadioGroup from "@/components/Dict/stitch-radio-group.vue";
 
 const emits = defineEmits(['refreshDataList'])
@@ -84,16 +74,17 @@ const checkRules = ref({
 function submitRoleHandler() {
   roleFormRef.value.validate((valid) => {
     if (valid) {
+      const checkMenus = []
+      checkMenus.unshift(...menuTreeComponent.value.getCheckedKeys())
+      roleInfo.menuIds = checkMenus
       if (roleInfo.roleId) {
-        const checkMenus = []
-        checkMenus.unshift(...menuTreeComponent.value.getCheckedKeys())
-        roleInfo.menuIds = checkMenus
         updateSysRole(roleInfo).then(res => {
           ElMessage.success('修改成功')
           closeForm()
           emits('refreshDataList')
         })
       } else {
+
         insertSysRole(roleInfo).then(res => {
           ElMessage.success('新增成功')
           closeForm()
@@ -160,6 +151,4 @@ defineExpose({
 })
 
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>
