@@ -13,9 +13,8 @@
       <el-form-item label="状态" prop="status">
         <stitch-radio-group v-model="roleInfo.status" dict-type="role_status" />
       </el-form-item>
-      <el-form-item label="功能权限" prop="menuIds">
-        <el-tree ref="menuTreeComponent" :data="selectMenuData" :props="defaultProps"
-          :default-checked-keys="roleInfo.menuIds" check-strictly node-key="value" show-checkbox />
+      <el-form-item label="功能权限">
+        <el-tree ref="menuTreeComponent" :data="selectMenuData" :props="defaultProps" node-key="value" show-checkbox />
       </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input type="textarea" placeholder="备注" v-model="roleInfo.remark" class="form-input" />
@@ -75,6 +74,7 @@ function submitRoleHandler() {
   roleFormRef.value.validate((valid) => {
     if (valid) {
       const checkMenus = []
+      checkMenus.unshift(...menuTreeComponent.value.getHalfCheckedKeys())
       checkMenus.unshift(...menuTreeComponent.value.getCheckedKeys())
       roleInfo.menuIds = checkMenus
       if (roleInfo.roleId) {
@@ -130,12 +130,9 @@ function init(roleId) {
     roleFormTitle.value = '修改角色'
     selectAuthMenu(roleId).then(res => {
       const role = res.data
-      roleInfo.roleId = roleId
-      roleInfo.roleName = role.roleName
-      roleInfo.roleKey = role.roleKey
-      roleInfo.status = role.status
-      roleInfo.remark = role.remark
-      roleInfo.menuIds = role.menuIds
+      Object.assign(roleInfo, role)
+      //设置菜单权限树已选中的节点
+      role.menuIds.forEach(item => menuTreeComponent.value.setChecked(item, true))
     })
   } else {
     roleFormTitle.value = '新增角色'
