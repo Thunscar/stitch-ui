@@ -89,6 +89,9 @@ service.interceptors.response.use(response => {
             router.push({path: `/login?redirect=${router.currentRoute.value.fullPath}`}).catch()
         })
         return Promise.reject(message)
+    }else if(code === 403){
+        ElMessage.warning(message)
+        return Promise.reject(message)
     }
     return response.data
 }, error => {

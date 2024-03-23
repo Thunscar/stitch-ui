@@ -1,46 +1,45 @@
 <template>
   <el-card>
     <div class="search">
-      <span><el-input class="s-search-input" placeholder="字典名称" v-model="queryDictType.dictName"/></span>
-      <span><el-input class="s-search-input" placeholder="字典类型" v-model="queryDictType.dictType"/></span>
+      <span><el-input class="s-search-input" placeholder="字典名称" v-model="queryDictType.dictName" /></span>
+      <span><el-input class="s-search-input" placeholder="字典类型" v-model="queryDictType.dictType" /></span>
       <span>
         <el-button type="primary" @click="queryDictTypeList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
-        <el-button type="primary" text bg @click="createTypeHandler">新增</el-button>
-        <el-button type="danger" text bg @click="deleteBatchTypeHandler"
-                   :disabled="selectedTypes.length === 0">批量删除</el-button>
-        <el-button type="success" text bg @click="refreshCacheHandler">刷新缓存</el-button>
+        <el-button v-auth="'sys:dict:create'" type="primary" text bg @click="createTypeHandler">新增</el-button>
+        <el-button v-auth="'sys:dict:delete'" type="danger" text bg @click="deleteBatchTypeHandler"
+          :disabled="selectedTypes.length === 0">批量删除</el-button>
+        <el-button v-auth="'sys:dict:refresh'" type="success" text bg @click="refreshCacheHandler">刷新缓存</el-button>
       </span>
     </div>
     <el-table :data="typeList" :row-key="(record) => record.dictId" :default-expand-all="false" :indent="8" border
-              :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectDictTypeHandler">
-      <el-table-column type="selection" width="50" align="center"/>
-      <el-table-column label="字典名称" prop="dictName" :show-overflow-tooltip="true" align="center"/>
-      <el-table-column label="字典类型编码" prop="dictType" :show-overflow-tooltip="true" align="center"/>
+      :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectDictTypeHandler">
+      <el-table-column type="selection" width="50" align="center" />
+      <el-table-column label="字典名称" prop="dictName" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="字典类型编码" prop="dictType" :show-overflow-tooltip="true" align="center" />
       <el-table-column label="是否内置" prop="isSystem" width="85" align="center">
         <template #default="scope">
-          <stitch-tag :tag-value="scope.row.isSystem" dict-type="normal_system"/>
+          <stitch-tag :tag-value="scope.row.isSystem" dict-type="normal_system" />
         </template>
       </el-table-column>
-      <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
-      <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center" />
+      <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true" align="center" />
       <el-table-column label="操作" width="200" min-width="120" fixed="right" align="center">
         <template #default="scope">
-          <el-button type="primary" link @click="dictConfig(scope.row.dictType,scope.row.dictName)">字典配置
+          <el-button v-auth="'sys:dict:config'" type="primary" link @click="dictConfig(scope.row.dictType, scope.row.dictName)">字典配置
           </el-button>
-          <el-button type="primary" link @click="updateTypeHandler(scope.row.dictId)">修改
+          <el-button v-auth="'sys:dict:update'" type="primary" link @click="updateTypeHandler(scope.row.dictId)">修改
           </el-button>
-          <el-button type="danger" link @click="deleteTypeHandler(scope.row.dictId)">删除
+          <el-button v-auth="'sys:dict:delete'" type="danger" link @click="deleteTypeHandler(scope.row.dictId)">删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination v-model:current-page="queryDictType.pageNum" v-model:page-size="queryDictType.pageSize"
-                   :page-sizes="[5, 10, 20, 50]" layout="total, sizes, prev, pager, next, jumper"
-                   :total="queryDictType.total"
-                   @size-change="queryDictTypeList" @current-change="queryDictTypeList" class="table-pagination"/>
-    <dict-form ref="dictFormRef" @refresh-data-list="queryDictTypeList"/>
-    <dict-data-drawer ref="dictDataDrawerRef"/>
+      :page-sizes="[5, 10, 20, 50]" layout="total, sizes, prev, pager, next, jumper" :total="queryDictType.total"
+      @size-change="queryDictTypeList" @current-change="queryDictTypeList" class="table-pagination" />
+    <dict-form ref="dictFormRef" @refresh-data-list="queryDictTypeList" />
+    <dict-data-drawer ref="dictDataDrawerRef" />
   </el-card>
 </template>
 <script>
@@ -49,14 +48,14 @@ export default {
 }
 </script>
 <script setup>
-import {onMounted, reactive, ref} from "vue";
+import { onMounted, reactive, ref } from "vue";
 import '@/assets/css/table/table.css'
-import {deleteDict, getDictList, refreshDictCache} from "@/api/system/dict.js";
+import { deleteDict, getDictList, refreshDictCache } from "@/api/system/dict.js";
 import DictForm from "@/views/system/dict/dict-form.vue";
-import {ElMessage, ElMessageBox} from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import StitchTag from "@/components/Dict/stitch-tag.vue";
 import DictDataDrawer from "@/views/system/dict/data/dict-data-drawer.vue";
-import {useStore} from "@/store/index.js";
+import { useStore } from "@/store/index.js";
 
 const queryDictType = reactive({
   dictName: '',

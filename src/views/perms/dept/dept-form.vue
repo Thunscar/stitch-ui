@@ -36,7 +36,6 @@ import '@/assets/css/form/form.css'
 import { getDeptList, getSysDeptById, insertSysDept, updateSysDept } from "@/api/system/dept.js";
 import { initSelectTree } from "@/utils/tree.js";
 import { ElMessage } from "element-plus";
-import { de } from "element-plus/es/locale";
 
 const visible = ref(false)
 const deptFormTitle = ref()

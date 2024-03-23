@@ -1,9 +1,9 @@
-import {defineStore} from "pinia";
-import {login, logout} from "@/api/login.js";
-import {getUserInfo} from "@/api/router.js";
-import {persistConfig} from "@/store/config/persistConfig.js";
-import {useVisitedStore} from "@/store/modules/visit.js";
-import {useRouterStore} from "@/store/modules/router.js";
+import { defineStore } from "pinia";
+import { login, logout } from "@/api/login.js";
+import { getUserInfo } from "@/api/router.js";
+import { persistConfig } from "@/store/config/persistConfig.js";
+import { useVisitedStore } from "@/store/modules/visit.js";
+import { useRouterStore } from "@/store/modules/router.js";
 
 export const userStorageKey = 'user'
 export const useUserStore = defineStore("user", {
@@ -32,7 +32,7 @@ export const useUserStore = defineStore("user", {
                     this.name = res.user.nickName
                     this.avatar = res.user.avatar
                     this.roles = res.roles
-                    this.permission = res.permission
+                    this.permission = res.menus
                     resolve()
                 }).catch(error => {
                     reject(error)
@@ -58,6 +58,13 @@ export const useUserStore = defineStore("user", {
                     reject(error)
                 })
             })
+        },
+        HasPerms(perms) {
+            const all_perms = '*:*:*'
+            if (this.permission.includes(all_perms)) {
+                return true
+            }
+            return this.permission.find(item => item === perms)
         }
     },
     persist: persistConfig(userStorageKey, ['name', 'avatar', 'roles', 'permission', 'token'])

@@ -1,13 +1,14 @@
-import {createApp} from 'vue'
+import { createApp } from 'vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'virtual:svg-icons-register'
 import './permission.js'
 import router from '@/router/index.js'
-import {createPinia} from "pinia"
+import { createPinia } from "pinia"
 import persistPlugin from 'pinia-plugin-persist'
 import '@/utils/modules.js'
+import directive from '@/utils/directive.js'
 
 //引入主题相关文件
 import '@/assets/css/theme/default.css'
@@ -20,6 +21,8 @@ const pinia = createPinia();
 pinia.use(persistPlugin)
 
 const app = createApp(App)
+//自定义指令注册
+directive(app)
 app.use(ElementPlus)
 app.config.globalProperties.bus = bus
 app.use(pinia)

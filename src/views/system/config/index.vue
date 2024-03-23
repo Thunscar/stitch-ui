@@ -1,61 +1,50 @@
 <template>
   <el-card>
     <div class="search">
-      <span><el-input class="s-search-input" placeholder="参数名称" v-model="queryConfig.configName"/></span>
-      <span><el-input class="s-search-input" placeholder="参数键名" v-model="queryConfig.configKey"/></span>
+      <span><el-input class="s-search-input" placeholder="参数名称" v-model="queryConfig.configName" /></span>
+      <span><el-input class="s-search-input" placeholder="参数键名" v-model="queryConfig.configKey" /></span>
       <span>
-        <stitch-select class="s-search-input" v-model="queryConfig.configType" dict-type="normal_system"/>
+        <stitch-select class="s-search-input" v-model="queryConfig.configType" dict-type="normal_system" />
       </span>
       <span>
         <el-button type="primary" @click="queryConfigList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
-        <el-button type="primary" text bg @click="createConfigHandler">新增</el-button>
-        <el-button type="danger" text bg :disabled="selectedConfigs.length === 0"
-                   @click="deleteBatchConfigHandler">批量删除
+        <el-button v-auth="'sys:config:create'" type="primary" text bg @click="createConfigHandler">新增</el-button>
+        <el-button v-auth="'sys:config:delete'" type="danger" text bg :disabled="selectedConfigs.length === 0"
+          @click="deleteBatchConfigHandler">批量删除
         </el-button>
-        <el-button type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
-        <el-button type="success" text bg @click="refreshCacheHandler">刷新缓存</el-button>
+        <el-button v-auth="'sys:config:export'" type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
+        <el-button v-auth="'sys:config:refresh'" type="success" text bg @click="refreshCacheHandler">刷新缓存</el-button>
       </span>
     </div>
-    <el-table :data="configList"
-              :row-key="(record) => record.configId"
-              :default-expand-all="false"
-              :indent="8"
-              border
-              :header-cell-style="{'text-align':'center'}"
-              @selection-change="selectConfigHandler">
-      <el-table-column type="selection" width="50" align="center"/>
-      <el-table-column label="参数名称" prop="configName" :show-overflow-tooltip="true" align="center"/>
-      <el-table-column label="参数键名" prop="configKey" :show-overflow-tooltip="true" align="center"/>
-      <el-table-column label="参数值" prop="configValue" :show-overflow-tooltip="true" align="center"/>
+    <el-table :data="configList" :row-key="(record) => record.configId" :default-expand-all="false" :indent="8" border
+      :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectConfigHandler">
+      <el-table-column type="selection" width="50" align="center" />
+      <el-table-column label="参数名称" prop="configName" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="参数键名" prop="configKey" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="参数值" prop="configValue" :show-overflow-tooltip="true" align="center" />
       <el-table-column label="是否内置" prop="configType" width="100" align="center">
         <template #default="scope">
-          <stitch-tag :tag-value="scope.row.configType" dict-type="normal_system"/>
+          <stitch-tag :tag-value="scope.row.configType" dict-type="normal_system" />
         </template>
       </el-table-column>
-      <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"/>
-      <el-table-column prop="createUser" label="创建人员" :show-overflow-tooltip="true" align="center"/>
-      <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true" align="center"/>
+      <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center" />
+      <el-table-column prop="createUser" label="创建人员" :show-overflow-tooltip="true" align="center" />
+      <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true" align="center" />
       <el-table-column label="操作" width="120" min-width="120" fixed="right" align="center">
         <template #default="scope">
-          <el-button type="primary" link @click="updateConfigHandler(scope.row.configId)">修改
+          <el-button v-auth="'sys:config:update'" type="primary" link
+            @click="updateConfigHandler(scope.row.configId)">修改
           </el-button>
-          <el-button type="danger" link @click="deleteConfigHandler(scope.row.configId)">删除
+          <el-button v-auth="'sys:config:delete'" type="danger" link @click="deleteConfigHandler(scope.row.configId)">删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-        v-model:current-page="queryConfig.pageNum"
-        v-model:page-size="queryConfig.pageSize"
-        :page-sizes="[5, 10, 20, 50]"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="queryConfig.total"
-        @size-change="queryConfigList"
-        @current-change="queryConfigList"
-        class="table-pagination"
-    />
-    <config-form ref="configFormRef" @refresh-data-list="queryConfigList"/>
+    <el-pagination v-model:current-page="queryConfig.pageNum" v-model:page-size="queryConfig.pageSize"
+      :page-sizes="[5, 10, 20, 50]" layout="total, sizes, prev, pager, next, jumper" :total="queryConfig.total"
+      @size-change="queryConfigList" @current-change="queryConfigList" class="table-pagination" />
+    <config-form ref="configFormRef" @refresh-data-list="queryConfigList" />
   </el-card>
 </template>
 <script>
@@ -64,11 +53,11 @@ export default {
 }
 </script>
 <script setup>
-import {deleteConfig, getConfigList, refreshConfigCache} from "@/api/system/config.js";
-import {onMounted, reactive, ref} from "vue";
-import {ElMessage, ElMessageBox} from "element-plus";
+import { deleteConfig, getConfigList, refreshConfigCache } from "@/api/system/config.js";
+import { onMounted, reactive, ref } from "vue";
+import { ElMessage, ElMessageBox } from "element-plus";
 import '@/assets/css/table/table.css'
-import {download} from "@/api/download.js";
+import { download } from "@/api/download.js";
 import ConfigForm from "@/views/system/config/config-form.vue";
 import StitchTag from "@/components/Dict/stitch-tag.vue";
 import StitchSelect from "@/components/Dict/stitch-select.vue";
@@ -149,7 +138,7 @@ function deleteBatchConfigHandler() {
 
 //导出Excel
 function exportExcelHandler() {
-  download('/sys/config/export', {...queryConfig}, `config_${new Date().getTime()}.xlsx`)
+  download('/sys/config/export', { ...queryConfig }, `config_${new Date().getTime()}.xlsx`)
 }
 
 //刷新缓存
@@ -164,5 +153,4 @@ onMounted(() => {
 })
 
 </script>
-<style scoped>
-</style>
+<style scoped></style>
