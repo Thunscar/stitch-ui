@@ -45,7 +45,7 @@
       <el-table-column prop="createTime" label="创建时间" :show-overflow-tooltip="true" align="center" />
       <el-table-column label="操作" width="120" min-width="120" fixed="right" align="center">
         <template #default="scope">
-          <el-button type="primary" link @click="updateMenuHandler(scope.row.menuId)">修改</el-button>
+          <el-button v-auth="'sys:menu:update'" type="primary" link @click="updateMenuHandler(scope.row.menuId)">修改</el-button>
           <el-button v-auth="'sys:menu:delete'" type="danger" link @click="deleteMenu(scope.row.menuId)">删除</el-button>
         </template>
       </el-table-column>
