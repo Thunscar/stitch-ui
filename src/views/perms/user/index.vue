@@ -8,7 +8,8 @@
         <el-button type="primary" @click="queryUserList">搜索</el-button>
         <el-button type="default" @click="resetQueryCondition">重置</el-button>
         <el-button v-auth="'sys:user:create'" type="success" text bg @click="createUserHandler">新增</el-button>
-        <el-button v-auth="'sys:user:delete'" type="danger" text bg :disabled="selectedUsers.length === 0" @click="deleteBatchUserHandler">批量删除
+        <el-button v-auth="'sys:user:delete'" type="danger" text bg :disabled="selectedUsers.length === 0"
+          @click="deleteBatchUserHandler">批量删除
         </el-button>
         <el-button v-auth="'sys:user:export'" type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
         <el-button v-auth="'sys:user:import'" type="success" text bg @click="importExcelHandler">导入用户</el-button>
@@ -45,16 +46,22 @@
       <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center" />
       <el-table-column label="操作" width="180" min-width="160" fixed="right" align="center">
         <template #default="scope">
-          <el-button v-auth="'sys:user:update'" type="primary" link @click="updateUserHandler(scope.row.userId)">修改</el-button>
-          <el-button v-auth="'sys:user:delete'" type="danger" link @click="deleteUserHandler(scope.row.userId)">删除</el-button>
+          <el-button v-auth="'sys:user:update'" type="primary" link
+            @click="updateUserHandler(scope.row.userId)">修改</el-button>
+          <el-button v-auth="'sys:user:delete'" type="danger" link
+            @click="deleteUserHandler(scope.row.userId)">删除</el-button>
           <el-button type="primary" link>
             <el-dropdown>
               <el-button type="primary" link>更多</el-button>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item v-auth="'sys:user:resetPassword'" @click="resetPassword(scope.row.userId)">重置密码</el-dropdown-item>
-                  <el-dropdown-item v-auth="'sys:user:allocatedRole'" @click="allocatedRoles(scope.row.userId, scope.row.userName)">分配角色
-                  </el-dropdown-item>
+                  <span v-auth="'sys:user:resetPassword'"><el-dropdown-item
+                      @click="resetPassword(scope.row.userId)">重置密码</el-dropdown-item>
+                  </span>
+                  <span v-auth="'sys:user:allocatedRole'"><el-dropdown-item
+                      @click="allocatedRoles(scope.row.userId, scope.row.userName)">分配角色
+                    </el-dropdown-item>
+                  </span>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>

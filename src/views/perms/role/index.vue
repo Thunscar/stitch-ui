@@ -31,17 +31,23 @@
       <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center" />
       <el-table-column label="操作" width="180" min-width="160" fixed="right" align="center">
         <template #default="scope">
-          <el-button v-auth="'sys:role:update'" type="primary" link @click="updateRoleHandler(scope.row.roleId)">修改</el-button>
-          <el-button v-auth="'sys:role:delete'" type="danger" link @click="deleteRoleHandler(scope.row.roleId)">删除</el-button>
+          <el-button v-auth="'sys:role:update'" type="primary" link
+            @click="updateRoleHandler(scope.row.roleId)">修改</el-button>
+          <el-button v-auth="'sys:role:delete'" type="danger" link
+            @click="deleteRoleHandler(scope.row.roleId)">删除</el-button>
           <el-button type="primary" link>
             <el-dropdown>
               <el-button type="primary" link style="outline: 0 !important;">更多</el-button>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item v-auth="'sys:role:dataScope'" @click="allocatedDataAuthority(scope.row.roleId, scope.row.roleName)">数据权限
-                  </el-dropdown-item>
-                  <el-dropdown-item v-auth="'sys:role:allocatedUser'" @click="allocatedUsers(scope.row.roleId, scope.row.roleName)">分配用户
-                  </el-dropdown-item>
+                  <span v-auth="'sys:role:dataScope'">
+                    <el-dropdown-item @click="allocatedDataAuthority(scope.row.roleId, scope.row.roleName)">数据权限
+                    </el-dropdown-item>
+                  </span>
+                  <span v-auth="'sys:role:allocatedUser'">
+                    <el-dropdown-item @click="allocatedUsers(scope.row.roleId, scope.row.roleName)">分配用户
+                    </el-dropdown-item>
+                  </span>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
