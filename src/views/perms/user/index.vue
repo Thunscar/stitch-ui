@@ -55,11 +55,16 @@
               <el-button type="primary" link>更多</el-button>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <span v-auth="'sys:user:resetPassword'"><el-dropdown-item
-                      @click="resetPassword(scope.row.userId)">重置密码</el-dropdown-item>
+                  <span v-auth="'sys:user:resetPassword'">
+                    <el-dropdown-item @click="resetPassword(scope.row.userId)">重置密码</el-dropdown-item>
                   </span>
-                  <span v-auth="'sys:user:allocatedRole'"><el-dropdown-item
-                      @click="allocatedRoles(scope.row.userId, scope.row.userName)">分配角色
+                  <span v-auth="'sys:user:unlock'">
+                    <el-dropdown-item @click="unlockAccount(scope.row.userId)">
+                      账户解锁
+                    </el-dropdown-item>
+                  </span>
+                  <span v-auth="'sys:user:allocatedRole'">
+                    <el-dropdown-item @click="allocatedRoles(scope.row.userId, scope.row.userName)">分配角色
                     </el-dropdown-item>
                   </span>
                 </el-dropdown-menu>
@@ -83,7 +88,7 @@ export default {
 </script>
 <script setup>
 import { onActivated, onMounted, reactive, ref } from "vue";
-import { deleteSysUser, getSysUserList, resetSysUserPassword } from "@/api/perms/user.js";
+import { deleteSysUser, getSysUserList, resetSysUserPassword, unlockUserAccount } from "@/api/perms/user.js";
 import { ElMessage, ElMessageBox } from "element-plus";
 import '@/assets/css/table/table.css'
 import UserForm from "@/views/perms/user/user-form.vue";
@@ -162,6 +167,13 @@ function deleteUserHandler(userId) {
 function resetPassword(userId) {
   resetSysUserPassword(userId).then(res => {
     ElMessage.success('重置成功')
+  })
+}
+
+//解锁账户
+const unlockAccount = (userId) => {
+  unlockUserAccount(userId).then(() => {
+    ElMessage.success('解锁成功')
   })
 }
 

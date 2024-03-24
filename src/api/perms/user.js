@@ -76,3 +76,10 @@ export function cancelAllocateRoles(sysUserRole) {
         params: sysUserRole
     })
 }
+
+export function unlockUserAccount(userId) {
+    return request({
+        method: 'post',
+        url: '/sys/user/unlock/' + userId
+    })
+}
