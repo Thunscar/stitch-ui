@@ -1,16 +1,14 @@
 <template>
   <el-card>
     <div class="search">
-      <span><el-input class="s-search-input" placeholder="字典名称" v-model="queryDictType.dictName" /></span>
-      <span><el-input class="s-search-input" placeholder="字典类型" v-model="queryDictType.dictType" /></span>
-      <span>
-        <el-button type="primary" @click="queryDictTypeList">搜索</el-button>
-        <el-button type="default" @click="resetQueryCondition">重置</el-button>
-        <el-button v-auth="'sys:dict:create'" type="primary" text bg @click="createTypeHandler">新增</el-button>
-        <el-button v-auth="'sys:dict:delete'" type="danger" text bg @click="deleteBatchTypeHandler"
-          :disabled="selectedTypes.length === 0">批量删除</el-button>
-        <el-button v-auth="'sys:dict:refresh'" type="success" text bg @click="refreshCacheHandler">刷新缓存</el-button>
-      </span>
+      <el-input class="s-search-input" placeholder="字典名称" v-model="queryDictType.dictName" />
+      <el-input class="s-search-input" placeholder="字典类型" v-model="queryDictType.dictType" />
+      <el-button type="primary" @click="queryDictTypeList">搜索</el-button>
+      <el-button type="default" @click="resetQueryCondition">重置</el-button>
+      <el-button v-auth="'sys:dict:create'" type="primary" text bg @click="createTypeHandler">新增</el-button>
+      <el-button v-auth="'sys:dict:delete'" type="danger" text bg @click="deleteBatchTypeHandler"
+        :disabled="selectedTypes.length === 0">批量删除</el-button>
+      <el-button v-auth="'sys:dict:refresh'" type="success" text bg @click="refreshCacheHandler">刷新缓存</el-button>
     </div>
     <el-table :data="typeList" :row-key="(record) => record.dictId" :default-expand-all="false" :indent="8" border
       :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectDictTypeHandler">
@@ -26,7 +24,8 @@
       <el-table-column prop="createTime" label="创建时间" width="200" :show-overflow-tooltip="true" align="center" />
       <el-table-column label="操作" width="200" min-width="120" fixed="right" align="center">
         <template #default="scope">
-          <el-button v-auth="'sys:dict:config'" type="primary" link @click="dictConfig(scope.row.dictType, scope.row.dictName)">字典配置
+          <el-button v-auth="'sys:dict:config'" type="primary" link
+            @click="dictConfig(scope.row.dictType, scope.row.dictName)">字典配置
           </el-button>
           <el-button v-auth="'sys:dict:update'" type="primary" link @click="updateTypeHandler(scope.row.dictId)">修改
           </el-button>

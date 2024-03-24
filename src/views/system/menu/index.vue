@@ -1,22 +1,16 @@
 <template>
   <el-card>
     <div class="search">
-      <span><el-input class="s-search-input" placeholder="菜单名称" v-model="queryMenu.menuName" /></span>
-      <span>
-        <el-select class="s-search-input" placeholder="是否可见" v-model="queryMenu.visible">
-          <el-option value="1" label="可见" />
-          <el-option value="0" label="不可见" />
-        </el-select>
-      </span>
-      <span>
-        <stitch-select class="s-search-input" v-model="queryMenu.status" dict-type="menu_status" placeholder="状态" />
-      </span>
-      <span>
-        <el-button type="primary" @click="queryMenuDataList">搜索</el-button>
-        <el-button type="default" @click="resetQueryCondition">重置</el-button>
-        <el-button v-auth="'sys:menu:create'" type="primary" text bg @click="createMenuHandler">新增</el-button>
-        <el-button type="info" text bg @click="expandAllHandler">展开/折叠</el-button>
-      </span>
+      <el-input class="s-search-input" placeholder="菜单名称" v-model="queryMenu.menuName" />
+      <el-select class="s-search-input" placeholder="是否可见" v-model="queryMenu.visible">
+        <el-option value="1" label="可见" />
+        <el-option value="0" label="不可见" />
+      </el-select>
+      <stitch-select class="s-search-input" v-model="queryMenu.status" dict-type="menu_status" placeholder="状态" />
+      <el-button type="primary" @click="queryMenuDataList">搜索</el-button>
+      <el-button type="default" @click="resetQueryCondition">重置</el-button>
+      <el-button v-auth="'sys:menu:create'" type="primary" text bg @click="createMenuHandler">新增</el-button>
+      <el-button type="info" text bg @click="expandAllHandler">展开/折叠</el-button>
     </div>
     <el-table :data="menuTreeData" :row-key="(record) => record.menuId" v-model:expand-row-keys="expandColumns"
       :default-expand-all="false" :indent="8" border :header-cell-style="{ 'text-align': 'center' }">
@@ -45,7 +39,8 @@
       <el-table-column prop="createTime" label="创建时间" :show-overflow-tooltip="true" align="center" />
       <el-table-column label="操作" width="120" min-width="120" fixed="right" align="center">
         <template #default="scope">
-          <el-button v-auth="'sys:menu:update'" type="primary" link @click="updateMenuHandler(scope.row.menuId)">修改</el-button>
+          <el-button v-auth="'sys:menu:update'" type="primary" link
+            @click="updateMenuHandler(scope.row.menuId)">修改</el-button>
           <el-button v-auth="'sys:menu:delete'" type="danger" link @click="deleteMenu(scope.row.menuId)">删除</el-button>
         </template>
       </el-table-column>

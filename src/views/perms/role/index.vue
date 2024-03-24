@@ -1,18 +1,14 @@
 <template>
   <el-card>
     <div class="search">
-      <span><el-input class="s-search-input" placeholder="角色名称" v-model="queryRole.roleName" /></span>
-      <span>
-        <stitch-select class="s-search-input" v-model="queryRole.status" dict-type="role_status" placeholder="状态" />
-      </span>
-      <span>
-        <el-button type="primary" @click="queryRoleList">搜索</el-button>
-        <el-button type="default" @click="resetQueryCondition">重置</el-button>
-        <el-button v-auth="'sys:role:create'" type="primary" text bg @click="createRoleHandler">新增</el-button>
-        <el-button v-auth="'sys:role:delete'" type="danger" text bg :disabled="selectedRoles.length === 0"
-          @click="deleteBatchRoleHandler">批量删除</el-button>
-        <el-button v-auth="'sys:role:export'" type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
-      </span>
+      <el-input class="s-search-input" placeholder="角色名称" v-model="queryRole.roleName" />
+      <stitch-select class="s-search-input" v-model="queryRole.status" dict-type="role_status" placeholder="状态" />
+      <el-button type="primary" @click="queryRoleList">搜索</el-button>
+      <el-button type="default" @click="resetQueryCondition">重置</el-button>
+      <el-button v-auth="'sys:role:create'" type="primary" text bg @click="createRoleHandler">新增</el-button>
+      <el-button v-auth="'sys:role:delete'" type="danger" text bg :disabled="selectedRoles.length === 0"
+        @click="deleteBatchRoleHandler">批量删除</el-button>
+      <el-button v-auth="'sys:role:export'" type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
     </div>
     <el-table :data="roleList" :row-key="(record) => record.roleId" :default-expand-all="false" :indent="8" border
       :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectRoleHandler">

@@ -1,13 +1,11 @@
 <template>
   <el-card>
     <div class="search">
-      <span><el-input class="s-search-input" placeholder="用户名" v-model="queryInfo.userName" /></span>
-      <span><el-input class="s-search-input" placeholder="登录IP" v-model="queryInfo.ipaddr" /></span>
-      <span><el-input class="s-search-input" placeholder="登录地址" v-model="queryInfo.loginLocation" /></span>
-      <span>
-        <el-button type="primary" @click="queryInfoList">搜索</el-button>
-        <el-button type="default" @click="resetQueryCondition">重置</el-button>
-      </span>
+      <el-input class="s-search-input" placeholder="用户名" v-model="queryInfo.userName" />
+      <el-input class="s-search-input" placeholder="登录IP" v-model="queryInfo.ipaddr" />
+      <el-input class="s-search-input" placeholder="登录地址" v-model="queryInfo.loginLocation" />
+      <el-button type="primary" @click="queryInfoList">搜索</el-button>
+      <el-button type="default" @click="resetQueryCondition">重置</el-button>
     </div>
     <el-table :data="infoList" :row-key="(record) => record.infoId" :default-expand-all="false" :indent="8" border
       :header-cell-style="{ 'text-align': 'center' }">

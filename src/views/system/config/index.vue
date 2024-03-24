@@ -1,21 +1,17 @@
 <template>
   <el-card>
     <div class="search">
-      <span><el-input class="s-search-input" placeholder="参数名称" v-model="queryConfig.configName" /></span>
-      <span><el-input class="s-search-input" placeholder="参数键名" v-model="queryConfig.configKey" /></span>
-      <span>
-        <stitch-select class="s-search-input" v-model="queryConfig.configType" dict-type="normal_system" />
-      </span>
-      <span>
-        <el-button type="primary" @click="queryConfigList">搜索</el-button>
-        <el-button type="default" @click="resetQueryCondition">重置</el-button>
-        <el-button v-auth="'sys:config:create'" type="primary" text bg @click="createConfigHandler">新增</el-button>
-        <el-button v-auth="'sys:config:delete'" type="danger" text bg :disabled="selectedConfigs.length === 0"
-          @click="deleteBatchConfigHandler">批量删除
-        </el-button>
-        <el-button v-auth="'sys:config:export'" type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
-        <el-button v-auth="'sys:config:refresh'" type="success" text bg @click="refreshCacheHandler">刷新缓存</el-button>
-      </span>
+      <el-input class="s-search-input" placeholder="参数名称" v-model="queryConfig.configName" />
+      <el-input class="s-search-input" placeholder="参数键名" v-model="queryConfig.configKey" />
+      <stitch-select class="s-search-input" v-model="queryConfig.configType" dict-type="normal_system" />
+      <el-button type="primary" @click="queryConfigList">搜索</el-button>
+      <el-button type="default" @click="resetQueryCondition">重置</el-button>
+      <el-button v-auth="'sys:config:create'" type="primary" text bg @click="createConfigHandler">新增</el-button>
+      <el-button v-auth="'sys:config:delete'" type="danger" text bg :disabled="selectedConfigs.length === 0"
+        @click="deleteBatchConfigHandler">批量删除
+      </el-button>
+      <el-button v-auth="'sys:config:export'" type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
+      <el-button v-auth="'sys:config:refresh'" type="success" text bg @click="refreshCacheHandler">刷新缓存</el-button>
     </div>
     <el-table :data="configList" :row-key="(record) => record.configId" :default-expand-all="false" :indent="8" border
       :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectConfigHandler">

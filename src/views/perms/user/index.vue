@@ -1,19 +1,17 @@
 <template>
   <el-card>
     <div class="search">
-      <span><el-input class="s-search-input" placeholder="用户名" v-model="queryUser.userName" /></span>
-      <span><el-input class="s-search-input" placeholder="手机号" v-model="queryUser.phone" /></span>
-      <span><el-input class="s-search-input" placeholder="邮箱" v-model="queryUser.email" /></span>
-      <span>
-        <el-button type="primary" @click="queryUserList">搜索</el-button>
-        <el-button type="default" @click="resetQueryCondition">重置</el-button>
-        <el-button v-auth="'sys:user:create'" type="success" text bg @click="createUserHandler">新增</el-button>
-        <el-button v-auth="'sys:user:delete'" type="danger" text bg :disabled="selectedUsers.length === 0"
-          @click="deleteBatchUserHandler">批量删除
-        </el-button>
-        <el-button v-auth="'sys:user:export'" type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
-        <el-button v-auth="'sys:user:import'" type="success" text bg @click="importExcelHandler">导入用户</el-button>
-      </span>
+      <el-input class="s-search-input" placeholder="用户名" v-model="queryUser.userName" />
+      <el-input class="s-search-input" placeholder="手机号" v-model="queryUser.phone" />
+      <el-input class="s-search-input" placeholder="邮箱" v-model="queryUser.email" />
+      <el-button type="primary" @click="queryUserList">搜索</el-button>
+      <el-button type="default" @click="resetQueryCondition">重置</el-button>
+      <el-button v-auth="'sys:user:create'" type="success" text bg @click="createUserHandler">新增</el-button>
+      <el-button v-auth="'sys:user:delete'" type="danger" text bg :disabled="selectedUsers.length === 0"
+        @click="deleteBatchUserHandler">批量删除
+      </el-button>
+      <el-button v-auth="'sys:user:export'" type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
+      <el-button v-auth="'sys:user:import'" type="success" text bg @click="importExcelHandler">导入用户</el-button>
     </div>
 
     <el-table :data="userList" :row-key="(record) => record.userId" :default-expand-all="false" :indent="8" border

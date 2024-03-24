@@ -1,19 +1,15 @@
 <template>
   <el-card>
     <div class="search">
-      <span><el-input class="s-search-input" placeholder="岗位编码" v-model="queryPost.postCode" /></span>
-      <span><el-input class="s-search-input" placeholder="岗位名称" v-model="queryPost.postName" /></span>
-      <span>
-        <stitch-select class="s-search-input" v-model="queryPost.status" dict-type="post_status" />
-      </span>
-      <span>
-        <el-button type="primary" @click="queryPostList">搜索</el-button>
-        <el-button type="default" @click="resetQueryCondition">重置</el-button>
-        <el-button v-auth="'sys:post:create'" type="primary" text bg @click="createPostHandler">新增</el-button>
-        <el-button v-auth="'sys:post:delete'" type="danger" text bg :disabled="selectedPostIds.length === 0"
-          @click="deleteBatchPostHandler">批量删除</el-button>
-        <el-button v-auth="'sys:post:export'" type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
-      </span>
+      <el-input class="s-search-input" placeholder="岗位编码" v-model="queryPost.postCode" />
+      <el-input class="s-search-input" placeholder="岗位名称" v-model="queryPost.postName" />
+      <stitch-select class="s-search-input" v-model="queryPost.status" dict-type="post_status" />
+      <el-button type="primary" @click="queryPostList">搜索</el-button>
+      <el-button type="default" @click="resetQueryCondition">重置</el-button>
+      <el-button v-auth="'sys:post:create'" type="primary" text bg @click="createPostHandler">新增</el-button>
+      <el-button v-auth="'sys:post:delete'" type="danger" text bg :disabled="selectedPostIds.length === 0"
+        @click="deleteBatchPostHandler">批量删除</el-button>
+      <el-button v-auth="'sys:post:export'" type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
     </div>
     <el-table :data="postList" :row-key="(record) => record.postId" :default-expand-all="false" :indent="8" border
       :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectPostHandler">
