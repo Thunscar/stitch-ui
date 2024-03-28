@@ -146,7 +146,7 @@ onMounted(() => {
   height: 380px;
   background-color: var(--login-form-color);
   border-radius: 10px;
-  box-shadow: 0 0 10px var(--login-form-shadow);
+  box-shadow: 0 0 6px 0 var(--login-form-shadow);
 }
 
 .code-form {
@@ -154,6 +154,7 @@ onMounted(() => {
 }
 
 .form-title {
+  display: block;
   position: absolute;
   text-align: center;
   width: 100%;
@@ -175,9 +176,11 @@ onMounted(() => {
 }
 
 .form-content {
+  display: block;
   position: absolute;
-  top: 120px;
+  top: 110px;
   width: 100%;
+  height: max-content;
 }
 
 .login-input {
