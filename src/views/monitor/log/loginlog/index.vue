@@ -6,6 +6,7 @@
       <el-input class="s-search-input" placeholder="登录地址" v-model="queryInfo.loginLocation" />
       <el-button type="primary" @click="queryInfoList">搜索</el-button>
       <el-button type="default" @click="resetQueryCondition">重置</el-button>
+      <el-button v-auth="'sys:loginlog:export'" type="info" text bg @click="exportExcel">导出Excel</el-button>
     </div>
     <el-table :data="infoList" :row-key="(record) => record.infoId" :default-expand-all="false" :indent="8" border
       :header-cell-style="{ 'text-align': 'center' }">
@@ -33,6 +34,7 @@
 import { queryLoginInfoList } from '@/api/monitor/logininfo';
 import '@/assets/css/table/table.css'
 import { onMounted, reactive, ref } from "vue";
+import {download} from "@/api/download.js";
 const infoList = ref([])
 const queryInfo = reactive({
   userName: '',
@@ -43,6 +45,7 @@ const queryInfo = reactive({
   total: 0
 })
 
+//查询数据
 const queryInfoList = () => {
   queryLoginInfoList(queryInfo).then(res => {
     infoList.value = res.list
@@ -50,6 +53,7 @@ const queryInfoList = () => {
   })
 }
 
+//重置查询条件
 const resetQueryCondition = () => {
   queryInfo.userName = ''
   queryInfo.ipaddr = ''
@@ -58,6 +62,10 @@ const resetQueryCondition = () => {
   queryInfo.pageSize = 10
   queryInfo.total = 0
   queryInfoList()
+}
+
+const exportExcel = ()=>{
+  download('/sys/loginlog/export', { ...queryInfo }, `login_log_${new Date().getTime()}.xls`)
 }
 
 onMounted(() => {

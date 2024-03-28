@@ -11,7 +11,7 @@
       </el-select>
       <el-button type="primary" @click="queryOperLogList">搜索</el-button>
       <el-button type="default" @click="resetQueryCondition">重置</el-button>
-      <el-button type="info" text bg @click="exportExcel">导出Excel</el-button>
+      <el-button v-auth="'sys:operlog:export'" type="info" text bg @click="exportExcel">导出Excel</el-button>
     </div>
     <el-table :data="logList" :row-key="(record) => record.logId" :flexible="true" :indent="8" border
               :header-cell-style="{ 'text-align': 'center' }">
