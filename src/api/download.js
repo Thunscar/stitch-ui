@@ -10,15 +10,23 @@ export function download(url, params, filename, config) {
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         responseType: 'blob',
         ...config
-    }).then(async (data) => {
+    }).then((data) => {
         if (isValidBlob(data)) {
             const blob = new Blob([data])
             saveAs(blob, filename)
         } else {
-            const responseText = await data.text
-            const responseObj = JSON.parse(responseText)
-            const msg = errorMessage[responseObj.code] || responseObj.msg || errorMessage['default']
-            ElMessage.error(msg)
+            const fileReader = new FileReader()
+            fileReader.readAsText(data, 'utf-8')
+            fileReader.onload = ()=>{
+                let code = JSON.parse(fileReader.result).code
+                let msg = JSON.parse(fileReader.result).msg
+                console.log(code)
+                if(code === 601){
+                    ElMessage.warning(msg)
+                }else{
+                    ElMessage.error(msg)
+                }
+            }
         }
     })
 }
