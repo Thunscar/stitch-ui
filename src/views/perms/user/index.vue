@@ -134,7 +134,7 @@ function deleteBatchUserHandler() {
 
 //导出用户信息
 function exportExcelHandler() {
-  download('/sys/user/export', { ...queryUser }, `user_${new Date().getTime()}.xlsx`)
+  download('/sys/user/export', { ...queryUser }, `user_${new Date().getTime()}.xls`)
 }
 
 //导入用户信息

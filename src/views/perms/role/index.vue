@@ -115,7 +115,7 @@ function deleteBatchRoleHandler() {
 
 //导出角色信息
 function exportExcelHandler() {
-  download('/sys/role/export', { ...queryRole }, `role_${new Date().getTime()}.xlsx`)
+  download('/sys/role/export', { ...queryRole }, `role_${new Date().getTime()}.xls`)
 }
 
 //更新角色信息

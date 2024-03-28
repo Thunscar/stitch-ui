@@ -134,7 +134,7 @@ function deleteBatchConfigHandler() {
 
 //导出Excel
 function exportExcelHandler() {
-  download('/sys/config/export', { ...queryConfig }, `config_${new Date().getTime()}.xlsx`)
+  download('/sys/config/export', { ...queryConfig }, `config_${new Date().getTime()}.xls`)
 }
 
 //刷新缓存

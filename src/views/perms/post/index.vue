@@ -86,7 +86,7 @@ function deleteBatchPostHandler() {
 }
 
 function exportExcelHandler() {
-  download('/sys/post/export', { ...queryPost }, `post_${new Date().getTime()}.xlsx`)
+  download('/sys/post/export', { ...queryPost }, `post_${new Date().getTime()}.xls`)
 }
 
 function selectPostHandler(rows) {

@@ -11,6 +11,7 @@
       </el-select>
       <el-button type="primary" @click="queryOperLogList">搜索</el-button>
       <el-button type="default" @click="resetQueryCondition">重置</el-button>
+      <el-button type="info" text bg @click="exportExcel">导出Excel</el-button>
     </div>
     <el-table :data="logList" :row-key="(record) => record.logId" :flexible="true" :indent="8" border
               :header-cell-style="{ 'text-align': 'center' }">
@@ -62,6 +63,7 @@
 import {queryOperateLogList} from '@/api/monitor/operlog'
 import '@/assets/css/table/table.css'
 import {onMounted, reactive, ref} from "vue";
+import {download} from "@/api/download.js";
 
 const logList = ref([])
 const queryInfo = reactive({
@@ -94,6 +96,11 @@ const resetQueryCondition = () => {
   queryInfo.pageSize = 10
   queryInfo.total = 0
   queryOperLogList()
+}
+
+//导出Excel
+const exportExcel = () => {
+  download('/sys/operlog/export', { ...queryInfo }, `operate_log_${new Date().getTime()}.xls`)
 }
 
 onMounted(() => {
