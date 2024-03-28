@@ -7,7 +7,7 @@
           <el-dropdown-menu>
             <br/>
             <el-timeline style="min-width: 400px;max-height: 80vh">
-              <el-timeline-item timestamp="2024-03-08">基本功能完成</el-timeline-item>
+              <el-timeline-item timestamp="2024-03-02">基本功能完成</el-timeline-item>
               <el-timeline-item timestamp="2024-03-28">
                 1.新增登录与操作日志记录<br/>
                 2.修复部分Bug<br/>
