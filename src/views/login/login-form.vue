@@ -18,7 +18,7 @@
         </el-form-item>
       </el-form>
       <div class="login-btn-group">
-        <el-button class="login-btn" :icon="UserFilled" @click="handlerLogin(loginFormRef)">登录</el-button>
+        <el-button :loading="loginLoading" class="login-btn" :icon="UserFilled" @click="handlerLogin(loginFormRef)">登录</el-button>
         <el-button class="login-btn reset" :icon="Refresh" @click="handlerReset">重置</el-button>
       </div>
     </div>
@@ -46,6 +46,7 @@ const loginForm = reactive({
   verifyCodeEnable: false
 })
 const loginFormRef = ref()
+const loginLoading = ref(false)
 
 const checkRules = ref({
   username: {
@@ -100,7 +101,7 @@ function removeCookie() {
 function handlerLogin(loginFormRef) {
   loginFormRef.validate((valid) => {
     if (valid) {
-      loginForm.loading = true
+      loginLoading.value = true
       const userInfo = {
         username: loginForm.username,
         password: loginForm.password,
@@ -117,7 +118,7 @@ function handlerLogin(loginFormRef) {
         //路由跳转
         router.push({ path: router.currentRoute.value.query.redirect || "/" })
       }).catch(res => {
-        loginForm.loading = false
+        loginLoading.value = false
         getVerifyCode()
         loginForm.code = ''
       })
