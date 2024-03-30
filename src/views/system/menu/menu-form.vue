@@ -1,6 +1,6 @@
 <template>
   <el-dialog v-model="visible" :title="menuFormTitle" width="620" @close="closeForm">
-    <el-form :model="menuInfo" ref="menuFormRef" label-width="100" :rules="checkRules" inline>
+    <el-form :model="menuInfo" ref="menuFormRef" label-width="100" :rules="checkRules" inline v-loading="loading">
       <el-form-item label="菜单类型">
         <el-radio-group v-model="menuInfo.menuType" :disabled="menuTypeDisabled">
           <el-radio label="M">菜单</el-radio>
@@ -8,25 +8,26 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="菜单名称" prop="menuName">
-        <el-input placeholder="菜单名称" v-model="menuInfo.menuName" class="form-input" />
+        <el-input placeholder="菜单名称" v-model="menuInfo.menuName" class="form-input"/>
       </el-form-item>
       <el-form-item label="菜单图标" v-if="menuInfo.menuType === 'M'" prop="icon">
-        <icon-selector :icon="menuInfo.icon" @icon-selected="iconSelected" class="select-input" />
+        <icon-selector :icon="menuInfo.icon" @icon-selected="iconSelected" class="select-input"/>
       </el-form-item>
       <el-form-item label="菜单排序">
-        <el-input type="number" placeholder="菜单排序" v-model="menuInfo.orderNum" :min="0" :max="999" class="sort-input" />
+        <el-input type="number" placeholder="菜单排序" v-model="menuInfo.orderNum" :min="0" :max="999"
+                  class="sort-input"/>
       </el-form-item>
       <el-form-item label="上级菜单">
-        <el-tree-select v-model="menuInfo.parentId" :data="selectMenuData" check-strictly class="select-input" />
+        <el-tree-select v-model="menuInfo.parentId" :data="selectMenuData" check-strictly class="select-input"/>
       </el-form-item>
       <el-form-item label="路由地址" v-if="menuInfo.menuType === 'M'" prop="path">
-        <el-input placeholder="路由地址" v-model="menuInfo.path" class="form-input" />
+        <el-input placeholder="路由地址" v-model="menuInfo.path" class="form-input"/>
       </el-form-item>
       <el-form-item label="组件地址" v-if="menuInfo.menuType === 'M'">
-        <el-input placeholder="组件地址" v-model="menuInfo.component" class="form-input" />
+        <el-input placeholder="组件地址" v-model="menuInfo.component" class="form-input"/>
       </el-form-item>
       <el-form-item label="权限标识符">
-        <el-input placeholder="权限标识符" v-model="menuInfo.perms" class="form-input" />
+        <el-input placeholder="权限标识符" v-model="menuInfo.perms" class="form-input"/>
       </el-form-item>
       <el-form-item label="是否外链" v-if="menuInfo.menuType === 'M'">
         <el-radio-group v-model="menuInfo.isFrame">
@@ -47,7 +48,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="菜单状态" v-if="menuInfo.menuType === 'M'">
-        <stitch-radio-group v-model="menuInfo.status" dict-type="menu_status" />
+        <stitch-radio-group v-model="menuInfo.status" dict-type="menu_status"/>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -60,11 +61,11 @@
 </template>
 <script setup>
 
-import { reactive, ref } from "vue"
-import { createMenu, getMenuById, getMenuList, updateSysMenu } from "@/api/system/menu.js";
-import { initSelectTree } from "@/utils/tree.js";
+import {reactive, ref} from "vue"
+import {createMenu, getMenuById, getMenuList, updateSysMenu} from "@/api/system/menu.js";
+import {initSelectTree} from "@/utils/tree.js";
 import '@/assets/css/form/form.css'
-import { ElMessage, ElMessageBox } from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 import IconSelector from "@/components/Icon/IconSelector.vue";
 import StitchRadioGroup from "@/components/Dict/stitch-radio-group.vue";
 
@@ -110,6 +111,7 @@ const checkRules = ref({
     trigger: ['blur']
   }
 })
+const loading = ref(false)
 
 const emits = defineEmits(['refreshDataList'])
 
@@ -184,11 +186,12 @@ const init = (menuId) => {
   if (menuId) {
     menuFormTitle.value = '修改菜单'
     menuTypeDisabled.value = true
+    loading.value = true
     getMenuById(menuId).then(res => {
       const menuData = res.data
       Object.assign(menuInfo, menuData)
       oldPath.value = menuInfo.path
-    })
+    }).finally(() => loading.value = false)
   } else {
     menuFormTitle.value = '新增菜单'
   }

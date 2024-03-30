@@ -1,24 +1,25 @@
 <template>
   <el-dialog v-model="visible" :title="deptFormTitle" width="620" @close="closeForm">
-    <el-form :model="deptInfo" ref="deptFormRef" :rules="checkRules" label-width="100" inline>
+    <el-form :model="deptInfo" ref="deptFormRef" :rules="checkRules" label-width="100" inline v-loading="loading">
       <el-form-item label="部门名称" prop="deptName">
-        <el-input placeholder="部门名称" v-model="deptInfo.deptName" class="form-input" />
+        <el-input placeholder="部门名称" v-model="deptInfo.deptName" class="form-input"/>
       </el-form-item>
       <el-form-item label="上级部门" prop="parentId">
         <el-tree-select placeholder="上级部门" v-model="deptInfo.parentId" :data="selectDeptData" check-strictly
-          class="select-input" />
+                        class="select-input"/>
       </el-form-item>
       <el-form-item label="部门排序">
-        <el-input type="number" placeholder="部门排序" v-model="deptInfo.orderNum" :min="0" :max="999" class="sort-input" />
+        <el-input type="number" placeholder="部门排序" v-model="deptInfo.orderNum" :min="0" :max="999"
+                  class="sort-input"/>
       </el-form-item>
       <el-form-item label="联系人">
-        <el-input placeholder="联系人" v-model="deptInfo.leader" class="form-input" />
+        <el-input placeholder="联系人" v-model="deptInfo.leader" class="form-input"/>
       </el-form-item>
       <el-form-item label="联系电话">
-        <el-input placeholder="联系电话" v-model="deptInfo.phone" class="form-input" />
+        <el-input placeholder="联系电话" v-model="deptInfo.phone" class="form-input"/>
       </el-form-item>
       <el-form-item label="联系邮箱">
-        <el-input placeholder="联系邮箱" v-model="deptInfo.email" class="form-input" />
+        <el-input placeholder="联系邮箱" v-model="deptInfo.email" class="form-input"/>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -31,11 +32,11 @@
 </template>
 <script setup>
 
-import { reactive, ref } from "vue";
+import {reactive, ref} from "vue";
 import '@/assets/css/form/form.css'
-import { getDeptList, getSysDeptById, insertSysDept, updateSysDept } from "@/api/system/dept.js";
-import { initSelectTree } from "@/utils/tree.js";
-import { ElMessage } from "element-plus";
+import {getDeptList, getSysDeptById, insertSysDept, updateSysDept} from "@/api/system/dept.js";
+import {initSelectTree} from "@/utils/tree.js";
+import {ElMessage} from "element-plus";
 
 const visible = ref(false)
 const deptFormTitle = ref()
@@ -65,6 +66,7 @@ const checkRules = {
     trigger: 'blur'
   }
 }
+const loading = ref(false)
 const emits = defineEmits(['refreshDataList'])
 
 //初始化菜单树选择框
@@ -120,8 +122,11 @@ function init(deptId) {
 
   if (deptId) {
     deptFormTitle.value = '修改部门信息'
+    loading.value = true
     getSysDeptById(deptId).then(res => {
       Object.assign(deptInfo, res.data)
+    }).finally(() => {
+      loading.value = false
     })
   } else {
     deptFormTitle.value = '新增部门'

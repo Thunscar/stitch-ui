@@ -1,20 +1,21 @@
 <template>
   <el-dialog v-model="visible" :title="configFormTitle" width="620" @close="closeForm">
-    <el-form :model="configInfo" ref="configFormRef" :rules="checkRules" label-width="100" inline>
+    <el-form :model="configInfo" ref="configFormRef" :rules="checkRules" label-width="100" inline
+             v-loading="loading">
       <el-form-item label="参数名称" prop="configName">
-        <el-input placeholder="参数名称" v-model="configInfo.configName" class="form-input" />
+        <el-input placeholder="参数名称" v-model="configInfo.configName" class="form-input"/>
       </el-form-item>
       <el-form-item label="参数键名" prop="configKey">
-        <el-input placeholder="参数键名" v-model="configInfo.configKey" class="form-input" />
+        <el-input placeholder="参数键名" v-model="configInfo.configKey" class="form-input"/>
       </el-form-item>
       <el-form-item label="参数值">
-        <el-input placeholder="参数值" v-model="configInfo.configValue" class="form-input" />
+        <el-input placeholder="参数值" v-model="configInfo.configValue" class="form-input"/>
       </el-form-item>
       <el-form-item label="是否内置">
-        <stitch-radio-group dict-type="normal_system" v-model="configInfo.configType" />
+        <stitch-radio-group dict-type="normal_system" v-model="configInfo.configType"/>
       </el-form-item>
       <el-form-item label="备注">
-        <el-input type="textarea" placeholder="备注" v-model="configInfo.remark" class="form-input" />
+        <el-input type="textarea" placeholder="备注" v-model="configInfo.remark" class="form-input"/>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -27,11 +28,10 @@
 </template>
 <script setup>
 
-
-import { reactive, ref } from "vue";
+import {reactive, ref} from "vue";
 import '@/assets/css/form/form.css'
-import { addConfig, getConfig, updateConfig } from "@/api/system/config.js";
-import { ElMessage } from "element-plus";
+import {addConfig, getConfig, updateConfig} from "@/api/system/config.js";
+import {ElMessage} from "element-plus";
 import StitchRadioGroup from "@/components/Dict/stitch-radio-group.vue";
 
 const emits = defineEmits(['refreshDataList'])
@@ -58,6 +58,7 @@ const checkRules = ref({
     trigger: 'blur'
   }
 })
+const loading = ref(false)
 
 //提交表单
 function submitConfigHandler() {
@@ -99,13 +100,15 @@ function clearForm() {
 function init(configId) {
   //清空表单
   clearForm()
-
   visible.value = true
 
   if (configId) {
     configFormTitle.value = '修改参数'
+    loading.value = true
     getConfig(configId).then(res => {
       Object.assign(configInfo, res.data)
+    }).finally(() => {
+      loading.value = false
     })
   } else {
     configFormTitle.value = '新增参数'

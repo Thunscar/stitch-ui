@@ -6,7 +6,7 @@
              destroy-on-close>
     <template #default>
       <div>
-        <el-form :model="roleInfo" label-width="100" inline>
+        <el-form :model="roleInfo" label-width="100" inline v-loading="loading">
           <el-form-item label="数据范围">
             <el-select v-model="roleInfo.dataScope">
               <el-option value="0" label="全部数据权限"></el-option>
@@ -43,7 +43,6 @@
 <script setup>
 import {reactive, ref} from "vue";
 import {selectDataScope, updateDataScope} from "@/api/perms/role.js";
-import {getDeptList} from "@/api/system/dept.js";
 import {initSelectTree} from "@/utils/tree.js";
 import {ElMessage} from "element-plus";
 
@@ -64,6 +63,7 @@ const defaultProps = {
   label: 'label',
 }
 const deptTreeData = ref([])
+const loading = ref(false)
 
 
 function cancelClick() {
@@ -82,17 +82,16 @@ function checkChangeHandler() {
 }
 
 function initSysRoleInfo() {
+  loading.value = true
   selectDataScope(drawerInfo.roleId).then(res => {
-    const role = res.data
+    const role = res.role
+    const deptList = res.depts
     roleInfo.roleId = role.roleId
     roleInfo.dataScope = role.dataScope
     roleInfo.deptIds = role.deptIds
-  })
-}
-
-function initDeptTreeData() {
-  getDeptList().then(res => {
-    deptTreeData.value = initSelectTree(res.data, 'deptId', 'deptName')
+    deptTreeData.value = initSelectTree(deptList, 'deptId', 'deptName')
+  }).finally(() => {
+    loading.value = false
   })
 }
 
@@ -103,7 +102,6 @@ function initDrawer(roleId, roleName) {
   drawerInfo.roleName = roleName
 
   initSysRoleInfo()
-  initDeptTreeData()
 }
 
 defineExpose({

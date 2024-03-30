@@ -1,43 +1,43 @@
 <template>
   <el-dialog v-model="visible" :title="userFormTitle" @close="closeForm" width="620">
-    <el-form :model="userInfo" ref="userFormRef" label-width="100" :rules="checkRules" inline>
+    <el-form :model="userInfo" ref="userFormRef" label-width="100" :rules="checkRules" inline v-loading="loading">
       <el-form-item label="用户名" prop="userName">
-        <el-input placeholder="用户名" v-model="userInfo.userName" class="form-input" />
+        <el-input placeholder="用户名" v-model="userInfo.userName" class="form-input"/>
       </el-form-item>
       <el-form-item label="昵称" prop="nickName">
-        <el-input placeholder="昵称" v-model="userInfo.nickName" class="form-input" />
+        <el-input placeholder="昵称" v-model="userInfo.nickName" class="form-input"/>
       </el-form-item>
       <el-form-item label="密码" v-if="!userInfo.userId" prop="password">
-        <el-input placeholder="密码(若为空，则设置为默认密码)" v-model="userInfo.password" class="form-input" />
+        <el-input placeholder="密码(若为空，则设置为默认密码)" v-model="userInfo.password" class="form-input"/>
       </el-form-item>
       <el-form-item label="性别">
-        <stitch-radio-group v-model="userInfo.sex" dict-type="user_gender" />
+        <stitch-radio-group v-model="userInfo.sex" dict-type="user_gender"/>
       </el-form-item>
       <el-form-item label="所属部门" prop="deptId">
         <el-tree-select placeholder="所属部门" v-model="userInfo.deptId" :data="selectDeptData" check-strictly
-          class="select-input" />
+                        class="select-input"/>
       </el-form-item>
       <el-form-item label="角色配置">
         <el-select v-model="userInfo.roleIds" multiple placeholder="角色配置" class="select-input">
-          <el-option v-for="item in selectRoleData" :key="item.roleId" :label="item.roleName" :value="item.roleId" />
+          <el-option v-for="item in selectRoleData" :key="item.roleId" :label="item.roleName" :value="item.roleId"/>
         </el-select>
       </el-form-item>
       <el-form-item label="岗位配置">
         <el-select v-model="userInfo.postIds" multiple placeholder="岗位配置" class="select-input">
-          <el-option v-for="item in selectPostData" :key="item.postId" :label="item.postName" :value="item.postId" />
+          <el-option v-for="item in selectPostData" :key="item.postId" :label="item.postName" :value="item.postId"/>
         </el-select>
       </el-form-item>
       <el-form-item label="电话">
-        <el-input placeholder="电话" v-model="userInfo.phone" class="form-input" />
+        <el-input placeholder="电话" v-model="userInfo.phone" class="form-input"/>
       </el-form-item>
       <el-form-item label="邮箱">
-        <el-input placeholder="邮箱" v-model="userInfo.email" class="form-input" />
+        <el-input placeholder="邮箱" v-model="userInfo.email" class="form-input"/>
       </el-form-item>
       <el-form-item label="备注">
-        <el-input type="textarea" placeholder="备注" v-model="userInfo.remark" class="form-input" />
+        <el-input type="textarea" placeholder="备注" v-model="userInfo.remark" class="form-input"/>
       </el-form-item>
       <el-form-item label="状态">
-        <stitch-radio-group v-model="userInfo.status" dict-type="user_status" />
+        <stitch-radio-group v-model="userInfo.status" dict-type="user_status"/>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -50,10 +50,10 @@
 </template>
 <script setup>
 
-import { reactive, ref } from "vue";
-import { ElMessage } from "element-plus";
-import { initSelectTree } from "@/utils/tree.js";
-import { getSysUserById, insertSysUser, updateSysUser } from "@/api/perms/user.js";
+import {reactive, ref} from "vue";
+import {ElMessage} from "element-plus";
+import {initSelectTree} from "@/utils/tree.js";
+import {getSysUserById, insertSysUser, updateSysUser} from "@/api/perms/user.js";
 import '@/assets/css/form/form.css'
 import StitchRadioGroup from "@/components/Dict/stitch-radio-group.vue";
 
@@ -78,6 +78,7 @@ const userInfo = reactive({
   password: '',
   remark: ''
 })
+const loading = ref(false)
 
 const checkRules = ref({
   userName: {
@@ -137,6 +138,7 @@ const clearForm = () => {
 //初始化表单
 const initFormData = (userId) => {
   userId = userId ? userId : ''
+  loading.value = true
   getSysUserById(userId).then(res => {
     if (res.user) {
       Object.assign(userInfo, res.user)
@@ -147,6 +149,8 @@ const initFormData = (userId) => {
     selectRoleData.value = res.roles
     //初始化岗位选择框
     selectPostData.value = res.posts
+  }).finally(() => {
+    loading.value = false
   })
 }
 
@@ -170,12 +174,12 @@ function closeForm() {
 function init(userId) {
   //清空表单
   clearForm()
+  //展示表单
+  visible.value = true
   //设置标题
   initFormTitle(userId)
   //初始化表单数据
   initFormData(userId)
-  //展示表单
-  visible.value = true
 }
 
 // 暴露初始化函数

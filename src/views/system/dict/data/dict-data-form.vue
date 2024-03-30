@@ -1,6 +1,7 @@
 <template>
   <el-dialog v-model="visible" :title="dataFormTitle" width="620" @close="closeForm">
-    <el-form :model="dictDataInfo" ref="dictDataFormRef" :rules="checkRules" label-width="100" inline>
+    <el-form :model="dictDataInfo" ref="dictDataFormRef" :rules="checkRules" label-width="100" inline
+             v-loading="loading">
       <el-form-item label="字典标签" prop="dictLabel">
         <el-input placeholder="字典标签" v-model="dictDataInfo.dictLabel" class="form-input"/>
       </el-form-item>
@@ -74,6 +75,7 @@ const checkRules = ref({
     trigger: 'blur'
   }
 })
+const loading = ref(false)
 
 //提交表单
 const submitDictHandler = () => {
@@ -122,8 +124,11 @@ function init(dictType, dictCode) {
 
   if (dictCode) {
     dataFormTitle.value = '修改字典数据'
+    loading.value = true
     getDictDataByCode(dictCode).then(res => {
-      Object.assign(dictDataInfo,res.data)
+      Object.assign(dictDataInfo, res.data)
+    }).finally(() => {
+      loading.value = false
     })
   } else {
     dataFormTitle.value = '新增字典数据'

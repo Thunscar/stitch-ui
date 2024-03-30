@@ -3,7 +3,7 @@
              :title="postFormTitle"
              width="620"
              @close="closeForm">
-    <el-form :model="postInfo" ref="postFormRef" :rules="checkRules" label-width="100" inline>
+    <el-form :model="postInfo" ref="postFormRef" :rules="checkRules" label-width="100" inline v-loading="loading">
       <el-form-item label="岗位编码" prop="postCode">
         <el-input placeholder="岗位编码" v-model="postInfo.postCode" class="form-input"/>
       </el-form-item>
@@ -60,6 +60,7 @@ const checkRules = ref({
     trigger: 'blur'
   }
 })
+const loading = ref(false)
 
 
 // 提交表单
@@ -108,8 +109,11 @@ function init(postId) {
 
   if (postId) {
     postFormTitle.value = '修改岗位'
+    loading.value = true
     getSysPostById(postId).then(res => {
-      Object.assign(postInfo,res.data)
+      Object.assign(postInfo, res.data)
+    }).finally(() => {
+      loading.value = false
     })
   } else {
     postFormTitle.value = '新增参数'
