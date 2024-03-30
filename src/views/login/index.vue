@@ -51,7 +51,6 @@ function changeTheme() {
   position: absolute;
   width: 100%;
   height: 100%;
-  margin: -8px;
 }
 
 .container-view {
@@ -100,4 +99,18 @@ function changeTheme() {
   right: 30px;
 }
 
+@media only screen and  (max-width: 768px) {
+  .logo-image {
+    display: none;
+  }
+
+  .login-view {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    right: auto;
+    width: 400px;
+  }
+}
 </style>

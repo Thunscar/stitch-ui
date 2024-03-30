@@ -74,11 +74,11 @@ const nickName = computed(() => userStore.name)
 const globalStore = useStore().global
 const size = computed(() => globalStore.size)
 
-const collapse = ref(false)
-const screenWidth = ref(document.body.scrollWidth)
+const collapse = ref(true)
+const screenWidth = ref(document.body.clientWidth)
 
 watch(screenWidth, () => {
-  console.log(screenWidth.value)
+  collapse.value = screenWidth.value < 1000
 })
 
 
@@ -100,6 +100,8 @@ function putAwayMenuClick() {
 
 watch(collapse, () => {
   bus.emit('changeCollapseStatus', collapse.value)
+}, {
+  immediate: true
 })
 
 //设置全局布局大小
@@ -132,9 +134,10 @@ function toggleTheme() {
 onMounted(() => {
   window.onresize = () => {
     return (() => {
-      collapse.value = document.body.clientWidth < 1000;
+      screenWidth.value = document.body.clientWidth;
     })()
   }
+
 })
 
 </script>
@@ -258,6 +261,7 @@ onMounted(() => {
   color: var(--text-color);
 }
 
+
 .layout-size {
   display: flex;
   align-items: center;
@@ -296,5 +300,17 @@ onMounted(() => {
   width: 20px;
   height: 20px;
   content: var(--theme-mode-icon);
+}
+
+@media only screen and (max-width: 768px) {
+  .user-info {
+    width: 60px;
+  }
+  .user-name {
+    display: none;
+  }
+  .left-header{
+    display: none;
+  }
 }
 </style>

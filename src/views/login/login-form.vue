@@ -208,13 +208,6 @@ onMounted(() => {
   margin-left: 4%;
 }
 
-.code-img-group {
-  margin-left: 10%;
-  margin-bottom: 15px;
-  width: 80%;
-  height: 40px;
-}
-
 .code-input {
   width: 48%;
   height: 40px;
@@ -229,5 +222,12 @@ onMounted(() => {
   margin-bottom: 0;
   vertical-align: middle;
   border-radius: 3px;
+}
+
+@media only screen and (max-width: 768px) {
+  .login-form{
+    width: 400px;
+    height: 380px;
+  }
 }
 </style>
