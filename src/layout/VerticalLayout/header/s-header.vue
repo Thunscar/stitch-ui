@@ -67,7 +67,6 @@ import {useFullscreen} from "@vueuse/core";
 const instance = getCurrentInstance()
 const bus = instance.appContext.config.globalProperties.bus
 
-
 const {isFullscreen, toggle} = useFullscreen()
 const userStore = useStore().user
 const nickName = computed(() => userStore.name)
@@ -79,7 +78,7 @@ const screenWidth = ref(document.body.clientWidth)
 
 watch(screenWidth, () => {
   collapse.value = screenWidth.value < 1000
-})
+}, {immediate: true})
 
 
 const breadcrumb = computed(() => {
@@ -306,10 +305,12 @@ onMounted(() => {
   .user-info {
     width: 60px;
   }
+
   .user-name {
     display: none;
   }
-  .left-header{
+
+  .left-header {
     display: none;
   }
 }
