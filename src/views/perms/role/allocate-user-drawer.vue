@@ -26,7 +26,7 @@
             :indent="8" border :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectUserHandler"
             class="table-content" v-loading="tableLoading">
             <el-table-column type="selection" width="50" align="center" />
-            <el-table-column label="用户名" prop="userName" :show-overflow-tooltip="true" fixed="left" width="140"
+            <el-table-column label="用户名" prop="userName" :show-overflow-tooltip="true" width="140"
               align="center" />
             <el-table-column label="昵称" prop="nickName" :show-overflow-tooltip="true" width="100" align="center" />
             <el-table-column label="类型" prop="userType" width="110" align="center">

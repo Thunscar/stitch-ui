@@ -14,8 +14,7 @@
     <el-table :data="postList" :row-key="(record) => record.postId" :default-expand-all="false" :indent="8" border
       :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectPostHandler" v-loading="tableLoading">
       <el-table-column type="selection" width="50" align="center" />
-      <el-table-column label="岗位编码" prop="postCode" :show-overflow-tooltip="true" width="180" fixed="left"
-        align="center" />
+      <el-table-column label="岗位编码" prop="postCode" :show-overflow-tooltip="true" width="180" align="center" />
       <el-table-column label="岗位名称" prop="postName" :show-overflow-tooltip="true" align="center" />
       <el-table-column label="排序" prop="postSort" :show-overflow-tooltip="true" width="80" align="center" />
       <el-table-column label="状态" prop="status" width="85" align="center">

@@ -26,7 +26,7 @@
                     @selection-change="selectRoleHandler"
                     class="table-content" v-loading="tableLoading">
             <el-table-column type="selection" width="50" align="center"/>
-            <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" fixed="left"
+            <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true"
                              align="center"/>
             <el-table-column label="角色编码" prop="roleKey" :show-overflow-tooltip="true" align="center"/>
             <el-table-column label="排序" prop="roleSort" :show-overflow-tooltip="true" width="80" align="center"/>

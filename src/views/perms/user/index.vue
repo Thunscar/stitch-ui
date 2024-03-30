@@ -18,8 +18,7 @@
               :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectUserHandler"
               v-loading="tableLoading">
       <el-table-column type="selection" width="50" align="center"/>
-      <el-table-column label="用户名" prop="userName" :show-overflow-tooltip="true" fixed="left" width="140"
-                       align="center"/>
+      <el-table-column label="用户名" prop="userName" :show-overflow-tooltip="true" width="140" align="center"/>
       <el-table-column label="昵称" prop="nickName" :show-overflow-tooltip="true" width="100" align="center"/>
       <el-table-column label="类型" prop="userType" width="120" align="center">
         <template #default="scope">
