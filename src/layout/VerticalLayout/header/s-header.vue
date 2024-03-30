@@ -58,7 +58,7 @@
 </template>
 <script setup>
 import router from "@/router/index.js";
-import {computed, getCurrentInstance, ref} from "vue";
+import {computed, getCurrentInstance, onMounted, ref, watch} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {useStore} from "@/store/index.js";
 import {ArrowDownBold} from "@element-plus/icons-vue";
@@ -67,12 +67,19 @@ import {useFullscreen} from "@vueuse/core";
 const instance = getCurrentInstance()
 const bus = instance.appContext.config.globalProperties.bus
 
-const collapse = ref(false)
+
 const {isFullscreen, toggle} = useFullscreen()
 const userStore = useStore().user
 const nickName = computed(() => userStore.name)
 const globalStore = useStore().global
 const size = computed(() => globalStore.size)
+
+const collapse = ref(false)
+const screenWidth = ref(document.body.scrollWidth)
+
+watch(screenWidth, () => {
+  console.log(screenWidth.value)
+})
 
 
 const breadcrumb = computed(() => {
@@ -89,8 +96,11 @@ const breadcrumb = computed(() => {
 //收起菜单事件(利用全局事件总线设置菜单的collapse属性)
 function putAwayMenuClick() {
   collapse.value = !collapse.value
-  bus.emit('changeCollapseStatus', collapse.value)
 }
+
+watch(collapse, () => {
+  bus.emit('changeCollapseStatus', collapse.value)
+})
 
 //设置全局布局大小
 function setSize(size) {
@@ -118,6 +128,14 @@ function toggleTheme() {
   const theme = globalStore.theme === 'dark' ? 'default' : 'dark'
   globalStore.SetUserTheme(theme)
 }
+
+onMounted(() => {
+  window.onresize = () => {
+    return (() => {
+      collapse.value = document.body.clientWidth < 1000;
+    })()
+  }
+})
 
 </script>
 <style scoped>
