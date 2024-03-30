@@ -9,7 +9,7 @@
       <el-button type="info" text bg @click="expandAllHandler">展开/折叠</el-button>
     </div>
     <el-table :data="deptTreeData" :row-key="(record) => record.deptId" v-model:expand-row-keys="expandColumns"
-      :default-expand-all="false" :indent="8" border :header-cell-style="{ 'text-align': 'center' }">
+      :default-expand-all="false" :indent="8" border :header-cell-style="{ 'text-align': 'center' }" v-loading="tableLoading">
       <el-table-column prop="deptName" label="部门名称" width="250" :show-overflow-tooltip="true" />
       <el-table-column prop="orderNum" label="排序" width="85" :show-overflow-tooltip="true" align="center" />
       <el-table-column prop="leader" label="联系人" :show-overflow-tooltip="true" align="center" />
@@ -48,6 +48,7 @@ const queryDept = reactive({
   leader: ''
 })
 const deptFormRef = ref()
+const tableLoading = ref(false)
 
 //展开或折叠事件
 function expandAllHandler() {
@@ -95,9 +96,12 @@ function resetQueryCondition() {
 
 //获取部门数据
 function queryDeptDataList() {
+  tableLoading.value = true
   getDeptList(queryDept).then(res => {
     deptTreeData.value = initTreeData(res.data, 'deptId')
     deptListData.value = res.data
+  }).finally(()=>{
+    tableLoading.value = false
   })
 }
 

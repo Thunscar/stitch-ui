@@ -24,7 +24,7 @@
         <div class="table">
           <el-table :data="userList" :row-key="(record) => record.userId" max-height="64vh" :default-expand-all="false"
             :indent="8" border :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectUserHandler"
-            class="table-content">
+            class="table-content" v-loading="tableLoading">
             <el-table-column type="selection" width="50" align="center" />
             <el-table-column label="用户名" prop="userName" :show-overflow-tooltip="true" fixed="left" width="140"
               align="center" />
@@ -91,6 +91,7 @@ const queryUser = reactive({
   pageSize: 10,
   total: 0
 })
+const tableLoading = ref(false)
 
 function selectUserHandler(rows) {
   selectedUsers.value = rows.map(row => row.userId)
@@ -170,16 +171,22 @@ const cancelBatchConferRole = () => {
 }
 
 const getAllocatedUsers = () => {
+  tableLoading.value = true
   selectAllocatedUsers(queryUser).then(res => {
     userList.value = res.list
     queryUser.total = res.total
+  }).finally(()=>{
+    tableLoading.value = false
   })
 }
 
 function getUnAllocatedUsers() {
+  tableLoading.value = true
   selectUnAllocatedUsers(queryUser).then(res => {
     userList.value = res.list
     queryUser.total = res.total
+  }).finally(()=>{
+    tableLoading.value = false
   })
 }
 

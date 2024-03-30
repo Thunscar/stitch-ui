@@ -1,26 +1,28 @@
 <template>
   <el-drawer v-model="visible" :close-on-click-modal="false" size="900" :title="title" @closed="clearDrawer"
-    destroy-on-close>
+             destroy-on-close>
     <template #default>
       <el-card>
         <div class="search">
-          <el-input class="s-search-input" placeholder="字典名称" v-model="queryDictData.dictLabel" />
+          <el-input class="s-search-input" placeholder="字典名称" v-model="queryDictData.dictLabel"/>
           <el-button type="primary" @click="queryDictDataList">搜索</el-button>
           <el-button type="default" @click="resetQueryCondition">重置</el-button>
           <el-button type="primary" text bg @click="createDictDataHandler">新增</el-button>
         </div>
         <el-table :data="dictDataList" :row-key="(record) => record.dictCode" :default-expand-all="false" :indent="8"
-          border :header-cell-style="{ 'text-align': 'center' }">
-          <el-table-column label="字典编码" prop="dictCode" :show-overflow-tooltip="true" align="center" />
+                  border :header-cell-style="{ 'text-align': 'center' }" v-loading="tableLoading">
+          <el-table-column label="字典编码" prop="dictCode" :show-overflow-tooltip="true" align="center"/>
           <el-table-column label="字典标签" prop="dictLabel" :show-overflow-tooltip="true" align="center">
             <template #default="scope">
-              <el-tag :type="scope.row.cssClass === 'primary' ? '' : scope.row.cssClass">{{ scope.row.dictLabel
-                }}</el-tag>
+              <el-tag :type="scope.row.cssClass === 'primary' ? '' : scope.row.cssClass">{{
+                  scope.row.dictLabel
+                }}
+              </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="字典键值" prop="dictValue" :show-overflow-tooltip="true" align="center" />
-          <el-table-column label="备注" prop="remark" :show-overflow-tooltip="true" align="center" />
-          <el-table-column label="创建时间" prop="createTime" :show-overflow-tooltip="true" align="center" />
+          <el-table-column label="字典键值" prop="dictValue" :show-overflow-tooltip="true" align="center"/>
+          <el-table-column label="备注" prop="remark" :show-overflow-tooltip="true" align="center"/>
+          <el-table-column label="创建时间" prop="createTime" :show-overflow-tooltip="true" align="center"/>
           <el-table-column label="操作" width="200" min-width="120" fixed="right" align="center">
             <template #default="scope">
               <el-button type="primary" link @click="updateDictDataHandler(scope.row.dictCode)">修改
@@ -31,10 +33,11 @@
           </el-table-column>
         </el-table>
         <el-pagination v-model:current-page="queryDictData.pageNum" v-model:page-size="queryDictData.pageSize"
-          :page-sizes="[5, 10, 20, 50]" layout="total, sizes, prev, pager, next, jumper" :total="queryDictData.total"
-          @size-change="queryDictDataList" @current-change="queryDictDataList" class="table-pagination" />
+                       :page-sizes="[5, 10, 20, 50]" layout="total, sizes, prev, pager, next, jumper"
+                       :total="queryDictData.total"
+                       @size-change="queryDictDataList" @current-change="queryDictDataList" class="table-pagination"/>
       </el-card>
-      <dict-data-form ref="dictDataFormRef" @refresh-data-list="queryDictDataList" />
+      <dict-data-form ref="dictDataFormRef" @refresh-data-list="queryDictDataList"/>
     </template>
     <template #footer>
       <div style="flex: auto">
@@ -44,11 +47,11 @@
   </el-drawer>
 </template>
 <script setup>
-import { reactive, ref } from "vue";
-import { deleteDictData, getDictDataList } from "@/api/system/dict-data.js";
+import {reactive, ref} from "vue";
+import {deleteDictData, getDictDataList} from "@/api/system/dict-data.js";
 import '@/assets/css/table/table.css'
 import DictDataForm from "@/views/system/dict/data/dict-data-form.vue";
-import { ElMessage, ElMessageBox } from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 const visible = ref(false)
 const title = ref()
@@ -65,6 +68,7 @@ const queryDictData = reactive({
   total: 0
 })
 const dictDataList = ref([])
+const tableLoading = ref(false)
 
 //取消按钮点击事件
 const closeClick = () => {
@@ -97,9 +101,12 @@ const deleteDictDataHandler = (dictCode) => {
 
 //查询字典数据
 const queryDictDataList = () => {
+  tableLoading.value = true
   getDictDataList(queryDictData).then(res => {
     dictDataList.value = res.list
     queryDictData.total = res.total
+  }).finally(() => {
+    tableLoading.value = false
   })
 }
 

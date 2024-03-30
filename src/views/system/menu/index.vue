@@ -13,7 +13,7 @@
       <el-button type="info" text bg @click="expandAllHandler">展开/折叠</el-button>
     </div>
     <el-table :data="menuTreeData" :row-key="(record) => record.menuId" v-model:expand-row-keys="expandColumns"
-      :default-expand-all="false" :indent="8" border :header-cell-style="{ 'text-align': 'center' }">
+      :default-expand-all="false" :indent="8" border :header-cell-style="{ 'text-align': 'center' }" v-loading="tableLoading">
       <el-table-column prop="menuName" label="菜单名称" width="120" :show-overflow-tooltip="true" />
       <el-table-column prop="menuType" label="类型" width="90" align="center">
         <template #default="scope">
@@ -73,6 +73,7 @@ const queryMenu = reactive({
   status: ''
 })
 const menuFormRef = ref()
+const tableLoading = ref(false)
 
 //展开或折叠事件
 function expandAllHandler() {
@@ -97,9 +98,12 @@ function resetQueryCondition() {
 
 // 查询菜单列表
 function queryMenuDataList() {
+  tableLoading.value = true
   getMenuList(queryMenu).then(res => {
     menuTreeData.value = initTreeData(res.data, 'menuId')
     menuListData.value = res.data
+  }).finally(()=>{
+    tableLoading.value = false
   })
 }
 

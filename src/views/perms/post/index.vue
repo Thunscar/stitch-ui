@@ -12,7 +12,7 @@
       <el-button v-auth="'sys:post:export'" type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
     </div>
     <el-table :data="postList" :row-key="(record) => record.postId" :default-expand-all="false" :indent="8" border
-      :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectPostHandler">
+      :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectPostHandler" v-loading="tableLoading">
       <el-table-column type="selection" width="50" align="center" />
       <el-table-column label="岗位编码" prop="postCode" :show-overflow-tooltip="true" width="180" fixed="left"
         align="center" />
@@ -67,6 +67,7 @@ const queryPost = reactive({
   pageSize: 10,
   total: 0
 })
+const tableLoading = ref(false)
 
 function createPostHandler() {
   postFormRef.value.init()
@@ -122,9 +123,12 @@ function resetQueryCondition() {
 }
 
 function queryPostList() {
+  tableLoading.value = true
   querySysPostList(queryPost).then(res => {
     postList.value = res.list
     queryPost.total = res.total
+  }).finally(()=>{
+    tableLoading.value = false
   })
 }
 

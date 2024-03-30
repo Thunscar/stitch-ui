@@ -6,12 +6,13 @@
 .search{
     margin-top: -6px;
     display: flex;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
+    align-content: start;
 }
 
 /* 搜索框间隔样式 */
-.search > button{
-    margin-right: -2px;
+.search > .el-button{
+    margin-left: 0;
 }
 .search > * {
     margin-right: 10px;

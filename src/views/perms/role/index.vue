@@ -11,7 +11,7 @@
       <el-button v-auth="'sys:role:export'" type="info" text bg @click="exportExcelHandler">导出Excel</el-button>
     </div>
     <el-table :data="roleList" :row-key="(record) => record.roleId" :default-expand-all="false" :indent="8" border
-      :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectRoleHandler">
+      :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectRoleHandler" v-loading="tableLoading">
       <el-table-column type="selection" width="50" align="center" />
       <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" fixed="left" align="center" />
       <el-table-column label="角色编码" prop="roleKey" :show-overflow-tooltip="true" align="center" />
@@ -88,6 +88,7 @@ const queryRole = reactive({
   pageSize: 10,
   total: 0
 })
+const tableLoading = ref(false)
 
 //新增角色
 function createRoleHandler() {
@@ -150,9 +151,12 @@ function allocatedUsers(roleId, roleName) {
 }
 
 function queryRoleList() {
+  tableLoading.value = true
   selectSysRoleList(queryRole).then(res => {
     roleList.value = res.list
     queryRole.total = res.total
+  }).finally(()=>{
+    tableLoading.value = false
   })
 }
 

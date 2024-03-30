@@ -11,7 +11,7 @@
       <el-button v-auth="'sys:dict:refresh'" type="success" text bg @click="refreshCacheHandler">刷新缓存</el-button>
     </div>
     <el-table :data="typeList" :row-key="(record) => record.dictId" :default-expand-all="false" :indent="8" border
-      :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectDictTypeHandler">
+      :header-cell-style="{ 'text-align': 'center' }" @selection-change="selectDictTypeHandler" v-loading="tableLoading">
       <el-table-column type="selection" width="50" align="center" />
       <el-table-column label="字典名称" prop="dictName" :show-overflow-tooltip="true" align="center" />
       <el-table-column label="字典类型编码" prop="dictType" :show-overflow-tooltip="true" align="center" />
@@ -68,6 +68,7 @@ const selectedTypes = ref([])
 const dictFormRef = ref()
 const dictDataDrawerRef = ref()
 const dictStore = useStore().dict
+const tableLoading = ref(false)
 
 //配置字典
 const dictConfig = (dictType, dictTypeName) => {
@@ -141,9 +142,12 @@ const resetQueryCondition = () => {
 
 //查询字典类型列表
 const queryDictTypeList = () => {
+  tableLoading.value = true
   getDictList(queryDictType).then(res => {
     typeList.value = res.list
     queryDictType.total = res.total
+  }).finally(()=>{
+    tableLoading.value = false
   })
 }
 

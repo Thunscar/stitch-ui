@@ -5,16 +5,12 @@
       <el-input class="s-search-input" placeholder="操作人" v-model="queryInfo.operateUser"/>
       <el-input class="s-search-input" placeholder="调用方法" v-model="queryInfo.method"/>
       <el-input class="s-search-input" placeholder="操作参数" v-model="queryInfo.operateParam"/>
-      <el-select class="s-search-input" placeholder="状态" v-model="queryInfo.status">
-        <el-option :value="0" label="成功"/>
-        <el-option :value="1" label="失败"/>
-      </el-select>
       <el-button type="primary" @click="queryOperLogList">搜索</el-button>
       <el-button type="default" @click="resetQueryCondition">重置</el-button>
       <el-button v-auth="'sys:operlog:export'" type="info" text bg @click="exportExcel">导出Excel</el-button>
     </div>
     <el-table :data="logList" :row-key="(record) => record.logId" :flexible="true" :indent="8" border
-              :header-cell-style="{ 'text-align': 'center' }">
+              :header-cell-style="{ 'text-align': 'center' }" v-loading="tableLoading">
       <el-table-column label="标题" prop="title" width="160" :show-overflow-tooltip="true" fixed="left" align="center"/>
       <el-table-column label="业务类型" prop="businessType" width="90" :show-overflow-tooltip="true" align="center">
         <template #default="scope">
@@ -76,12 +72,16 @@ const queryInfo = reactive({
   pageSize: 10,
   total: 0
 })
+const tableLoading = ref(false)
 
 //加载数据
 const queryOperLogList = () => {
+  tableLoading.value = true
   queryOperateLogList(queryInfo).then(res => {
     logList.value = res.list
     queryInfo.total = res.total
+  }).finally(() => {
+    tableLoading.value = false
   })
 }
 
@@ -100,7 +100,7 @@ const resetQueryCondition = () => {
 
 //导出Excel
 const exportExcel = () => {
-  download('/sys/operlog/export', { ...queryInfo }, `operate_log_${new Date().getTime()}.xls`)
+  download('/sys/operlog/export', {...queryInfo}, `operate_log_${new Date().getTime()}.xls`)
 }
 
 onMounted(() => {
