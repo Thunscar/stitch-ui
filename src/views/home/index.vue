@@ -1,9 +1,10 @@
 <template>
   <div class="home-page">
-    <img class="home-welcome-img" src="@/assets/img/home-welcome.svg" alt=""/>
+    <div class="home-title">
+      <img style="width: 40%" src="@/assets/img/home-welcome.svg">
+    </div>
     <div class="home-page-intro">
       <p>
-        介绍<br/>
         前端使用的开发工具有Vue3、Element Plus、Vue
         Router、Pinia、Axios、Vite等，后端使用的开发工具有SpringBoot、Spring
         Security、MyBatis、MySQL、Redis等。前端与后端都尽量做到少依赖外部工具库为原则，以降低评估和维护依赖而产生的时间成本。采用MIT开源协议，可免费用于商业项目等场景。<br/>
@@ -27,13 +28,16 @@ const authorBlogUrl = import.meta.env.VITE_BLOG
 const demoUrl = import.meta.env.VITE_FRONT_URL
 </script>
 <style scoped>
-.home-welcome-img {
-  width: 80%;
-  height: 80%;
-  pointer-events: none;
-  user-select: none
+.home-title{
+
 }
 
+.title-text h1{
+  font-size: 40px;
+}
+.title-text span{
+  font-size: 20px;
+}
 .home-page {
   padding-top: 5%;
   text-align: center;
