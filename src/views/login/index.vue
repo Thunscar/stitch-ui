@@ -13,6 +13,12 @@
                 2.修复部分Bug<br/>
                 3.优化页面交互
               </el-timeline-item>
+              <el-timeline-item timestamp="2024-04-01">
+                1.新增在线用户功能<br/>
+                2.新增个人信息修改功能<br/>
+                3.部分页面添加loading效果,优化交互<br/>
+                4.修复部分bug
+              </el-timeline-item>
             </el-timeline>
           </el-dropdown-menu>
         </template>
