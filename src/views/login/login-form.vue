@@ -117,7 +117,7 @@ function handlerLogin(loginFormRef) {
         }
         //路由跳转
         router.push({ path: router.currentRoute.value.query.redirect || "/" })
-      }).catch(res => {
+      }).catch(() => {
         loginLoading.value = false
         getVerifyCode()
         loginForm.code = ''

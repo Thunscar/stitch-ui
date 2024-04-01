@@ -46,7 +46,7 @@
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item @click="ElMessage.info('正在开发中')">个人中心</el-dropdown-item>
+              <el-dropdown-item @click="router.push('user-center')">个人中心</el-dropdown-item>
               <el-dropdown-item @click="ElMessage.info('正在开发中')">个性设置</el-dropdown-item>
               <el-dropdown-item @click="loginOut">退出登录</el-dropdown-item>
             </el-dropdown-menu>

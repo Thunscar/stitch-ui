@@ -12,5 +12,3 @@ export function removeToken() {
     localStorage.clear()
     // localStorage.removeItem(userStorageKey)
 }
-
-

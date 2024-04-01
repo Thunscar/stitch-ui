@@ -16,6 +16,15 @@ export const routes = [
                     title: '首页',
                     icon: 'f-home'
                 }
+            },
+            {
+                name: 'user-center',
+                path: '/user-center',
+                component: () => import('@/views/user/index.vue'),
+                meta: {
+                    title: '个人中心',
+                    icon: 'f-client'
+                }
             }
         ]
     },

@@ -8,7 +8,6 @@
 <script setup>
 
 import {useStore} from "@/store/index.js";
-import {onMounted, ref} from "vue";
 
 const dictStore = useStore().dict
 
