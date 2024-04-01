@@ -5,7 +5,7 @@
     </template>
     <el-tabs v-model="activeName">
       <el-tab-pane label="修改基本信息" name="user-profile">
-        <el-form :model="newUserProfile" label-width="auto" ref="userProfileRef" :rules="checkRules">
+        <el-form :model="newUserProfile" ref="userProfileRef" :rules="checkRules">
           <el-form-item label="用户昵称" prop="nickName">
             <el-input v-model="newUserProfile.nickName" class="form-input"/>
           </el-form-item>
@@ -25,7 +25,7 @@
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="修改密码" name="user-password">
-        <el-form :model="password" label-width="auto" ref="userPasswordRef" :rules="passwordCheckRules">
+        <el-form :model="password" ref="userPasswordRef" :rules="passwordCheckRules">
           <el-form-item label="旧密码" prop="oldPassword">
             <el-input v-model="password.oldPassword" class="form-input" type="password"/>
           </el-form-item>
