@@ -1,7 +1,7 @@
 <template>
   <div class="home-page">
     <div class="home-title">
-      <img style="width: 40%" src="@/assets/img/home-welcome.svg">
+      <img src="@/assets/img/home-welcome.svg">
     </div>
     <div class="home-page-intro">
       <p>
@@ -28,16 +28,20 @@ const authorBlogUrl = import.meta.env.VITE_BLOG
 const demoUrl = import.meta.env.VITE_FRONT_URL
 </script>
 <style scoped>
-.home-title{
-
+.home-title img {
+  width: 40%;
+  user-select: none;
+  pointer-events: none
 }
 
-.title-text h1{
+.title-text h1 {
   font-size: 40px;
 }
-.title-text span{
+
+.title-text span {
   font-size: 20px;
 }
+
 .home-page {
   padding-top: 5%;
   text-align: center;
