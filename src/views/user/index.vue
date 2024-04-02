@@ -62,7 +62,7 @@ onMounted(() => {
   .user-center{
     display: flex;
   }
-  .user-profile-form{
+  .user-center .user-profile-form{
     width: 400px;
   }
 }
