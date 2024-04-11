@@ -130,6 +130,10 @@ function initSelectMenuData(roleId) {
         loading.value = false
       })
     }
+  }).finally(() => {
+    if (!roleId) {
+      loading.value = false
+    }
   })
 }
 
